@@ -11,7 +11,11 @@
             <div class="col-md-4">
                <div class="row">
                 <div class="col-4 p-0 ">
-                  <h5 class="text-center">Puntaje del dia</h5>
+                  <h5 class="text-center">Puntaje del diaa</h5>
+                  {{-- code debe ser random --}}
+                  {{-- <a href="https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=vjl5wxupylcsiaq7kp5bjou29solwc&redirect_uri=http://localhost&scope=channel%3Amanage%3Apolls+channel%3Aread%3Apolls&state=c3ab8aa609ea11e793ae92361f002671" class="bg-success">Connect with Twitch</a>
+                  
+                  <a href="https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=vjl5wxupylcsiaq7kp5bjou29solwc&redirect_uri=http://localhost&scope=channel%3Amanage%3Apolls+channel%3Aread%3Apolls&state=c3ab8aa609ea11e793ae92361f002671" class="bg-warning">COnectate</a> --}}
                 </div>
                 <div class="col-7">
                   <div class="form-group">
