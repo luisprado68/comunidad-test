@@ -3,7 +3,7 @@
     font-size:18px;
     text-transform:uppercase;
     height:82px;
-    line-height:64px;
+    line-height:35px;
   }
   .flare {
     background:#ef662b;
@@ -28,4 +28,28 @@
       background : rgba(255,255,255,0.1);
       margin:2px;
     }
+  }
+
+  .profile-img{
+    width: 80px;
+  }
+  a.item-nav{
+    padding-top: 20px;
+  }
+  button.twich-button{
+    background-color: #9147ff;
+    color:white;
+  }
+  button.twich-button:hover  {
+    background-color: #782de9;
+    color:white;
+  }
+
+  button.kick-button{
+    background-color: #53fc16;
+    color:white;
+  }
+  button.kick-button:hover  {
+    background-color: #3ebb10;
+    color:white;
   }
