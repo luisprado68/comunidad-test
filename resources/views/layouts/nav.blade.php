@@ -16,9 +16,11 @@
                     <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img">
+                        {{-- <img src="./public/img/logo.webp" alt="tag" class="profile-img"> --}}
                     </a>
                     <ul class="dropdown-menu m-0" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li><a class="dropdown-item" href="{{ route('summary') }}">Resumen</a></li>
                         <li><a class="dropdown-item" href="#">Apoyar</a></li>
                         <li><a class="dropdown-item" href="#">Agendar</a></li>
                         <li><a class="dropdown-item" href="#">Mis Agendas</a></li>
@@ -27,10 +29,7 @@
                         <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
                     </ul>
                 </li>
-                {{-- <li class="nav-item">
-            <a class="nav-link mx-2" href="#">Cerrar Sesión</a>
-            <a class="nav-link mx-2" href="#">Cerrar Sesión<span class="ms-2">&#x2192;</span></a>
-          </li> --}}
+               
             </ul>
         </div>
     </div>

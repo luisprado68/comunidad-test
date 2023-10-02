@@ -5,6 +5,17 @@
     height:82px;
     line-height:35px;
   }
+  .dropdown, .dropdown-center, .dropend, .dropstart, .dropup, .dropup-center {
+    position: relative;
+    right: 7.8%;
+  } 
+/* .dropdown-menu[data-bs-popper] {
+  top: 100%;
+  left: 0;
+  right: 50%;
+  margin-top: var(--bs-dropdown-spacer);
+  
+} */
   .flare {
     background:#ef662b;
   }
@@ -25,7 +36,7 @@
       text-align:center
     }
     .nav-item {
-      background : rgba(255,255,255,0.1);
+      /* background : rgba(255,255,255,0.1); */
       margin:2px;
     }
   }
