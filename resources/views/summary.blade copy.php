@@ -9,7 +9,7 @@
             
                     <div class="card-body bg-dark">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-3">
                                 <div class="col-md-12 w-100">
                                     <div class="card ">
                                         {{-- <div class="card-header">{{ __('Dashboard') }}</div> --}}
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-3">
                                 <div class="col-md-12 pt-5 w-100">
                                     <div class="card">
                                         {{-- <div class="card-header">{{ __('Dashboard') }}</div> --}}
@@ -93,7 +93,7 @@
                 </div>
 
             </div>
-            {{-- <div class="col-md-12 pt-1 w-100">
+            <div class="col-md-12 pt-1 w-100">
                 <div class="card bg-secondary">
                     <div class="card-body bg-secondary">
                         <h5>COMPARTE TU LINK CON UN AMIGO</h5>
@@ -103,9 +103,10 @@
                         </div>
                     </div>
                 </div>
-                
+                {{-- <div class="card-header">{{ __('Dashboard') }}</div> --}}
 
-            </div> --}}
+
+            </div>
         </div>
     </div>
 @endsection
