@@ -34,7 +34,8 @@
                                 </div>
                             </div>
                             <div class="col-6 text-center">
-                                <img src="{{ asset('/img/rango.jpg') }}" alt="tag" class="w-25 m-5">
+                                {{-- <img src="{{ asset('/img/rango.jpg') }}" alt="tag" class="w-25 m-5"> --}}
+                                <img src="./public/img/rango.jpg" alt="tag"  class="w-25 m-5">
                                 <p class="text-light">Bronce</p>
                             </div>
                         </div>

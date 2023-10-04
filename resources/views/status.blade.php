@@ -4,7 +4,8 @@
                     <div class="card-body bg-dark">
                         <div class="row">
                             <div class="col-2">
-                                <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img">
+                                {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
+                                <img src="./public/img/logo.webp" alt="tag" class="profile-img">
                                 <label class="text-light" for="">Score Día</label>
                             </div>
                             <div class="col-4 offset-2">

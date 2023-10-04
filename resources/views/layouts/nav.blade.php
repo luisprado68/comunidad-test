@@ -21,15 +21,15 @@
                 <div class=" collapse navbar-collapse" id="navbarNavDropdown">
                     {{-- ms-auto --}}
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link mx-2 active item-nav" aria-current="page"
                                 href="{{ route('home') }}">Inicio</a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item dropdown">
                             <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img">
-                                {{-- <img src="./public/img/logo.webp" alt="tag" class="profile-img"> --}}
+                                {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
+                                <img src="./public/img/logo.webp" alt="tag" class="profile-img">
                             </a>
                             <ul class="dropdown-menu m-0" aria-labelledby="navbarDropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Perfil</a></li>
