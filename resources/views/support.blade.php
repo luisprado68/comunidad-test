@@ -12,8 +12,13 @@
                                 <div class="card banner">
                                     <div class="card-body text-center">
                                         <h3 class="text-light text-center">Stream Designado</h3>
-                                        {{-- <img src="{{ asset('/img/stream.avif') }}" alt="tag" class="w-50 m-1 text-center "> --}}
-                                        <img src="./public/img/stream.avif" alt="tag"  class="w-50 m-1 text-center ">
+                                        @if (env('APP_ENV') == 'local')
+                                            <img src="{{ asset('/img/stream.avif') }}" alt="tag"
+                                                class="w-50 m-1 text-center ">
+                                        @else
+                                            <img src="./public/img/stream.avif" alt="tag"
+                                                class="w-50 m-1 text-center ">
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -21,13 +26,18 @@
                                 <div class="card banner ">
                                     <div class="card-body text-center">
                                         <h3 class="text-light text-center">Stream Designado</h3>
-                                        {{-- <img src="{{ asset('/img/stream.avif') }}" alt="tag" class="w-50 m-1 text-center "> --}}
-                                        <img src="./public/img/stream.avif" alt="tag"  class="w-50 m-1 text-center ">
+                                        @if (env('APP_ENV') == 'local')
+                                            <img src="{{ asset('/img/stream.avif') }}" alt="tag"
+                                                class="w-50 m-1 text-center ">
+                                        @else
+                                            <img src="./public/img/stream.avif" alt="tag"
+                                                class="w-50 m-1 text-center ">
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6 text-center">
-                                
+
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0">
+    
     {{-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0"> --}}
     {{-- <div class="container-fluid"> --}}
     <div class="container-fluid">
@@ -28,17 +29,23 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
-                                <img src="./public/img/logo.webp" alt="tag" class="profile-img">
+                                @if (env('APP_ENV') == 'local')
+                                <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img">
+                                @else
+                                <img src="./public/img/logo.webp" alt="tag" class="profile-img">   
+                                @endif
+                                
+                              
+                                
                             </a>
                             <ul class="dropdown-menu m-0" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Perfil</a></li>
+                                <li><a class="dropdown-item" href="{{ route('profile') }}">Perfil</a></li>
                                 <li><a class="dropdown-item" href="{{ route('summary') }}">Resumen</a></li>
                                 <li><a class="dropdown-item" href="{{ route('support') }}">Apoyar</a></li>
                                 <li><a class="dropdown-item" href="#">Agendar</a></li>
                                 <li><a class="dropdown-item" href="{{ route('my_agendas') }}">Mis Agendas</a></li>
-                                <li><a class="dropdown-item" href="#">Historial</a></li>
-                                <li><a class="dropdown-item" href="#">Donaciones</a></li>
+                                <li><a class="dropdown-item" href="{{ route('history') }}">Historial</a></li>
+                                <li><a class="dropdown-item" href="{{ route('donation') }}">Donaciones</a></li>
                                 <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
                             </ul>
                         </li>
