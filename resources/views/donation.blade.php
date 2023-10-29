@@ -1,40 +1,50 @@
 @extends('layouts.app')
 
+
 @section('content')
     <div class="container bg-primary">
         <div class="row">
-            @include('status')
+
             <div class="col-md-12 pt-1 w-100">
-                <div class="card bg-secondary">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="card banner">
-                                    <div class="card-body banner">
-                                        <h3 class="text-light text-center">Rango</h3>
+                @if (session()->has('user') && env('USER_ACTIVE') == 0)
+                    @include('link')
+                @else
+                    <div class="card bg-secondary">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-12 text-light">
+                                    <h4 class="text-light text-center">Agradecemos tu apoyo</h4>
+                                    <p>Nuestra comunidad fue creada sin intención de lucro alguno. Nuestro principal
+                                        objetivo es ayudar a los streamers a ser parte de una comunidad que los ayuda a
+                                        alcanzar sus metas y conocer nuevos streamers con los que puedan formar lazos,
+                                        comunidades e interacciones más interesantes para su audiencia.</p>
+                                    <p>Sin embargo nuestro sistema tiene detrás varias horas de trabajo, atención y mejoras
+                                        constantes. Así como los costos mismos de servidores e infraestructura necesaria
+                                        para mantener la comunidad funcionando.</p>
+                                    <p>Como sugerencia de los propios miembros de la comunidad que quieren reconocer el
+                                        trabajo que realizamos, ponemos a tu alcance esta opción donde puedes aportar para
+                                        que este proyecto continúe creciendo y mejorando para todos.</p>
+                                    <p><b>Queremos dejar muy claro que realizar una donación por este medio, NO OFRECE
+                                            VENTAJA ALGUNA a ningún miembro de la comunidad, debido a que queremos que el
+                                            funcionamiento de la misma sea equitativo y justo para todos.</b></p>
+                                    <p>Toma en cuenta que si decides brindarnos tu apoyo, será de manera voluntaria y sin
+                                        intención alguna de obtener beneficio personal alguno en la comunidad.</p>
+                                    <p><b>Agradecemos muchísimo tu apoyo y esperamos seguir trabajando y mejorando para ti y
+                                            cumplir correctamente tus expectativas</b></p>
+                                    <p>Si tu economía personal, no te permite apoyarnos, no te preocupes, tu presencia y
+                                        actividad en la comunidad ya nos ayuda muchísimo</p>
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-warning">Donar</button>
                                     </div>
+
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="card banner ">
-                                    <div class="card-body banner">
-                                        <h3 class="text-light text-center">Referidos</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 text-center">
-                                @if (env('APP_ENV') == 'local')
-                                    <img src="{{ asset('/img/rango.jpg') }}" alt="tag" class="w-25 m-5">
-                                @else
-                                    <img src="./public/img/rango.jpg" alt="tag" class="w-25 m-5">
-                                @endif
-                                <p class="text-light">Bronce</p>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
-            @include('layouts.footer')
+           
         </div>
     </div>
+    @include('layouts.footer')
 @endsection

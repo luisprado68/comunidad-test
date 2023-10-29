@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProfileController extends Controller
+class PrivacyController extends Controller
 {
-    public $ggg = 'test';
     public function index(){
-        return view('profile');
+        return view('privacy');
     }
 }

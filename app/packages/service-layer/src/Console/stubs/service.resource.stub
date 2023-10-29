@@ -1,0 +1,21 @@
+<?php
+
+namespace DummyNamespace;
+
+use Broobe\Services\Service;
+use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
+
+final class DummyClass extends Service
+{
+    use CreateModel, ReadModel, UpdateModel, DestroyModel;
+
+    /**
+     * Set model class name.
+     *
+     * @return void
+     */
+    protected function setModel(): void
+    {
+        $this->model = Model::class;
+    }
+}

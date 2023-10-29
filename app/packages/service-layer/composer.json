@@ -1,0 +1,45 @@
+{
+    "name": "broobe/service-layer",
+    "description": "Service layer for laravel applications",
+    "keywords": [
+        "laravel",
+        "service",
+        "service layer",
+        "business layer",
+        "business logic"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "broobe",
+            "email": "dev@broobe.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.3|^8.0",
+        "illuminate/support": "^8|^9"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^3.8 || ^4.0",
+        "phpunit/phpunit": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Broobe\\Services\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Broobe\\Services\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Broobe\\Services\\ServiceLayerServiceProvider"
+            ]
+        }
+    }
+}

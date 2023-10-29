@@ -24,16 +24,17 @@
 
 <body class="bg-primary" style="width: 100%">
 
-    @if (session()->has('user'))
-        @include('layouts.nav', ['user' => session('user')])
-    @else
-        @include('layouts.nav')
-    @endif
+    {{$test}}
+    <div id="app">
 
-    <main class="py-4">
-        @yield('content')
-    </main>
-    {{-- @include('main') --}}
+        @include('layouts.nav')
+
+        <main class="py-4">
+            @yield('content')
+        </main>
+    </div>
+    @include('layouts.footer')
+
 
 
 
