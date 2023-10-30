@@ -19,6 +19,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'twich_id',
+        'channel',
+        'status',
         'email',
         'password',
     ];

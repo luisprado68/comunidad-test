@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomeController;
@@ -35,9 +36,10 @@ use Illuminate\Support\Facades\Route;
 // });
 // Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::group([ '/'], function () {
-   
-    // Route::get('/', [MainController::class, 'index'])->name('main');
+Route::group(['/'], function () {
+    Route::get('/welcome', function () {
+        return view('welcome');
+    });
     Route::get('login_token', [LoginController::class, 'getToken'])->name('getToken');
     // Route::get('send/', [LoginController::class, 'getToken'])->name('getToken');
 
@@ -53,6 +55,10 @@ Route::group([ '/'], function () {
     Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
     Route::get('login', [LoginController::class, 'login'])->name('login');
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+
+    Route::get('admin', [AdminController::class, 'index'])->name('admin-login');
+    Route::post('admin-login', [AdminController::class, 'login'])->name('admin-login');
+    Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
     // Route::get('login', [LoginController::class, 'login'])->name('login');
     // Route::get('create', [SectionController::class, 'create'])->name('create');
     // Route::get('detail/{sectionId}', [SectionController::class, 'detail'])->name('detail');

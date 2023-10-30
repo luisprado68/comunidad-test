@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
-class LoginController extends Controller
+class AdminController extends Controller
 {
     public $code;
     public $code_test;
@@ -34,12 +34,29 @@ class LoginController extends Controller
         $this->userService = $userService;
     }
 
-    public function login()
+    public function index()
     {
-        $urlToken = $this->twichService->login();
-        return redirect($urlToken);
+        Log::debug('index-----');
+        return view('admin.adminLogin');
     }
-
+    public function login(Request $request)
+    {
+        Log::debug('login-----');
+        $credentials = $request->all();
+        // dd($credentials);
+        $user = $this->twichService->getUser();
+        $exist = $this->userService->userExists($credentials['email']);
+        if($exist){
+            Log::debug('exist-----');
+            return redirect('admin/list');
+        }
+        
+        
+        // return view('admin.adminLogin');
+    }
+    public function list(){
+        return view('home');
+    }
     public function getToken(Request $request)
     {
         $this->twichService->getToken($request);

@@ -92,7 +92,7 @@ final class TwichService
            
             // $img = $this->user['profile_image_url'];
             session(['user' => $this->user]);
-        
+            return $this->user;
         }
     }
     // public function all(): Collection
