@@ -49,6 +49,8 @@ class AdminController extends Controller
         if($exist){
             Log::debug('exist-----');
             return redirect('admin/list');
+        }else{
+            return redirect('admin');
         }
         
         
@@ -67,9 +69,9 @@ class AdminController extends Controller
         $user = $request->all();
         $user = $this->userService->update($user);
        
-        // $url = $user['id'];
-        // dd($user);
-        return redirect('admin/'.$user);
+        $users = $this->userService->getUsers();
+        // dd($users);
+        return view('admin.list',['users' => $users]);
     }
     public function getToken(Request $request)
     {
