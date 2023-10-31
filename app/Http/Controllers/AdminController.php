@@ -55,7 +55,21 @@ class AdminController extends Controller
         // return view('admin.adminLogin');
     }
     public function list(){
-        return view('home');
+        $users = $this->userService->getUsers();
+        // dd($users);
+        return view('admin.list',['users' => $users]);
+    }
+    public function edit($id){
+        $user = $this->userService->getById($id);
+        return view('admin.edit',['user' => $user]);
+    }
+    public function post(Request $request){
+        $user = $request->all();
+        $user = $this->userService->update($user);
+       
+        // $url = $user['id'];
+        // dd($user);
+        return redirect('admin/'.$user);
     }
     public function getToken(Request $request)
     {

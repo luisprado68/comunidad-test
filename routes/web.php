@@ -59,6 +59,9 @@ Route::group(['/'], function () {
     Route::get('admin', [AdminController::class, 'index'])->name('admin-login');
     Route::post('admin-login', [AdminController::class, 'login'])->name('admin-login');
     Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
+    Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
+    Route::post('admin/post', [AdminController::class, 'post'])->name('admin-post');
+    // Route::post('admin-edit', [AdminController::class, 'login'])->name('admin-post');
     // Route::get('login', [LoginController::class, 'login'])->name('login');
     // Route::get('create', [SectionController::class, 'create'])->name('create');
     // Route::get('detail/{sectionId}', [SectionController::class, 'detail'])->name('detail');
