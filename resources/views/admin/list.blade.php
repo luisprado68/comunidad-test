@@ -23,6 +23,7 @@
 </head>
 
 <body class="bg-primary" style="width: 100%">
+    @include('admin.nav')
     <div class="container bg-primary">
         <div class="row">
             <div class="col-12 justify-content-lg-center ">

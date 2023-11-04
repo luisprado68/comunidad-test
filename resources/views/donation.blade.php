@@ -6,7 +6,7 @@
         <div class="row">
 
             <div class="col-md-12 pt-1 w-100">
-                @if (session()->has('user') && env('USER_ACTIVE') == 0)
+                @if (session()->has('user') && session('status') == 0)
                     @include('link')
                 @else
                     <div class="card bg-secondary">

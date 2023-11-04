@@ -23,57 +23,68 @@
 </head>
 
 <body class="bg-primary" style="width: 100%">
+    @include('admin.nav')
     <div class="container bg-primary">
         <div class="row">
             <div class="col-12 justify-content-lg-center ">
 
                 <div class="container mt-5 ">
                     <div class="row">
-                        <div class="row justify-content-center">
-                            <form action="{{ route('admin-post') }}" method="POST">
-                                @csrf
-                                <div class="col-8 mb-3 mt-3">
+                      
+                        <form action="{{ route('admin-post') }}" method="POST">
+                            @csrf
+                            <div class="d-flex justify-content-center">
+                                <div class="card w-50 bg-secondary">
+
+                                    <div class="card-body bg-secondary m-0 p-0">
+                                        <div class="card bg-black ">
+                                            <h5 class="card-title mt-2  text-center text-light ">Edit User</h5>
+                                        </div>
+
+                                        <div class="row justify-content-center">
+
+                                            <div class="col-8 mb-3 mt-3">
                                     
-                                    <input type="text" class="form-control" aria-label="Default" name="id"
-                                        aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
-                                </div>
-                                <div class="col-8 mb-3 mt-3">
-                                    <label class="block mb-2 text-sm font-medium text-white" for="channel">Name</label>
-                                    <input type="text" class="form-control" aria-label="Default" name="name"
-                                        aria-describedby="inputGroup-sizing-default" value="{{ $user->name }}">
-                                </div>
-                                <div class="col-8 mb-3 mt-3">
-                                    <label class="block mb-2 text-sm font-medium text-white"
-                                        for="channel">Email</label>
-                                    <input type="text" class="form-control" aria-label="Default" name="email"
-                                        aria-describedby="inputGroup-sizing-default" value="{{ $user->email }}">
-                                </div>
-                                @if ($user->status)
-                                    <div class="col-8 mb-3 mt-3">
-                                        <input class="form-check-input" type="checkbox" name="checkbox[]" value="{{ $user->id }}" checked>
-                                        <label class="form-check-label" for="flexCheckChecked">
-                                            Active
-                                        </label>
+                                                <input type="text" class="form-control" aria-label="Default" name="id"
+                                                    aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
+                                            </div>
+                                            <div class="col-8 mb-3 mt-3">
+                                                <label class="block mb-2 text-sm font-medium text-white" for="channel">Name</label>
+                                                <input type="text" class="form-control" aria-label="Default" name="name"
+                                                    aria-describedby="inputGroup-sizing-default" value="{{ $user->name }}">
+                                            </div>
+                                            <div class="col-8 mb-3 mt-3">
+                                                <label class="block mb-2 text-sm font-medium text-white"
+                                                    for="channel">Email</label>
+                                                <input type="text" class="form-control" aria-label="Default" name="email"
+                                                    aria-describedby="inputGroup-sizing-default" value="{{ $user->email }}">
+                                            </div>
+                                            @if ($user->status)
+                                                <div class="col-8 mb-3 mt-3">
+                                                    <input class="form-check-input" type="checkbox" name="checkbox[]" value="{{ $user->id }}" checked>
+                                                    <label class="form-check-label" for="flexCheckChecked">
+                                                        Active
+                                                    </label>
+                                                </div>
+                                            @else
+                                                <div class="col-8 mb-3 mt-3">
+                                                    <input class="form-check-input" type="checkbox" name="checkbox[]" value="{{ $user->id }}" {{ old('checkbox') == '0' ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="flexCheckChecked">
+                                                        Active
+                                                    </label>
+                                                </div>
+                                            @endif
+                                            <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
+                                                <button type="submit" class="btn btn-success">Guardar</button>
+                                                <a href="{{ route('admin-list') }}"><button type="button" class="btn btn-danger">Cancel</button></a>
+                                            </div>
+                                            
+                                        </div>
+
                                     </div>
-                                @else
-                                    
-                                    <div class="col-8 mb-3 mt-3">
-                                        <input class="form-check-input" type="checkbox" name="checkbox[]" value="{{ $user->id }}" {{ old('checkbox') == '0' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="flexCheckChecked">
-                                            Active
-                                        </label>
-                                    </div>
-                                @endif
-
-
-                                <div class="form-check">
-
                                 </div>
-                                <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
-                                    <button type="submit" class="btn btn-success">Guardar</button>
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                       
                     </div>
                 </div>

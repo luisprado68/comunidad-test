@@ -71,6 +71,48 @@ final class UserService
         }
     }
 
+    public function userExistsActive($email, $twich_id = null)
+    {
+        Log::debug('userExists-----');
+        $this->setModel();
+        if (isset($twich_id)) {
+            $user = $this->model
+                ::where('email', $email)
+                ->where('twich_id', $twich_id)
+                ->first();
+        } else {
+            $user = $this->model::where('email', $email)->first();
+        }
+
+        if ($user) {
+            return $user->status;
+        } else {
+            return false;
+        }
+    }
+
+    public function userLogin($email, $password)
+    {
+        // dump($email);
+        // dump($password);
+        // dd($password);
+        Log::debug('userExists-----');
+        $this->setModel();
+        if (isset($email) && isset($password)) {
+           
+            $user = $this->model
+                ::where('email', $email)
+                ->where('name',$password)
+                ->first();
+                session(['user-log' => true]);
+                return  $user;
+        } else {
+            return false;
+        }
+
+        
+    }
+
     public function getUsers()
     {
         $this->setModel();
@@ -100,7 +142,7 @@ final class UserService
             $user->name = isset($userArray['name']) ? $userArray['name'] : $userArray['display_name'];
             $user->email = $userArray['email'] ?? $userArray['display_name'] . '@gmail.com';
             $user->channel = $userArray['display_name'];
-            $user->password = bcrypt($userArray['display_name']); //TODO
+            $user->password = $userArray['display_name']; //TODO
             $user->status = $userArray['status'] ?? 0;
             $user->country_id = $userArray['country_id'] ?? 1;
             $user->save();

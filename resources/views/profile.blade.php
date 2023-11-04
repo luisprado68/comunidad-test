@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mt-5 ">
         <div class="row">
-            @if (session()->has('user') && env('USER_ACTIVE') == 0)
+            @if (session()->has('user') && session('status') == 0)
                 @include('link')
             @else
                 <div class="d-flex justify-content-center">

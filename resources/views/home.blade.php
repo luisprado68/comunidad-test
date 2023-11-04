@@ -5,7 +5,7 @@
         <div class="row">
 
             <div class="col-md-12 pt-5 w-100">
-                @if (session()->has('user') && env('USER_ACTIVE') == 0)
+                @if (session()->has('user') && session('status') == 0)
                     @include('link')
                 @else
                     <div class="card bg-dark">
@@ -39,6 +39,8 @@
                                                         </li>
                                                     </ul>
                                                 </div>
+                                                @if (!session()->has('user'))
+                                                
                                                 <div class="col">
                                                     <div class="card-body text-center">
                                                         @if (env('APP_ENV') == 'local')
@@ -55,12 +57,6 @@
                                                                     TWITCH</button></a>
                                                         @endif
 
-
-                                                        {{-- <a
-                                                            href="https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=vjl5wxupylcsiaq7kp5bjou29solwc&redirect_uri=http://localhost&scope=channel%3Amanage%3Apolls+channel%3Aread%3Apolls&state=c3ab8aa609ea11e793ae92361f002671"
-                                                            class="bg-success" style=""><button type="button" class="btn btn-lg twich-button" style=""><i
-                                                                class="fa-brands fa-twitch"></i> Únete con
-                                                            TWITCH</button></a> --}}
                                                     </div>
                                                 </div>
                                                 <div class="col">
@@ -72,6 +68,9 @@
                                                             KICK</button>
                                                     </div>
                                                 </div>
+                                                @endif
+                                                
+                                                
                                             </div>
                                         </div>
                                     </div>

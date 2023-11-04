@@ -49,11 +49,13 @@ class LoginController extends Controller
             $this->userService->create($user);
         }
         
-        return redirect('/');
+        
+        return redirect('/profile');
     }
     public function logout()
     {
         session()->forget('user');
+        session()->forget('user-log');
         return redirect('/');
     }
 }

@@ -45,48 +45,63 @@ class AdminController extends Controller
         $credentials = $request->all();
         // dd($credentials);
         $user = $this->twichService->getUser();
-        $exist = $this->userService->userExists($credentials['email']);
-        if($exist){
+        $exist = $this->userService->userLogin($credentials['email'], $credentials['password']);
+        if ($exist) {
             Log::debug('exist-----');
             return redirect('admin/list');
-        }else{
+        } else {
             return redirect('admin');
         }
-        
-        
+
         // return view('admin.adminLogin');
     }
-    public function list(){
-        $users = $this->userService->getUsers();
-        // dd($users);
-        return view('admin.list',['users' => $users]);
+    public function list()
+    {
+        if (Session::has('user-log')) {
+            $users = $this->userService->getUsers();
+            // dd($users);
+            return view('admin.list', ['users' => $users]);
+        } else {
+            return redirect('admin');
+        }
     }
-    public function edit($id){
-        $user = $this->userService->getById($id);
-        return view('admin.edit',['user' => $user]);
+    public function edit($id)
+    {
+        if (Session::has('user-log')) {
+            $user = $this->userService->getById($id);
+            return view('admin.edit', ['user' => $user]);
+        } else {
+            return redirect('admin');
+        }
     }
-    public function post(Request $request){
+    public function post(Request $request)
+    {
         $user = $request->all();
         $user = $this->userService->update($user);
-       
+
         $users = $this->userService->getUsers();
         // dd($users);
-        return view('admin.list',['users' => $users]);
+        return view('admin.list', ['users' => $users]);
+    }
+    public function logoutAdmin(){
+        session()->forget('user-log');
+        return redirect('/');
     }
     public function getToken(Request $request)
     {
         $this->twichService->getToken($request);
         $user = $this->twichService->getUser();
-        $exist = $this->userService->userExists($user['display_name'].'@gmail.com',$user['id']);
-        if($exist == false){
+        $exist = $this->userService->userExists($user['display_name'] . '@gmail.com', $user['id']);
+        if ($exist == false) {
             $this->userService->create($user);
         }
-        
+
         return redirect('/');
     }
     public function logout()
     {
         session()->forget('user');
+        session()->forget('user-log');
         return redirect('/');
     }
 }
