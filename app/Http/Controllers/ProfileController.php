@@ -59,6 +59,10 @@ class ProfileController extends Controller
     public function editUser(Request $request)
     {
         $user = $request->all();
+        $validated = $request->validate([
+            'name' => 'required',
+            'channel' => 'required',
+        ]);
         Log::debug('edit-------');
         $user = $this->userService->updateUser($user);
         return redirect('summary');
