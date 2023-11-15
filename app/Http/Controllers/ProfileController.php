@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\CountryService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -41,7 +42,7 @@ class ProfileController extends Controller
                 session(['status' => 0]);
             }
             $user_model = $this->userService->getByIdandTwichId($user['id']);
-            dump($user);
+            // dump($user_model);
         }
         return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model]);
     }
@@ -53,5 +54,13 @@ class ProfileController extends Controller
             dump($user);
         }
         
+    }
+
+    public function editUser(Request $request)
+    {
+        $user = $request->all();
+        Log::debug('edit-------');
+        $user = $this->userService->updateUser($user);
+        return redirect('summary');
     }
 }

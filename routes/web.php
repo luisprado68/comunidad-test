@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +50,7 @@ Route::group(['/'], function () {
     Route::get('support', [SupportController::class, 'index'])->name('support');
     Route::get('my_agendas', [MyAgendaController::class, 'index'])->name('my_agendas');
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('profile/edit', [ProfileController::class, 'editUser'])->name('edit-user');
     Route::get('history', [HistoryController::class, 'index'])->name('history');
     Route::get('donations', [DonationController::class, 'index'])->name('donation');
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');

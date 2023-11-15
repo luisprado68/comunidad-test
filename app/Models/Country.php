@@ -22,5 +22,8 @@ class Country extends Authenticatable
         'code',
     ];
 
-
+    public function users()
+    {
+        return $this->hasMany(User::class,'country_id');
+    }
 }

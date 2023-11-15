@@ -184,4 +184,22 @@ final class UserService
             return false;
         }
     }
+
+    public function updateUser($userArray)
+    {
+        // dd($userArray['checkbox']);
+        try {
+            $user = User::find($userArray['id']);
+            $user->name = $userArray['name'];
+            $user->channel = $userArray['channel'];
+            $user->country_id = intval($userArray['country']);
+            $user->area = $userArray['area'];
+            $user->phone = $userArray['phone'];
+            $user->time_zone = $userArray['timezone'];
+            $user->update();
+            return $user->id;
+        } catch (Error $e) {
+            return false;
+        }
+    }
 }
