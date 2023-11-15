@@ -23,6 +23,8 @@
 </head>
 
 <body class="bg-primary" style="width: 100%">
+    {{-- @dump(timezone_identifiers_list(\DateTimeZone::ALL)) --}}
+   {{-- {{json_encode($timezone)}} --}}
     <div class="container bg-primary">
         <div class="row">
             <div class="col-12 justify-content-lg-center ">
@@ -47,8 +49,8 @@
                                             <div class="col-8 mb-3 mt-3">
                                                 <label class="block mb-2 text-sm font-medium text-white"
                                                     for="email">Email</label>
-                                                <input type="email" name="email" class="form-control" aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default" >
+                                                <input type="email" name="email" class="form-control"
+                                                    aria-label="Default" aria-describedby="inputGroup-sizing-default">
                                                 @if ($errors->has('email'))
                                                     <span class="text-danger">{{ $errors->first('password') }}</span>
                                                 @endif
@@ -56,9 +58,9 @@
                                             <div class="col-8 mb-3 mt-3">
                                                 <label class="block mb-2 text-sm font-medium text-white"
                                                     for="channel">Password</label>
-                                                <input type="password" name="password" class="form-control" aria-label="Default"
-                                                    aria-describedby="inputGroup-sizing-default" >
-                                                    @if ($errors->has('password'))
+                                                <input type="password" name="password" class="form-control"
+                                                    aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                                @if ($errors->has('password'))
                                                     <span class="text-danger">{{ $errors->first('password') }}</span>
                                                 @endif
                                             </div>

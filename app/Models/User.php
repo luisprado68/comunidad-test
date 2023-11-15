@@ -23,6 +23,10 @@ class User extends Authenticatable
         'channel',
         'status',
         'email',
+        'phone',
+        'time_zone',
+        'status',
+        'hours_buyed',
         'password',
     ];
 

@@ -14,16 +14,21 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('twich_id')->unique();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->boolean('status')->default(0);
-            $table->string('channel');
-            $table->unsignedBigInteger('country_id')->nullable();
+            $table->string('channel')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('time_zone')->nullable();
+            $table->integer('hours_buyed')->nullable();
+            $table->unsignedBigInteger('country_id')->change()->nullable();
+            $table->unsignedBigInteger('range_id')->change()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
+            $table->foreign('range_id')->references('id')->on('ranges')->onDelete('cascade');
             $table->timestamps();
         });
     }

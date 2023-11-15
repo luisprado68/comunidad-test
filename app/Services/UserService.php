@@ -45,6 +45,16 @@ final class UserService
             return null;
         }
     }
+    public function getByIdandTwichId($twich_id)
+    {
+        $this->setModel();
+        $user = $this->model::where('twich_id', $twich_id)->first();
+        if ($user) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
 
     /**
      * @param $accountId

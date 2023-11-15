@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\User;
 use Broobe\Services\Service;
 use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
+use DateTimeZone;
 use Error;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -93,6 +94,7 @@ final class TwichService
             // $img = $this->user['profile_image_url'];
             session(['user' => $this->user]);
             return $this->user;
+            $gg = DateTimeZone::ALL;
         }
     }
     // public function all(): Collection

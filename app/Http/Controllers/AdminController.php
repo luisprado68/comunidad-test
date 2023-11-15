@@ -37,6 +37,7 @@ class AdminController extends Controller
     public function index()
     {
         Log::debug('index-----');
+        
         return view('admin.adminLogin');
     }
     public function login(Request $request)
