@@ -28,16 +28,19 @@
                                         <input type="text" class="form-control" aria-label="Default" name="channel"
                                             aria-describedby="inputGroup-sizing-default" value="{{ $user->channel }}">
                                         @error('channel')
-                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            <span
+                                                class="text-danger position-absolute">{{ trans('user.create.fields.channel') }}</span>
                                         @enderror
                                     </div>
                                     <div class="col-8 mb-3 mt-3">
-                                        <label class="block mb-2 text-sm font-medium text-white" for="channel">Nombre
+                                        <label class="block mb-2 text-sm font-medium text-white" for="name">Nombre
                                             Completo</label>
                                         <input type="text" class="form-control" aria-label="Default" name="name"
-                                            aria-describedby="inputGroup-sizing-default" value="{{ $user->name }}">
-                                            @error('name')
-                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            aria-describedby="inputGroup-sizing-default"
+                                            value="{{ $user->name }}">
+                                        @error('name')
+                                            <span
+                                                class="text-danger position-absolute">{{ trans('user.create.fields.name') }}</span>
                                         @enderror
                                     </div>
 
@@ -55,11 +58,14 @@
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
                                             @endforeach
                                         </select>
-
+                                        @error('country')
+                                            <span
+                                                class="text-danger position-absolute">{{ trans('user.create.fields.country') }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="row " style="margin-right:10px">
-                                        <div class="col-2 offset-2 mb-3">
+                                        <div class="col-3 offset-2 mb-3">
                                             <label class="block mb-2 text-sm font-medium text-white"
                                                 for="area">Teléfono</label>
                                             <select class="form-select" aria-label="Default select example" name="area">
@@ -316,7 +322,10 @@
                                                 <option value="+1876">+1876 (🇯🇲)</option>
                                                 <option value="+1939">+1939 (🇵🇷)</option>
                                             </select>
-
+                                            @error('area')
+                                                <span
+                                                    class="text-danger position-absolute">{{ trans('user.create.fields.area') }}</span>
+                                            @enderror
                                         </div>
                                         <div class="col-4">
                                             <label class="block mb-2 text-sm font-medium text-white" for="phone"
@@ -324,6 +333,11 @@
                                             <input type="text" class="form-control" aria-label="Default"
                                                 name="phone" aria-describedby="inputGroup-sizing-default"
                                                 value="{{ $user->phone }}">
+                                            @error('phone')
+                                            <span
+                                            class="text-danger position-absolute">{{ trans('user.create.fields.phone') }}</span>
+                                            @enderror
+                                          
                                         </div>
                                     </div>
 
@@ -344,11 +358,16 @@
                                             @endforeach
 
                                         </select>
+                                        @error('timezone')
+                                            <span
+                                                class="text-danger position-absolute">{{ trans('user.create.fields.timezone') }}</span>
+                                        @enderror
 
                                     </div>
 
                                     <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
+                                        <a href="{{ route('summary') }}"><button type="button" class="btn btn-danger">Volver</button></a>
                                     </div>
                                 </div>
                             </form>
