@@ -74,7 +74,7 @@
                                                                         multiple>
                                                                         
                                                                         @foreach ($times as $key => $time)
-                                                                            <option value="{{ $key }}">
+                                                                            <option value="{{ $time }}">
                                                                                 {{ $time }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -108,6 +108,7 @@
         jueves = [];
         viernes = [];
         sabado = [];
+        week = [];
         mobiscroll.setOptions({
             locale: mobiscroll
             .localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
@@ -196,22 +197,22 @@
             week = [];
             if(lunes.length > 0){
 
-                week.push({day:"lunes", horarios:lunes});
+                week.push({day:1, horarios:lunes});
             }
             if(martes.length > 0){
-                week.push({day:"mertes", horarios:mertes});
+                week.push({day:2, horarios:martes});
             }
             if(miercoles.length > 0){
-                week.push({day:"miercoles", horarios:miercoles});
+                week.push({day:3, horarios:miercoles});
             }
             if(jueves.length > 0){
-                week.push({day:"jueves", horarios:jueves});
+                week.push({day:4, horarios:jueves});
             }
             if(viernes.length > 0){
-                week.push({day:"viernes", horarios:viernes});
+                week.push({day:5, horarios:viernes});
             }
             if(sabado.length > 0){
-                week.push({day:"sabado", horarios:sabado});
+                week.push({day:6, horarios:sabado});
             }
            
             
@@ -220,7 +221,7 @@
             // console.log(miercoles);
             // console.log(jueves);
             // console.log(viernes);
-            // console.log(sabado);
+            console.log(week);
             if(week.length > 0){
                 $.ajax({
                     url: 'schedule/update',
@@ -238,7 +239,9 @@
                             console.log('okkkk');
                             console.log(response);
                         }else {
-                            console.log(response);
+                            
+                            alert(response.message);
+
                         }
                         // $(".loading").hide();
                     },

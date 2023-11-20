@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->boolean('status')->default(0);
             $table->string('channel')->nullable();
+            $table->string('area')->nullable();
             $table->string('phone')->nullable();
             $table->string('time_zone')->nullable();
             $table->integer('hours_buyed')->nullable();

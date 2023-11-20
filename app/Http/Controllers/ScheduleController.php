@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
+use App\Services\ScheduleService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -13,16 +15,26 @@ use PhpParser\Node\Stmt\Return_;
 class ScheduleController extends Controller
 {
     private $userService;
+    private $scheduleService;
     public $scheduler;
     public $times;
     public $days;
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService,ScheduleService $scheduleService)
     {
 
         $this->userService = $userService;
+        $this->scheduleService = $scheduleService;
     }
     public function index()
     {
+
+        $schedules = $this->scheduleService->getScheduleorThisWeek();
+        Log::debug('schedules'.json_encode($schedules));
+        
+        Log::debug('day'.json_encode( Carbon::parse($schedules[0]->start)->format('l')));
+        Log::debug('h'.json_encode( Carbon::parse($schedules[0]->start)->format('H')));
+        dump(Carbon::parse($schedules[0]->start)->format('l'));
+
         $this->times = [
             0 => '00:00',
             1 => '01:00',
@@ -108,11 +120,11 @@ class ScheduleController extends Controller
         //     ->format('Y-m-d H:i'));                                                                                  // string(16) "2017-02-01 00:00"
 
         // echo "-----------\n";
-        // $date = CarbonImmutable::now()->locale('en_US');
+         $date = CarbonImmutable::now()->locale('en_US');
 
         // var_dump($date->getDaysFromStartOfWeek());                     // int(1)
-        // var_dump($date->setDaysFromStartOfWeek(0)->format('Y-m-d'));     
-
+        // dump($date->setDaysFromStartOfWeek(1)->format('Y-m-d'));     
+        // dump($date->setDaysFromStartOfWeek(6));
         // $date = CarbonImmutable::now()->locale('de_AT');
 
         // var_dump($date->getDaysFromStartOfWeek());                     // int(0)
@@ -153,10 +165,52 @@ class ScheduleController extends Controller
     }
 
     public function updateScheduler(Request $request){
+      
+        $scheduleNew = [];
+        $hours_for_week = 0;
+        $user = $this->userService->getById(9);
+        //validar por tango y cantidada de horas diarias y semanales y si pasa guardar
+      
         $data = $request->all();
-        Log::debug("DAYS");
-        Log::debug(json_encode($data));
         $data['status'] = 'ok';
+
+        Log::debug("DAYS");
+        Log::debug(json_encode($data['days']));
+
+        
+        foreach ($data['days'] as $key => $value) {
+            Log::debug(json_encode(count(($value['horarios']))));
+            if(count(($value['horarios'])) > $user->range->hours_for_day){
+                $data['status'] = 'error';
+                $data['message'] = 'Supera la hora diaria permitida';
+                break;
+            }
+            
+            $hours_for_week = count(($value['horarios'])) + $hours_for_week;
+        }
+
+        if( $data['status'] == 'ok' && $hours_for_week > $user->range->hours_for_week){
+            $data['status'] = 'error';
+            $data['message'] = 'Supera las horas semanales permitidas';
+        }
+        if( $data['status'] == 'ok'){
+            $date = CarbonImmutable::now()->locale('en_US');
+            foreach ($data['days'] as $key => $value) {
+                Log::debug(json_encode($value['day']));
+                if(count(($value['horarios'])) > 0){
+                    foreach ($value['horarios'] as $key => $time) {
+
+                        $scheduleNewItem['user_id'] = $user->id;
+                        $scheduleNewItem['start'] =  new Carbon($date->setDaysFromStartOfWeek($value['day'])->format('Y-m-d').$time);
+                        array_push($scheduleNew,$scheduleNewItem);
+                    }
+                }   
+            }
+
+            $this->scheduleService->bulkCreate($scheduleNew);
+           
+        }
+        
         return $data;
     }
 }

@@ -8,22 +8,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Schedule extends Authenticatable
+class Range extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $table = 'schedule';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'start',
-        'end',
+        'name',
+        'hours_for_day',
+        'hours_for_week',
     ];
 
-    public function user()
+    public function users()
     {
-        return $this->hasOne(User::class,'schedule_id');
+        return $this->hasMany(User::class,'range_id');
     }
 }

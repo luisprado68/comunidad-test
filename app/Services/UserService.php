@@ -151,6 +151,7 @@ final class UserService
             }
             $user->name = isset($userArray['name']) ? $userArray['name'] : $userArray['display_name'];
             $user->email = $userArray['email'] ?? $userArray['display_name'] . '@gmail.com';
+            $user->range_id = 1;
             $user->channel = $userArray['display_name'];
             $user->password = $userArray['display_name']; //TODO
             $user->status = $userArray['status'] ?? 0;

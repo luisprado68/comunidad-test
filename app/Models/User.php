@@ -59,4 +59,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Schedule::class);
     }
+    public function range()
+    {
+        return $this->belongsTo(Range::class);
+    }
 }
