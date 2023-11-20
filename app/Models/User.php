@@ -55,4 +55,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Country::class);
     }
+    public function schedules()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 }

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('ranges', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->integer('hours')->nullable();
+            $table->integer('hours_for_day')->nullable();
+            $table->integer('hours_for_week')->nullable();
             $table->timestamps();
         });
     }

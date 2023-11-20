@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('country_id')->index()->nullable();
+            $table->unsignedBigInteger('range_id')->index()->nullable();
             $table->string('twich_id')->unique();
             $table->string('name')->nullable();
             $table->string('email')->unique();
@@ -21,8 +23,6 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('time_zone')->nullable();
             $table->integer('hours_buyed')->nullable();
-            $table->unsignedBigInteger('country_id')->change()->nullable();
-            $table->unsignedBigInteger('range_id')->change()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

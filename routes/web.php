@@ -54,6 +54,8 @@ Route::group(['/'], function () {
     Route::get('history', [HistoryController::class, 'index'])->name('history');
     Route::get('donations', [DonationController::class, 'index'])->name('donation');
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::post('schedule/update', [ScheduleController::class, 'updateScheduler'])->name('schedule-update');
+    Route::get('test', [ScheduleController::class, 'test'])->name('test');
     Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
     Route::get('login', [LoginController::class, 'login'])->name('login');
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');

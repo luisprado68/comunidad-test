@@ -98,4 +98,50 @@
   .navbar-expand-lg .navbar-nav {
     flex-direction: none !important;
 }
+
+
 } */
+.mbsc-ios.mbsc-page {
+  background: none;
+  color: #000;
+}
+button {
+  display: inline-block;
+  /* margin: 5px 5px 0 0; */
+  /* padding: 10px 30px; */
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  background: #5185a8;
+  color: #fff;
+  text-decoration: none;
+  font-family: arial, verdana, sans-serif;
+  font-size: 14px;
+  font-weight: 100;
+}
+
+input.calendar {
+  width: 50%;
+  /* margin: 0 0 5px 0; */
+  /* padding: 10px; */
+  /* border: 1px solid #ccc; */
+  border-radius: 0;
+  font-family: arial, verdana, sans-serif;
+  font-size: 14px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+.mbsc-page {
+  /* padding: 1em; */
+}
+
+.mbsc-ios.mbsc-textfield-wrapper-box, .mbsc-ios.mbsc-textfield-wrapper-outline {
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+  margin-right: 0em !important;
+  margin-left: 0em !important;
+}
+.mbsc-ios.mbsc-textfield-wrapper-box, .mbsc-ios.mbsc-textfield-wrapper-outline {
+  /* margin: 1.5em 1em; */
+}
