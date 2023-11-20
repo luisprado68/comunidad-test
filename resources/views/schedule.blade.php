@@ -54,37 +54,50 @@
                                                         </h4>
                                                     </div>
                                                 </div>
-                                                @foreach ($days as $day)
+                                                @foreach ($days_with_time as $key => $day_with_time)
                                                     <div class="col-3 mx-4 mb-4">
                                                         <input class="form-control form-control-lg bg-warning text-center"
-                                                            type="text" placeholder="{{ $day }}" disabled>
+                                                            type="text" placeholder="{{ $key }}" disabled>
                                                         <div class="col">
                                                             <div mbsc-page class="demo-multiple-select">
                                                                 <div style="height:100%">
                                                                     <label>
                                                                         {{-- Lunes --}}
                                                                         <input mbsc-input
-                                                                            id="{{ 'demo-multiple-select-input-' . $day }}"
+                                                                            id="{{ 'demo-multiple-select-input-' . $key }}"
                                                                             placeholder="Seleccione horario"
                                                                             data-dropdown="true" data-input-style="outline"
                                                                             data-label-style="stacked" data-tags="true"
                                                                             class="calendar" />
                                                                     </label>
-                                                                    <select id="{{ 'demo-multiple-select-' . $day }}"
+                                                                    <select id="{{ 'demo-multiple-select-' . $key }}"
                                                                         multiple>
-                                                                        
-                                                                        @foreach ($times as $key => $time)
-                                                                            <option value="{{ $time }}">
-                                                                                {{ $time }}</option>
+
+                                                                        @foreach ($day_with_time['times'] as $key => $time)
+                                                                            @if ($time['duplicated'])
+                                                                                <option value="{{ $time['hour'] }}"
+                                                                                    disabled>
+                                                                                    {{ $time['hour'] }}</option>
+                                                                            @else
+                                                                                <option value="{{ $time['hour'] }}">
+                                                                                    {{ $time['hour'] }}</option>
+                                                                            @endif
                                                                         @endforeach
                                                                     </select>
+                                                                    <div class="mbsc-scroller-wheel-item mbsc-ios mbsc-ltr mbsc-wheel-item-checkmark mbsc-wheel-item-multi"
+                                                                        role="option"
+                                                                        style="height: 34px;line-height: 34px;background-color: green !important;">
+                                                                        <div></div><span
+                                                                            class=" mbsc-ios mbsc-ltr mbsc-wheel-checkmark"></span>01:00
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 @endforeach
                                                 <div class="col-12 mx-4">
-                                                    <button class="btn btn-primary" type="submit" onclick="btnClick()">Guardar</button>
+                                                    <button class="btn btn-primary" type="submit"
+                                                        onclick="btnClick()">Guardar</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -111,7 +124,7 @@
         week = [];
         mobiscroll.setOptions({
             locale: mobiscroll
-            .localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+                .localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
             theme: 'ios', // Specify theme like: theme: 'ios' or omit setting to use default
             themeVariant: 'light' // More info about themeVariant: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-themeVariant
         });
@@ -121,7 +134,8 @@
             invalid: ['value'],
             Animation: 'slide-down',
             inputElement: document.getElementById(
-                'demo-multiple-select-input-lunes') // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                    'demo-multiple-select-input-lunes'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -134,7 +148,8 @@
             invalid: ['value'],
             Animation: 'slide-down',
             inputElement: document.getElementById(
-                'demo-multiple-select-input-martes') // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                    'demo-multiple-select-input-martes'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -147,7 +162,8 @@
             invalid: ['value'],
             Animation: 'slide-down',
             inputElement: document.getElementById(
-                'demo-multiple-select-input-miercoles') // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                    'demo-multiple-select-input-miercoles'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -160,7 +176,8 @@
             invalid: ['value'],
             Animation: 'slide-down',
             inputElement: document.getElementById(
-                'demo-multiple-select-input-jueves') // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                    'demo-multiple-select-input-jueves'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -173,7 +190,8 @@
             invalid: ['value'],
             Animation: 'slide-down',
             inputElement: document.getElementById(
-                'demo-multiple-select-input-viernes') // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                    'demo-multiple-select-input-viernes'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -186,76 +204,94 @@
             invalid: ['value'],
             Animation: 'slide-down',
             inputElement: document.getElementById(
-                'demo-multiple-select-input-sabado') // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                    'demo-multiple-select-input-sabado'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
                 sabado = ev.value;
             },
         });
-        function btnClick(){
-            week = [];
-            if(lunes.length > 0){
 
-                week.push({day:1, horarios:lunes});
+        function btnClick() {
+            week = [];
+            if (lunes.length > 0) {
+
+                week.push({
+                    day: 1,
+                    horarios: lunes
+                });
             }
-            if(martes.length > 0){
-                week.push({day:2, horarios:martes});
+            if (martes.length > 0) {
+                week.push({
+                    day: 2,
+                    horarios: martes
+                });
             }
-            if(miercoles.length > 0){
-                week.push({day:3, horarios:miercoles});
+            if (miercoles.length > 0) {
+                week.push({
+                    day: 3,
+                    horarios: miercoles
+                });
             }
-            if(jueves.length > 0){
-                week.push({day:4, horarios:jueves});
+            if (jueves.length > 0) {
+                week.push({
+                    day: 4,
+                    horarios: jueves
+                });
             }
-            if(viernes.length > 0){
-                week.push({day:5, horarios:viernes});
+            if (viernes.length > 0) {
+                week.push({
+                    day: 5,
+                    horarios: viernes
+                });
             }
-            if(sabado.length > 0){
-                week.push({day:6, horarios:sabado});
+            if (sabado.length > 0) {
+                week.push({
+                    day: 6,
+                    horarios: sabado
+                });
             }
-           
-            
+
+
             // console.log(lunes);
             // console.log(martes);
             // console.log(miercoles);
             // console.log(jueves);
             // console.log(viernes);
             console.log(week);
-            if(week.length > 0){
+            if (week.length > 0) {
                 $.ajax({
                     url: 'schedule/update',
-                    type:"POST",
-                    data:{
+                    type: "POST",
+                    data: {
                         "_token": "{{ csrf_token() }}",
-                        days : week,
+                        days: week,
 
                     },
-                    success:function(response){
-                       
-                        if(response.status === 'ok'){
+                    success: function(response) {
+
+                        if (response.status === 'ok') {
                             // $("#edit-dialog").modal("hide");
                             // table.draw();
                             console.log('okkkk');
                             console.log(response);
-                        }else {
-                            
+                        } else {
+
                             alert(response.message);
 
                         }
                         // $(".loading").hide();
                     },
-                    error :function( data ) {
+                    error: function(data) {
 
                     }
                 });
-            }
-            else{
-               alert('Debe agregar horas');
+            } else {
+                alert('Debe agregar horas');
             }
 
-            
+
         }
-        
     </script>
 @endpush

@@ -145,3 +145,8 @@ input.calendar {
 .mbsc-ios.mbsc-textfield-wrapper-box, .mbsc-ios.mbsc-textfield-wrapper-outline {
   /* margin: 1.5em 1em; */
 }
+
+/* .mbsc-ios.mbsc-scroller-pointer .mbsc-scroller-wheel-item {
+  color: #000;
+  background-color: yellow !important;
+} */

@@ -19,6 +19,7 @@ class ScheduleController extends Controller
     public $scheduler;
     public $times;
     public $days;
+    public $days_with_time;
     public function __construct(UserService $userService,ScheduleService $scheduleService)
     {
 
@@ -27,40 +28,67 @@ class ScheduleController extends Controller
     }
     public function index()
     {
+        $this->times = [
+            0 => ['hour'=> '00:00','duplicated' => false],
+            1 => ['hour'=> '01:00','duplicated' => false],
+            2 => ['hour'=> '02:00','duplicated' => false],
+            3 => ['hour'=> '03:00','duplicated' => false],
+            4 => ['hour'=> '04:00','duplicated' => false],
+            5 => ['hour'=> '05:00','duplicated' => false],
+            6 => ['hour'=> '06:00','duplicated' => false],
+            7 => ['hour'=> '07:00','duplicated' => false],
+            8 => ['hour'=> '08:00','duplicated' => false],
+            9 => ['hour'=> '09:00','duplicated' => false],
+            10 => ['hour'=> '10:00','duplicated' => false],
+            11 => ['hour'=> '11:00','duplicated' => false],
+            12 => ['hour'=> '12:00','duplicated' => false],
+            13 => ['hour'=> '13:00','duplicated' => false],
+            15 => ['hour'=> '15:00','duplicated' => false],
+            16 => ['hour'=> '16:00','duplicated' => false],
+            17 => ['hour'=> '17:00','duplicated' => false],
+            18 => ['hour'=> '18:00','duplicated' => false],
+            19 => ['hour'=> '19:00','duplicated' => false],
+            20 => ['hour'=> '20:00','duplicated' => false],
+            21 => ['hour'=> '21:00','duplicated' => false],
+            22 => ['hour'=> '22:00','duplicated' => false],
+            23 => ['hour'=> '23:00','duplicated' => false],
+        ];
+        $this->days_with_time = [
+            "lunes" => ['day' => 1, 'times' => $this->times],
+            "martes"=> ['day' =>2, 'times' =>$this->times],
+            "miercoles"=> ['day' =>3,'times' => $this->times],
+            "jueves"=> ['day' =>4,'times' => $this->times],
+            "viernes"=> ['day' =>5,'times' => $this->times],
+            "sabado"=> ['day' =>6, 'times' =>$this->times],
 
+        ];
         $schedules = $this->scheduleService->getScheduleorThisWeek();
         Log::debug('schedules'.json_encode($schedules));
+        dump($schedules);
+        $www = CarbonImmutable::now()->locale('en_US');
         
-        Log::debug('day'.json_encode( Carbon::parse($schedules[0]->start)->format('l')));
-        Log::debug('h'.json_encode( Carbon::parse($schedules[0]->start)->format('H')));
-        dump(Carbon::parse($schedules[0]->start)->format('l'));
-
-        $this->times = [
-            0 => '00:00',
-            1 => '01:00',
-            2 => '02:00',
-            3 => '03:00',
-            4 => '04:00',
-            5 => '05:00',
-            6 => '06:00',
-            7 => '07:00',
-            8 => '08:00',
-            9 => '09:00',
-            10 => '10:00',
-            11 => '11:00',
-            12 => '12:00',
-            13 => '13:00',
-            14 => '14:00',
-            15 => '15:00',
-            16 => '16:00',
-            17 => '17:00',
-            18 => '18:00',
-            19 => '19:00',
-            20 => '20:00',
-            21 => '21:00',
-            22 => '22:00',
-            23 => '23:00',
-        ];
+        // $dayss = $schedules->where('start',new Carbon($www->setDaysFromStartOfWeek(2)->format('Y-m-d')."03:00"));
+        // dump($dayss);
+        foreach ($this->days_with_time as $key_day => $day_with_time) {
+            foreach ($day_with_time['times'] as $key_time => $time) {
+                // dump($time);
+                if(count($schedules->where('start',new Carbon($www->setDaysFromStartOfWeek($day_with_time['day'])->format('Y-m-d').$time['hour']))) == 1){
+                    dump($this->days_with_time[$key_day]['times'][$key_time]['duplicated']);
+                    $this->days_with_time[$key_day]['times'][$key_time]['duplicated'] = true;
+                    // dump($this->days_with_time[$key_day]);
+                    // dump($key_day);
+                    // dump($key_time);
+                }
+            }
+            
+        }
+        // dump($this->days_with_time['lunes']['times']);
+        dump($this->days_with_time['lunes']);
+        // Log::debug('day'.json_encode( Carbon::parse($schedules[0]->start)->format('l')));
+        // Log::debug('h'.json_encode( Carbon::parse($schedules[0]->start)->format('H')));
+        // dump(Carbon::parse($schedules[0]->start)->format('l'));
+        
+        
         $this->days = [
             "lunes",
             "martes",
@@ -156,7 +184,7 @@ class ScheduleController extends Controller
                 session(['status' => 0]);
             }
         }
-        return view('schedule',['times'=> $this->times,'days' => $this->days]);
+        return view('schedule',['times'=> $this->times,'days' => $this->days,'days_with_time' => $this->days_with_time]);
     }
 
     public function test()
