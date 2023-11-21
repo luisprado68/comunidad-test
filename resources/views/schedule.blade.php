@@ -54,42 +54,39 @@
                                                         </h4>
                                                     </div>
                                                 </div>
-                                                @foreach ($days_with_time as $key => $day_with_time)
+                                                {{-- @dump($days_with_time) --}}
+                                                @foreach ($days_with_time as $key_day => $day_with_time)
                                                     <div class="col-3 mx-4 mb-4">
                                                         <input class="form-control form-control-lg bg-warning text-center"
-                                                            type="text" placeholder="{{ $key }}" disabled>
+                                                            type="text" placeholder="{{ $key_day }}" disabled>
                                                         <div class="col">
                                                             <div mbsc-page class="demo-multiple-select">
                                                                 <div style="height:100%">
                                                                     <label>
                                                                         {{-- Lunes --}}
                                                                         <input mbsc-input
-                                                                            id="{{ 'demo-multiple-select-input-' . $key }}"
+                                                                            id="{{ 'demo-multiple-select-input-' . $key_day }}"
                                                                             placeholder="Seleccione horario"
                                                                             data-dropdown="true" data-input-style="outline"
                                                                             data-label-style="stacked" data-tags="true"
                                                                             class="calendar" />
                                                                     </label>
-                                                                    <select id="{{ 'demo-multiple-select-' . $key }}"
+                                                                    <select id="{{ 'demo-multiple-select-' . $key_day }}"
                                                                         multiple>
 
-                                                                        @foreach ($day_with_time['times'] as $key => $time)
-                                                                            @if ($time['duplicated'])
-                                                                                <option value="{{ $time['hour'] }}"
-                                                                                    disabled>
+                                                                        @foreach ($day_with_time['times'] as $key_time => $time)
+                                                                            @if ($time['disabled'])
+                                                                                <option 
+                                                                                    value="{{ $time['hour'] }}" disabled>
                                                                                     {{ $time['hour'] }}</option>
+                                                                                
                                                                             @else
                                                                                 <option value="{{ $time['hour'] }}">
                                                                                     {{ $time['hour'] }}</option>
                                                                             @endif
                                                                         @endforeach
                                                                     </select>
-                                                                    <div class="mbsc-scroller-wheel-item mbsc-ios mbsc-ltr mbsc-wheel-item-checkmark mbsc-wheel-item-multi"
-                                                                        role="option"
-                                                                        style="height: 34px;line-height: 34px;background-color: green !important;">
-                                                                        <div></div><span
-                                                                            class=" mbsc-ios mbsc-ltr mbsc-wheel-checkmark"></span>01:00
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -115,6 +112,21 @@
 @endsection
 @push('schedule')
     <script>
+
+        var sites = {!! json_encode($days_with_time) !!};
+        data_lunes = [];
+        // console.log(sites['lunes']['times']);
+        let arrayLunes = sites['lunes']['times'];
+        // sites['lunes']['times'].forEach(element => {
+        //     data_lunes.push(element)
+        // });
+        Object.entries(arrayLunes).forEach(entry => {
+        const [key, value] = entry;
+        // console.log(value.hour);
+        
+        data_lunes.push({ text: value.hour, disabled: value.disabled,duplicated: value.duplicated ,value:   value.hour })
+        });
+        // console.log(data_lunes);
         lunes = [];
         martes = [];
         miercoles = [];
@@ -131,15 +143,33 @@
 
         mobiscroll.select('#demo-multiple-select-lunes', {
             selectMultiple: true,
-            invalid: ['value'],
+            invalid: ['1:00'],
             Animation: 'slide-down',
+            className: 'text-class',
+            data: data_lunes,
+            renderItem: function(item) {
+                // console.log(item);
+                if(item.data.duplicated){
+                    return `<div class="duplicatedInput">${item.value}</div>`;
+                }
+                if(item.data.disabled){
+                    return `<div class="disbledInput">${item.value}</div>`;
+                }
+                else{
+                    return  item.data.text;
+                }
+                
+            },
             inputElement: document.getElementById(
                     'demo-multiple-select-input-lunes'
-                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
+                // lunes =ev.valueText;
                 lunes = ev.value;
+
+                console.log(lunes)
             },
         });
 
@@ -149,11 +179,12 @@
             Animation: 'slide-down',
             inputElement: document.getElementById(
                     'demo-multiple-select-input-martes'
-                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
                 martes = ev.value;
+                console.log(ev)
             },
         });
 
@@ -163,7 +194,7 @@
             Animation: 'slide-down',
             inputElement: document.getElementById(
                     'demo-multiple-select-input-miercoles'
-                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -177,7 +208,7 @@
             Animation: 'slide-down',
             inputElement: document.getElementById(
                     'demo-multiple-select-input-jueves'
-                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -191,7 +222,7 @@
             Animation: 'slide-down',
             inputElement: document.getElementById(
                     'demo-multiple-select-input-viernes'
-                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -205,7 +236,7 @@
             Animation: 'slide-down',
             inputElement: document.getElementById(
                     'demo-multiple-select-input-sabado'
-                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
                 ,
             onChange: function(ev, inst) {
@@ -252,13 +283,7 @@
                     horarios: sabado
                 });
             }
-
-
-            // console.log(lunes);
-            // console.log(martes);
-            // console.log(miercoles);
-            // console.log(jueves);
-            // console.log(viernes);
+            console.log('week');
             console.log(week);
             if (week.length > 0) {
                 $.ajax({
@@ -293,5 +318,8 @@
 
 
         }
+
+        let collection = document.getElementById("demo-multiple-select-lunes");
+        console.log(collection);
     </script>
 @endpush

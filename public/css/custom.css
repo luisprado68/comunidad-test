@@ -150,3 +150,20 @@ input.calendar {
   color: #000;
   background-color: yellow !important;
 } */
+
+.mbsc-scroller-wheel-item.mbsc-duplicated {
+  background-color: yellow !important;
+}
+div.disbledInput{
+  /* color: #bdb3b3;
+    font-weight: bold;
+    background-color: rgb(88, 88, 81) !important; */
+}
+div.duplicatedInput{
+  background-color: yellow !important;
+}
+/* *:disabled {
+  background-color: dimgrey;
+  color: linen;
+  opacity: 1;
+} */

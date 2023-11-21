@@ -29,29 +29,29 @@ class ScheduleController extends Controller
     public function index()
     {
         $this->times = [
-            0 => ['hour'=> '00:00','duplicated' => false],
-            1 => ['hour'=> '01:00','duplicated' => false],
-            2 => ['hour'=> '02:00','duplicated' => false],
-            3 => ['hour'=> '03:00','duplicated' => false],
-            4 => ['hour'=> '04:00','duplicated' => false],
-            5 => ['hour'=> '05:00','duplicated' => false],
-            6 => ['hour'=> '06:00','duplicated' => false],
-            7 => ['hour'=> '07:00','duplicated' => false],
-            8 => ['hour'=> '08:00','duplicated' => false],
-            9 => ['hour'=> '09:00','duplicated' => false],
-            10 => ['hour'=> '10:00','duplicated' => false],
-            11 => ['hour'=> '11:00','duplicated' => false],
-            12 => ['hour'=> '12:00','duplicated' => false],
-            13 => ['hour'=> '13:00','duplicated' => false],
-            15 => ['hour'=> '15:00','duplicated' => false],
-            16 => ['hour'=> '16:00','duplicated' => false],
-            17 => ['hour'=> '17:00','duplicated' => false],
-            18 => ['hour'=> '18:00','duplicated' => false],
-            19 => ['hour'=> '19:00','duplicated' => false],
-            20 => ['hour'=> '20:00','duplicated' => false],
-            21 => ['hour'=> '21:00','duplicated' => false],
-            22 => ['hour'=> '22:00','duplicated' => false],
-            23 => ['hour'=> '23:00','duplicated' => false],
+            0 => ['hour'=> '00:00','duplicated' => false,'disabled' => false],
+            1 => ['hour'=> '01:00','duplicated' => false,'disabled' => false],
+            2 => ['hour'=> '02:00','duplicated' => false,'disabled' => false],
+            3 => ['hour'=> '03:00','duplicated' => false,'disabled' => false],
+            4 => ['hour'=> '04:00','duplicated' => false,'disabled' => false],
+            5 => ['hour'=> '05:00','duplicated' => false,'disabled' => false],
+            6 => ['hour'=> '06:00','duplicated' => false,'disabled' => false],
+            7 => ['hour'=> '07:00','duplicated' => false,'disabled' => false],
+            8 => ['hour'=> '08:00','duplicated' => false,'disabled' => false],
+            9 => ['hour'=> '09:00','duplicated' => false,'disabled' => false],
+            10 => ['hour'=> '10:00','duplicated' => false,'disabled' => false],
+            11 => ['hour'=> '11:00','duplicated' => false,'disabled' => false],
+            12 => ['hour'=> '12:00','duplicated' => false,'disabled' => false],
+            13 => ['hour'=> '13:00','duplicated' => false,'disabled' => false],
+            15 => ['hour'=> '15:00','duplicated' => false,'disabled' => false],
+            16 => ['hour'=> '16:00','duplicated' => false,'disabled' => false],
+            17 => ['hour'=> '17:00','duplicated' => false,'disabled' => false],
+            18 => ['hour'=> '18:00','duplicated' => false,'disabled' => false],
+            19 => ['hour'=> '19:00','duplicated' => false,'disabled' => false],
+            20 => ['hour'=> '20:00','duplicated' => false,'disabled' => false],
+            21 => ['hour'=> '21:00','duplicated' => false,'disabled' => false],
+            22 => ['hour'=> '22:00','duplicated' => false,'disabled' => false],
+            23 => ['hour'=> '23:00','duplicated' => false,'disabled' => false],
         ];
         $this->days_with_time = [
             "lunes" => ['day' => 1, 'times' => $this->times],
@@ -78,6 +78,10 @@ class ScheduleController extends Controller
                     // dump($this->days_with_time[$key_day]);
                     // dump($key_day);
                     // dump($key_time);
+                }
+                elseif(count($schedules->where('start',new Carbon($www->setDaysFromStartOfWeek($day_with_time['day'])->format('Y-m-d').$time['hour']))) == 2){
+                    //remove item
+                    $this->days_with_time[$key_day]['times'][$key_time]['disabled'] = true;
                 }
             }
             
