@@ -113,27 +113,36 @@
 @push('schedule')
     <script>
 
-        var sites = {!! json_encode($days_with_time) !!};
-        data_lunes = [];
-        // console.log(sites['lunes']['times']);
-        let arrayLunes = sites['lunes']['times'];
-        // sites['lunes']['times'].forEach(element => {
-        //     data_lunes.push(element)
-        // });
-        Object.entries(arrayLunes).forEach(entry => {
-        const [key, value] = entry;
-        // console.log(value.hour);
+        let sites = {!! json_encode($days_with_time) !!};
+        let lunes = [];
+        let martes = [];
+        let miercoles = [];
+        let jueves = [];
+        let viernes = [];
+        let sabado = [];
+        let week = [];
+        let data_lunes = [];
+        let data_martes = [];
+        let data_miercoles= [];
+        let data_jueves = [];
+        let data_viernes = [];
+        let data_sabado = [];
         
-        data_lunes.push({ text: value.hour, disabled: value.disabled,duplicated: value.duplicated ,value:   value.hour })
-        });
+        let arrayLunes = sites['lunes']['times'];
+        let arrayMartes = sites['martes']['times'];
+        let arrayMiercoles = sites['miercoles']['times'];
+        let arrayJueves = sites['jueves']['times'];
+        let arrayViernes = sites['viernes']['times'];
+        let arraySabado = sites['sabado']['times'];
+      
+        data_lunes = crateSelectDay(arrayLunes);
+        data_martes = crateSelectDay(arrayMartes);
+        data_miercoles = crateSelectDay(arrayMiercoles);
+        data_jueves = crateSelectDay(arrayJueves);
+        data_viernes = crateSelectDay(arrayViernes);
+        data_sabado = crateSelectDay(arraySabado);
         // console.log(data_lunes);
-        lunes = [];
-        martes = [];
-        miercoles = [];
-        jueves = [];
-        viernes = [];
-        sabado = [];
-        week = [];
+        
         mobiscroll.setOptions({
             locale: mobiscroll
                 .localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
@@ -177,6 +186,20 @@
             selectMultiple: true,
             invalid: ['value'],
             Animation: 'slide-down',
+            data: data_martes,
+            renderItem: function(item) {
+                // console.log(item);
+                if(item.data.duplicated){
+                    return `<div class="duplicatedInput">${item.value}</div>`;
+                }
+                if(item.data.disabled){
+                    return `<div class="disbledInput">${item.value}</div>`;
+                }
+                else{
+                    return  item.data.text;
+                }
+                
+            },
             inputElement: document.getElementById(
                     'demo-multiple-select-input-martes'
                 ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
@@ -192,6 +215,20 @@
             selectMultiple: true,
             invalid: ['value'],
             Animation: 'slide-down',
+            data: data_miercoles,
+            renderItem: function(item) {
+                // console.log(item);
+                if(item.data.duplicated){
+                    return `<div class="duplicatedInput">${item.value}</div>`;
+                }
+                if(item.data.disabled){
+                    return `<div class="disbledInput">${item.value}</div>`;
+                }
+                else{
+                    return  item.data.text;
+                }
+                
+            },
             inputElement: document.getElementById(
                     'demo-multiple-select-input-miercoles'
                 ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
@@ -206,6 +243,20 @@
             selectMultiple: true,
             invalid: ['value'],
             Animation: 'slide-down',
+            data: data_jueves,
+            renderItem: function(item) {
+                // console.log(item);
+                if(item.data.duplicated){
+                    return `<div class="duplicatedInput">${item.value}</div>`;
+                }
+                if(item.data.disabled){
+                    return `<div class="disbledInput">${item.value}</div>`;
+                }
+                else{
+                    return  item.data.text;
+                }
+                
+            },
             inputElement: document.getElementById(
                     'demo-multiple-select-input-jueves'
                 ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
@@ -220,6 +271,20 @@
             selectMultiple: true,
             invalid: ['value'],
             Animation: 'slide-down',
+            data: data_viernes,
+            renderItem: function(item) {
+                // console.log(item);
+                if(item.data.duplicated){
+                    return `<div class="duplicatedInput">${item.value}</div>`;
+                }
+                if(item.data.disabled){
+                    return `<div class="disbledInput">${item.value}</div>`;
+                }
+                else{
+                    return  item.data.text;
+                }
+                
+            },
             inputElement: document.getElementById(
                     'demo-multiple-select-input-viernes'
                 ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
@@ -234,6 +299,20 @@
             selectMultiple: true,
             invalid: ['value'],
             Animation: 'slide-down',
+            data: data_sabado,
+            renderItem: function(item) {
+                // console.log(item);
+                if(item.data.duplicated){
+                    return `<div class="duplicatedInput">${item.value}</div>`;
+                }
+                if(item.data.disabled){
+                    return `<div class="disbledInput">${item.value}</div>`;
+                }
+                else{
+                    return  item.data.text;
+                }
+                
+            },
             inputElement: document.getElementById(
                     'demo-multiple-select-input-sabado'
                 ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
@@ -243,7 +322,14 @@
                 sabado = ev.value;
             },
         });
-
+        function crateSelectDay(arrayDay){
+            let data_day = [];
+            Object.entries(arrayDay).forEach(entry => {
+            const [key, value] = entry;
+            data_day.push({ text: value.hour, disabled: value.disabled,duplicated: value.duplicated ,value: value.hour })
+            });
+            return data_day;
+        }
         function btnClick() {
             week = [];
             if (lunes.length > 0) {
