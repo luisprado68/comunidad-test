@@ -29,6 +29,7 @@ class ScheduleController extends Controller
     }
     public function index()
     {
+        //validar que el mismo usuario no carge otra vez en la misma hora
         $user = $this->userService->getById(9);
         if (!empty($user)) {
             $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user->id);
