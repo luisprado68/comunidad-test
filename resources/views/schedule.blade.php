@@ -34,29 +34,30 @@
 
                                         </div>
                                     </div>
-                                    @if (false)
+                                   
+                                    @if (!$schedule_avaible)
                                         <div class="card bg-dark text-light mt-2">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="text-lg font-bold text-left mt-2 mb-2 mx-2">Aún no están
-                                                        habilitadas las reservas para tu rango</div>
+                                                    <div class="text-lg font-bold text-left mt-2 mb-2 mx-2">No están
+                                                        habilitadas las reservas</div>
                                                 </div>
 
 
                                             </div>
                                         </div>
                                     @else
+                                    <div class=" col-12 py-2">
+                                        <div class="card-body banner">
+                                            <h3 class="text-light text-center">Seleccione Día y Hora</h3>
+                                        </div>
+                                    </div>
                                         <div class="card bg-dark text-light mt-2">
                                             <div class="row">
-                                                <div class="container col-12">
-                                                    <div class="text-lg font-bold text-left mt-2 mb-2 mx-2">
-                                                        <h4 class="text-light text-center">Selecciona Día y Hora
-                                                        </h4>
-                                                    </div>
-                                                </div>
+                                                
                                                 {{-- @dump($days_with_time) --}}
                                                 @foreach ($days_with_time as $key_day => $day_with_time)
-                                                    <div class="col-3 mx-4 mb-4">
+                                                    <div class="col-4 px-4 my-3">
                                                         <input class="form-control form-control-lg bg-warning text-center"
                                                             type="text" placeholder="{{ $key_day }}" disabled>
                                                         <div class="col">
@@ -92,9 +93,9 @@
                                                         </div>
                                                     </div>
                                                 @endforeach
-                                                <div class="col-12 mx-4">
+                                                <div class="col-12 mx-3 py-4">
                                                     <button class="btn btn-primary" type="submit"
-                                                        onclick="btnClick()">Guardar</button>
+                                                        onclick="btnClick()">Guardar Cambios</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,7 +166,7 @@
                     return `<div class="disbledInput">${item.value}</div>`;
                 }
                 else{
-                    return  item.data.text;
+                    return `<div class="avaibleInput">${item.value}</div>`;
                 }
                 
             },
@@ -196,7 +197,7 @@
                     return `<div class="disbledInput">${item.value}</div>`;
                 }
                 else{
-                    return  item.data.text;
+                    return `<div class="avaibleInput">${item.value}</div>`;
                 }
                 
             },
@@ -225,7 +226,7 @@
                     return `<div class="disbledInput">${item.value}</div>`;
                 }
                 else{
-                    return  item.data.text;
+                    return `<div class="avaibleInput">${item.value}</div>`;
                 }
                 
             },
@@ -253,7 +254,7 @@
                     return `<div class="disbledInput">${item.value}</div>`;
                 }
                 else{
-                    return  item.data.text;
+                    return `<div class="avaibleInput">${item.value}</div>`;
                 }
                 
             },
@@ -281,7 +282,7 @@
                     return `<div class="disbledInput">${item.value}</div>`;
                 }
                 else{
-                    return  item.data.text;
+                    return `<div class="avaibleInput">${item.value}</div>`;
                 }
                 
             },
@@ -309,7 +310,7 @@
                     return `<div class="disbledInput">${item.value}</div>`;
                 }
                 else{
-                    return  item.data.text;
+                    return `<div class="avaibleInput">${item.value}</div>`;
                 }
                 
             },
@@ -387,6 +388,7 @@
                             // table.draw();
                             console.log('okkkk');
                             console.log(response);
+                            window.location.href = "{{ route('summary')}}";
                         } else {
 
                             alert(response.message);

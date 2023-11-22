@@ -55,10 +55,23 @@ final class ScheduleService
         $this->setModel();
         $en = CarbonImmutable::now()->locale('en_US');
         $start = $en->startOfWeek(Carbon::MONDAY);
-        Log::debug('start' . json_encode($start));
         $end = $en->endOfWeek(Carbon::SATURDAY);
-        Log::debug('end' . json_encode($end));
         $week = $this->model::whereBetween('start', [$start, $end])->get();
+
+        if (count($week) > 0) {
+            return $week;
+        } else {
+            return null;
+        }
+    }
+
+    public function getScheduleorThisWeekByUser($id)
+    {
+        $this->setModel();
+        $en = CarbonImmutable::now()->locale('en_US');
+        $start = $en->startOfWeek(Carbon::MONDAY);
+        $end = $en->endOfWeek(Carbon::SATURDAY);
+        $week = $this->model::whereBetween('start', [$start, $end])->where('user_id',$id)->get();
 
         if (count($week) > 0) {
             return $week;

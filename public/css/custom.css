@@ -151,16 +151,26 @@ input.calendar {
   background-color: yellow !important;
 } */
 
-.mbsc-scroller-wheel-item.mbsc-duplicated {
+.mbsc-scroller-wheel-item.mbsc {
   background-color: yellow !important;
 }
 div.disbledInput{
-  /* color: #bdb3b3;
+  color: red;
     font-weight: bold;
-    background-color: rgb(88, 88, 81) !important; */
+    /* background-color: rgb(204, 42, 13) !important; */
+    width: 30%;
 }
 div.duplicatedInput{
-  background-color: yellow !important;
+  color: rgb(255, 136, 0) !important;
+  width: 30%;
+  font-weight: bold;
+  /* margin-left: 5px; */
+}
+div.avaibleInput{
+  color: #5bac6e !important;
+  width: 30%;
+  font-weight: bold;
+  /* margin-left: 5px; */
 }
 /* *:disabled {
   background-color: dimgrey;
