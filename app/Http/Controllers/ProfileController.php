@@ -43,7 +43,7 @@ class ProfileController extends Controller
     // }
     public function index(){
         $countries = $this->countryService->getCountries();
-        
+        $user_model = null;
         $active = false;
         $timestamp = time();
         foreach (timezone_identifiers_list(\DateTimeZone::ALL) as $key => $value) {
@@ -52,6 +52,7 @@ class ProfileController extends Controller
         }
 
         if(session()->exists('user')){
+            
             $user = session('user');
             
             $active = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
@@ -65,8 +66,11 @@ class ProfileController extends Controller
             }
             $user_model = $this->userService->getByIdandTwichId($user['id']);
             // dump($user_model);
-        }
-        return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model]);
+            return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model]);
+        }else{
+            return redirect('/');
+        }   
+        
     }
 
     public function update(){

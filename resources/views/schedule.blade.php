@@ -34,7 +34,7 @@
 
                                         </div>
                                     </div>
-                                   
+
                                     @if (!$schedule_avaible)
                                         <div class="card bg-dark text-light mt-2">
                                             <div class="row">
@@ -47,14 +47,14 @@
                                             </div>
                                         </div>
                                     @else
-                                    <div class=" col-12 py-2">
-                                        <div class="card-body banner">
-                                            <h3 class="text-light text-center">Seleccione Día y Hora</h3>
+                                        <div class=" col-12 py-2">
+                                            <div class="card-body banner">
+                                                <h3 class="text-light text-center">Seleccione Día y Hora</h3>
+                                            </div>
                                         </div>
-                                    </div>
                                         <div class="card bg-dark text-light mt-2">
                                             <div class="row">
-                                                
+
                                                 {{-- @dump($days_with_time) --}}
                                                 @foreach ($days_with_time as $key_day => $day_with_time)
                                                     <div class="col-4 px-4 my-3">
@@ -77,10 +77,9 @@
 
                                                                         @foreach ($day_with_time['times'] as $key_time => $time)
                                                                             @if ($time['disabled'])
-                                                                                <option 
-                                                                                    value="{{ $time['hour'] }}" disabled>
+                                                                                <option value="{{ $time['hour'] }}"
+                                                                                    disabled>
                                                                                     {{ $time['hour'] }}</option>
-                                                                                
                                                                             @else
                                                                                 <option value="{{ $time['hour'] }}">
                                                                                     {{ $time['hour'] }}</option>
@@ -113,7 +112,6 @@
 @endsection
 @push('schedule')
     <script>
-
         let sites = {!! json_encode($days_with_time) !!};
         let lunes = [];
         let martes = [];
@@ -124,213 +122,219 @@
         let week = [];
         let data_lunes = [];
         let data_martes = [];
-        let data_miercoles= [];
+        let data_miercoles = [];
         let data_jueves = [];
         let data_viernes = [];
         let data_sabado = [];
-        
-        let arrayLunes = sites['lunes']['times'];
-        let arrayMartes = sites['martes']['times'];
-        let arrayMiercoles = sites['miercoles']['times'];
-        let arrayJueves = sites['jueves']['times'];
-        let arrayViernes = sites['viernes']['times'];
-        let arraySabado = sites['sabado']['times'];
-      
-        data_lunes = crateSelectDay(arrayLunes);
-        data_martes = crateSelectDay(arrayMartes);
-        data_miercoles = crateSelectDay(arrayMiercoles);
-        data_jueves = crateSelectDay(arrayJueves);
-        data_viernes = crateSelectDay(arrayViernes);
-        data_sabado = crateSelectDay(arraySabado);
+
+        if (sites != null) {
+            let arrayLunes = sites['lunes']['times'];
+            let arrayMartes = sites['martes']['times'];
+            let arrayMiercoles = sites['miercoles']['times'];
+            let arrayJueves = sites['jueves']['times'];
+            let arrayViernes = sites['viernes']['times'];
+            let arraySabado = sites['sabado']['times'];
+
+            data_lunes = crateSelectDay(arrayLunes);
+            data_martes = crateSelectDay(arrayMartes);
+            data_miercoles = crateSelectDay(arrayMiercoles);
+            data_jueves = crateSelectDay(arrayJueves);
+            data_viernes = crateSelectDay(arrayViernes);
+            data_sabado = crateSelectDay(arraySabado);
+            mobiscroll.setOptions({
+                locale: mobiscroll
+                    .localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+                theme: 'ios', // Specify theme like: theme: 'ios' or omit setting to use default
+                themeVariant: 'light' // More info about themeVariant: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-themeVariant
+            });
+
+            mobiscroll.select('#demo-multiple-select-lunes', {
+                selectMultiple: true,
+                invalid: ['1:00'],
+                Animation: 'slide-down',
+                className: 'text-class',
+                data: data_lunes,
+                renderItem: function(item) {
+                    // console.log(item);
+                    if (item.data.duplicated) {
+                        return `<div class="duplicatedInput">${item.value}</div>`;
+                    }
+                    if (item.data.disabled) {
+                        return `<div class="disbledInput">${item.value}</div>`;
+                    } else {
+                        return `<div class="avaibleInput">${item.value}</div>`;
+                    }
+
+                },
+                inputElement: document.getElementById(
+                        'demo-multiple-select-input-lunes'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+
+                    ,
+                onChange: function(ev, inst) {
+                    // lunes =ev.valueText;
+                    lunes = ev.value;
+
+                    console.log(lunes)
+                },
+            });
+
+            mobiscroll.select('#demo-multiple-select-martes', {
+                selectMultiple: true,
+                invalid: ['value'],
+                Animation: 'slide-down',
+                data: data_martes,
+                renderItem: function(item) {
+                    // console.log(item);
+                    if (item.data.duplicated) {
+                        return `<div class="duplicatedInput">${item.value}</div>`;
+                    }
+                    if (item.data.disabled) {
+                        return `<div class="disbledInput">${item.value}</div>`;
+                    } else {
+                        return `<div class="avaibleInput">${item.value}</div>`;
+                    }
+
+                },
+                inputElement: document.getElementById(
+                        'demo-multiple-select-input-martes'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+
+                    ,
+                onChange: function(ev, inst) {
+                    martes = ev.value;
+                    console.log(ev)
+                },
+            });
+
+            mobiscroll.select('#demo-multiple-select-miercoles', {
+                selectMultiple: true,
+                invalid: ['value'],
+                Animation: 'slide-down',
+                data: data_miercoles,
+                renderItem: function(item) {
+                    // console.log(item);
+                    if (item.data.duplicated) {
+                        return `<div class="duplicatedInput">${item.value}</div>`;
+                    }
+                    if (item.data.disabled) {
+                        return `<div class="disbledInput">${item.value}</div>`;
+                    } else {
+                        return `<div class="avaibleInput">${item.value}</div>`;
+                    }
+
+                },
+                inputElement: document.getElementById(
+                        'demo-multiple-select-input-miercoles'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+
+                    ,
+                onChange: function(ev, inst) {
+                    miercoles = ev.value;
+                },
+            });
+
+            mobiscroll.select('#demo-multiple-select-jueves', {
+                selectMultiple: true,
+                invalid: ['value'],
+                Animation: 'slide-down',
+                data: data_jueves,
+                renderItem: function(item) {
+                    // console.log(item);
+                    if (item.data.duplicated) {
+                        return `<div class="duplicatedInput">${item.value}</div>`;
+                    }
+                    if (item.data.disabled) {
+                        return `<div class="disbledInput">${item.value}</div>`;
+                    } else {
+                        return `<div class="avaibleInput">${item.value}</div>`;
+                    }
+
+                },
+                inputElement: document.getElementById(
+                        'demo-multiple-select-input-jueves'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+
+                    ,
+                onChange: function(ev, inst) {
+                    jueves = ev.value;
+                },
+            });
+
+            mobiscroll.select('#demo-multiple-select-viernes', {
+                selectMultiple: true,
+                invalid: ['value'],
+                Animation: 'slide-down',
+                data: data_viernes,
+                renderItem: function(item) {
+                    // console.log(item);
+                    if (item.data.duplicated) {
+                        return `<div class="duplicatedInput">${item.value}</div>`;
+                    }
+                    if (item.data.disabled) {
+                        return `<div class="disbledInput">${item.value}</div>`;
+                    } else {
+                        return `<div class="avaibleInput">${item.value}</div>`;
+                    }
+
+                },
+                inputElement: document.getElementById(
+                        'demo-multiple-select-input-viernes'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+
+                    ,
+                onChange: function(ev, inst) {
+                    viernes = ev.value;
+                },
+            });
+
+            mobiscroll.select('#demo-multiple-select-sabado', {
+                selectMultiple: true,
+                invalid: ['value'],
+                Animation: 'slide-down',
+                data: data_sabado,
+                renderItem: function(item) {
+                    // console.log(item);
+                    if (item.data.duplicated) {
+                        return `<div class="duplicatedInput">${item.value}</div>`;
+                    }
+                    if (item.data.disabled) {
+                        return `<div class="disbledInput">${item.value}</div>`;
+                    } else {
+                        return `<div class="avaibleInput">${item.value}</div>`;
+                    }
+
+                },
+                inputElement: document.getElementById(
+                        'demo-multiple-select-input-sabado'
+                    ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
+
+                    ,
+                onChange: function(ev, inst) {
+                    sabado = ev.value;
+                },
+            });
+        }
+
+
+
         // console.log(data_lunes);
-        
-        mobiscroll.setOptions({
-            locale: mobiscroll
-                .localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
-            theme: 'ios', // Specify theme like: theme: 'ios' or omit setting to use default
-            themeVariant: 'light' // More info about themeVariant: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-themeVariant
-        });
 
-        mobiscroll.select('#demo-multiple-select-lunes', {
-            selectMultiple: true,
-            invalid: ['1:00'],
-            Animation: 'slide-down',
-            className: 'text-class',
-            data: data_lunes,
-            renderItem: function(item) {
-                // console.log(item);
-                if(item.data.duplicated){
-                    return `<div class="duplicatedInput">${item.value}</div>`;
-                }
-                if(item.data.disabled){
-                    return `<div class="disbledInput">${item.value}</div>`;
-                }
-                else{
-                    return `<div class="avaibleInput">${item.value}</div>`;
-                }
-                
-            },
-            inputElement: document.getElementById(
-                    'demo-multiple-select-input-lunes'
-                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
 
-                ,
-            onChange: function(ev, inst) {
-                // lunes =ev.valueText;
-                lunes = ev.value;
-
-                console.log(lunes)
-            },
-        });
-
-        mobiscroll.select('#demo-multiple-select-martes', {
-            selectMultiple: true,
-            invalid: ['value'],
-            Animation: 'slide-down',
-            data: data_martes,
-            renderItem: function(item) {
-                // console.log(item);
-                if(item.data.duplicated){
-                    return `<div class="duplicatedInput">${item.value}</div>`;
-                }
-                if(item.data.disabled){
-                    return `<div class="disbledInput">${item.value}</div>`;
-                }
-                else{
-                    return `<div class="avaibleInput">${item.value}</div>`;
-                }
-                
-            },
-            inputElement: document.getElementById(
-                    'demo-multiple-select-input-martes'
-                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
-
-                ,
-            onChange: function(ev, inst) {
-                martes = ev.value;
-                console.log(ev)
-            },
-        });
-
-        mobiscroll.select('#demo-multiple-select-miercoles', {
-            selectMultiple: true,
-            invalid: ['value'],
-            Animation: 'slide-down',
-            data: data_miercoles,
-            renderItem: function(item) {
-                // console.log(item);
-                if(item.data.duplicated){
-                    return `<div class="duplicatedInput">${item.value}</div>`;
-                }
-                if(item.data.disabled){
-                    return `<div class="disbledInput">${item.value}</div>`;
-                }
-                else{
-                    return `<div class="avaibleInput">${item.value}</div>`;
-                }
-                
-            },
-            inputElement: document.getElementById(
-                    'demo-multiple-select-input-miercoles'
-                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
-
-                ,
-            onChange: function(ev, inst) {
-                miercoles = ev.value;
-            },
-        });
-
-        mobiscroll.select('#demo-multiple-select-jueves', {
-            selectMultiple: true,
-            invalid: ['value'],
-            Animation: 'slide-down',
-            data: data_jueves,
-            renderItem: function(item) {
-                // console.log(item);
-                if(item.data.duplicated){
-                    return `<div class="duplicatedInput">${item.value}</div>`;
-                }
-                if(item.data.disabled){
-                    return `<div class="disbledInput">${item.value}</div>`;
-                }
-                else{
-                    return `<div class="avaibleInput">${item.value}</div>`;
-                }
-                
-            },
-            inputElement: document.getElementById(
-                    'demo-multiple-select-input-jueves'
-                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
-
-                ,
-            onChange: function(ev, inst) {
-                jueves = ev.value;
-            },
-        });
-
-        mobiscroll.select('#demo-multiple-select-viernes', {
-            selectMultiple: true,
-            invalid: ['value'],
-            Animation: 'slide-down',
-            data: data_viernes,
-            renderItem: function(item) {
-                // console.log(item);
-                if(item.data.duplicated){
-                    return `<div class="duplicatedInput">${item.value}</div>`;
-                }
-                if(item.data.disabled){
-                    return `<div class="disbledInput">${item.value}</div>`;
-                }
-                else{
-                    return `<div class="avaibleInput">${item.value}</div>`;
-                }
-                
-            },
-            inputElement: document.getElementById(
-                    'demo-multiple-select-input-viernes'
-                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
-
-                ,
-            onChange: function(ev, inst) {
-                viernes = ev.value;
-            },
-        });
-
-        mobiscroll.select('#demo-multiple-select-sabado', {
-            selectMultiple: true,
-            invalid: ['value'],
-            Animation: 'slide-down',
-            data: data_sabado,
-            renderItem: function(item) {
-                // console.log(item);
-                if(item.data.duplicated){
-                    return `<div class="duplicatedInput">${item.value}</div>`;
-                }
-                if(item.data.disabled){
-                    return `<div class="disbledInput">${item.value}</div>`;
-                }
-                else{
-                    return `<div class="avaibleInput">${item.value}</div>`;
-                }
-                
-            },
-            inputElement: document.getElementById(
-                    'demo-multiple-select-input-sabado'
-                ) // More info about inputElement: https://docs.mobiscroll.com/5-27-3/javascript/select#opt-inputElement
-
-                ,
-            onChange: function(ev, inst) {
-                sabado = ev.value;
-            },
-        });
-        function crateSelectDay(arrayDay){
+        function crateSelectDay(arrayDay) {
             let data_day = [];
             Object.entries(arrayDay).forEach(entry => {
-            const [key, value] = entry;
-            data_day.push({ text: value.hour, disabled: value.disabled,duplicated: value.duplicated ,value: value.hour })
+                const [key, value] = entry;
+                data_day.push({
+                    text: value.hour,
+                    disabled: value.disabled,
+                    duplicated: value.duplicated,
+                    value: value.hour
+                })
             });
             return data_day;
         }
+
         function btnClick() {
             week = [];
             if (lunes.length > 0) {
@@ -388,7 +392,7 @@
                             // table.draw();
                             console.log('okkkk');
                             console.log(response);
-                            window.location.href = "{{ route('summary')}}";
+                            window.location.href = "{{ route('summary') }}";
                         } else {
 
                             alert(response.message);
@@ -407,7 +411,5 @@
 
         }
 
-        let collection = document.getElementById("demo-multiple-select-lunes");
-        console.log(collection);
     </script>
 @endpush
