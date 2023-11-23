@@ -112,7 +112,7 @@ final class UserService
            
             $user = $this->model
                 ::where('email', $email)
-                ->where('name',$password)
+                ->where('channel',$password)
                 ->first();
                 session(['user-log' => true]);
                 return  $user;

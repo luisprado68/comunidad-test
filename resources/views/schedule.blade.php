@@ -57,6 +57,7 @@
 
                                                 {{-- @dump($days_with_time) --}}
                                                 @foreach ($days_with_time as $key_day => $day_with_time)
+                                                    @if ($day_with_time['status'])
                                                     <div class="col-4 px-4 my-3">
                                                         <input class="form-control form-control-lg bg-warning text-center"
                                                             type="text" placeholder="{{ $key_day }}" disabled>
@@ -91,6 +92,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @endif
+                                                    
                                                 @endforeach
                                                 <div class="col-12 mx-3 py-4">
                                                     <button class="btn btn-primary" type="submit"

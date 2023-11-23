@@ -104,6 +104,7 @@
 .mbsc-ios.mbsc-page {
   background: none;
   color: #000;
+  /* visibility: hidden; */
 }
 button {
   display: inline-block;
