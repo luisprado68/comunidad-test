@@ -177,8 +177,6 @@
                 onChange: function(ev, inst) {
                     // lunes =ev.valueText;
                     lunes = ev.value;
-
-                    console.log(lunes)
                 },
             });
 
@@ -389,6 +387,7 @@
 
                     },
                     success: function(response) {
+                        console.log(response);
 
                         if (response.status === 'ok') {
                             // $("#edit-dialog").modal("hide");
@@ -397,9 +396,10 @@
                             console.log(response);
                             window.location.href = "{{ route('summary') }}";
                         } else {
-
-                            alert(response.message);
-
+                            console.log('error');
+                            window.alert(response.message);
+                            // window.location.href = "{{ route('schedule') }}";
+                            location.reload()
                         }
                         // $(".loading").hide();
                     },

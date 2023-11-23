@@ -102,12 +102,9 @@ final class ScheduleService
         $hours = 0;
         $en = CarbonImmutable::now()->locale('en_US');
         $start = $en->endOfWeek($date)->addHours(-23)->format('Y-m-d H:00:00');
-        dump('start');
-        dump($start);
+        
         $end = $en->endOfWeek($date)->format('Y-m-d H:00:00');
-        dump('end');
-        dump($end);
-  
+       
         $hours = count($this->model::whereBetween('start', [$start, $end])->where('user_id',$id)->get());
         // dump($hours);
         return $hours;
