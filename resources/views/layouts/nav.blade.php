@@ -52,7 +52,7 @@
                     </a>
                     <ul class="dropdown-menu m-0" aria-labelledby="navbarDropdownMenuLink">
                        
-                        @if (session()->has('user'))
+                        @if (session()->has('user') || env('APP_ENV') == 'local')
                             {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
                             <li><a class="dropdown-item" href="{{ route('profile') }}">Perfil</a></li>
                             <li><a class="dropdown-item" href="{{ route('summary') }}">Resumen</a></li>

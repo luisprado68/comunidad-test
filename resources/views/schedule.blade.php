@@ -394,7 +394,7 @@
                             // table.draw();
                             console.log('okkkk');
                             console.log(response);
-                            window.location.href = "{{ route('summary') }}";
+                            window.location.href = "{{ route('my_agendas') }}";
                         } else {
                             console.log('error');
                             window.alert(response.message);

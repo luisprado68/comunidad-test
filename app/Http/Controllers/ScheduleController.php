@@ -42,7 +42,8 @@ class ScheduleController extends Controller
     }
     public function index()
     {   
-        
+        // dump($ar = CarbonImmutable::now()->locale('ar'));
+
         if(env('APP_ENV') == 'local'){
             $user_model = $this->userService->getById(9);
            
@@ -69,8 +70,8 @@ class ScheduleController extends Controller
             
            
             if (!empty($user_model)) {
-                $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model->id);
-               
+                $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
+            //    dump($schedules_by_user);
                 if (!isset($schedules_by_user)) {
                     $this->schedule_avaible = true;
                 } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
@@ -114,45 +115,46 @@ class ScheduleController extends Controller
 
                 ];
 
-                if($user_model->range->hours_for_day <= $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::MONDAY)){
+                if($user_model->range->hours_for_day <= count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::MONDAY))){
                     $this->days_with_time['lunes']['status']= false;
                     
                 }
-                if($user_model->range->hours_for_day <= $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::TUESDAY)){
+                if($user_model->range->hours_for_day <= count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::TUESDAY))){
                     $this->days_with_time['martes']['status']= false;
                 }
-                if($user_model->range->hours_for_day <= $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::WEDNESDAY)){
+                if($user_model->range->hours_for_day <= count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::WEDNESDAY))){
                     $this->days_with_time['miercoles']['status']= false;
                 }
-                if($user_model->range->hours_for_day <= $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::THURSDAY)){
+                if($user_model->range->hours_for_day <= count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::THURSDAY))){
                     $this->days_with_time['jueves']['status']= false;
                 }
                 
-                if($user_model->range->hours_for_day <= $this->scheduleService->getSchedulerDayEndByUser($user_model->id,Carbon::FRIDAY)){
+                if($user_model->range->hours_for_day <= count($this->scheduleService->getSchedulerDayEndByUser($user_model,Carbon::FRIDAY))){
                     $this->days_with_time['viernes']['status']= false;
                 }
-                if($user_model->range->hours_for_day <= $this->scheduleService->getSchedulerDayEndByUser($user_model->id,Carbon::SATURDAY)){
+                if($user_model->range->hours_for_day <= count($this->scheduleService->getSchedulerDayEndByUser($user_model,Carbon::SATURDAY))){
                     $this->days_with_time['sabado']['status']= false;
                 }
-
-                $schedules = $this->scheduleService->getScheduleorThisWeek();
+                // dump($this->days_with_time);
+                $schedules = $this->scheduleService->getScheduleorThisWeek($user_model);
+                $new_schedules = [];
+                dump($schedules);
+                
                 if (isset($schedules)) {
                     Log::debug('schedules' . json_encode($schedules));
                     $www = CarbonImmutable::now()->locale('en_US');
 
                     foreach ($this->days_with_time as $key_day => $day_with_time) {
                         foreach ($day_with_time['times'] as $key_time => $time) {
-                            //validar si supero el limite diario de hora y no permitir agregar en el mismo dia
-                            // $this->countDay++;
-                            // $this->hours_per_day_user = count($schedules->where('start', new Carbon($www->setDaysFromStartOfWeek($day_with_time['day'])->format('Y-m-d') . $time['hour']))->where('user_id', $user_model->id)) + $this->hours_per_day_user;
-                            //validar la hora que ya seteo en deshabilitada
-                            if (count($schedules->where('start', new Carbon($www->setDaysFromStartOfWeek($day_with_time['day'])->format('Y-m-d') . $time['hour']))->where('user_id', $user_model->id)) == 1) {
+                            
+                            $new_start = $this->parseToCountry($www,$day_with_time['day'],$time['hour'],$user_model->time_zone);
+                            if (count($schedules->where('start',$new_start)->where('user_id', $user_model->id)) == 1) {
                                 // dump($this->days_with_time[$key_day]['times'][$key_time]['disabled']);
                                 $this->days_with_time[$key_day]['times'][$key_time]['disabled'] = true;
-                            } elseif (count($schedules->where('start', new Carbon($www->setDaysFromStartOfWeek($day_with_time['day'])->format('Y-m-d') . $time['hour']))) == 1) {
+                            } elseif (count($schedules->where('start', $new_start)) == 1) {
                                 // dump($this->days_with_time[$key_day]['times'][$key_time]['duplicated']);
                                 $this->days_with_time[$key_day]['times'][$key_time]['duplicated'] = true;
-                            } elseif (count($schedules->where('start', new Carbon($www->setDaysFromStartOfWeek($day_with_time['day'])->format('Y-m-d') . $time['hour']))) == 2) {
+                            } elseif (count($schedules->where('start', $new_start)) == 2) {
                                 //remove item
                                 $this->days_with_time[$key_day]['times'][$key_time]['disabled'] = true;
                             }
@@ -167,73 +169,8 @@ class ScheduleController extends Controller
                         "sabado",
 
                     ];
-                    // $teaTime = Carbon::createFromTimeString(Carbon::now(), 'America/Lima');
-                    $en = CarbonImmutable::now()->locale('en_US');
-
-
-
-
-                    // $nuevo = Carbon::now();
-                    // $nuevo->day;
-                    // $nuevo->hour = 3;
-                    // $nuevo->minute = 50;
-                    // $nuevo->tz = 'America/Argentina/Buenos_Aires';
-
-                    // $ar = CarbonImmutable::now()->locale('ar');
-
-
-
-
-
-                    // We still can force to use an other day as start/end of week
-                    $start = $en->startOfWeek(Carbon::MONDAY);
-                    $end = $en->endOfWeek(Carbon::SATURDAY);
-                    // var_dump($start->format('Y-m-d'));                 // string(16) "2023-10-03 00:00"
-                    // var_dump($end->format('Y-m-d'));
-
-                    $time = "01:00";
-                    $monday = new Carbon($start->format('Y-m-d') . $time);
-                    // dump($monday);
-                    // $monday->tz = 'America/Argentina/Buenos_Aires';
-
-                    // echo "-----------\n";
-                    // var_dump($en->week());                                 // int(6)
-                    // var_dump($en->isoWeek());                              // int(5)
-                    // var_dump($en->week(1)->format('Y-m-d H:i'));           // string(16) "2017-01-01 00:00"
-                    // var_dump($en->isoWeek(1)->format('Y-m-d H:i'));        // string(16) "2017-01-08 00:00"
-
-                    // // weekday/isoWeekday are meant to be used with days constants
-                    // var_dump($en->weekday());                              // int(0)
-                    // var_dump($en->isoWeekday());                           // int(7)
-                    //  var_dump($en->weekday(CarbonInterface::MONDAY)
-                    //     ->format('Y-m-d'));                                                                               // string(16) "2017-02-08 00:00"
-                    // var_dump($en->isoWeekday(CarbonInterface::WEDNESDAY)
-                    //     ->format('Y-m-d H:i'));                                                                                  // string(16) "2017-02-01 00:00"
-
-                    // echo "-----------\n";
-                    $date = CarbonImmutable::now()->locale('en_US');
-
-                    // var_dump($date->getDaysFromStartOfWeek());                     // int(1)
-                    // dump($date->setDaysFromStartOfWeek(1)->format('Y-m-d'));     
-                    // dump($date->setDaysFromStartOfWeek(6));
-                    // $date = CarbonImmutable::now()->locale('de_AT');
-
-                    // var_dump($date->getDaysFromStartOfWeek());                     // int(0)
-                    // var_dump($date->setDaysFromStartOfWeek(3)->format('Y-m-d'));   // string(10) "2022-12-08"
-
-                    // // Or specify explicitly the first day of week
-                    // var_dump($date->setDaysFromStartOfWeek(3, CarbonInterface::SUNDAY)->format('Y-m-d')); // string(10) "2022-12-07"
-
-
-                    // $teaTime = Carbon::now();
-                    // $teaTime->tz = 'America/Lima';
-                    // $teaTime->hour = 0;
-                    // // dump($teaTime);
-                    // $dt = Carbon::now();
-                    // // $dt->hour = 22;
-                    // // $dt->minute = 32;
-                    // $dt->tz = 'America/Argentina/Buenos_Aires';
-                    // dump($dt->get('hour'));
+                    
+                    
                 }
             }
             return view('schedule', ['times' => $this->times, 'days' => $this->days, 'days_with_time' => $this->days_with_time, 'schedule_avaible' => $this->schedule_avaible
@@ -260,7 +197,7 @@ class ScheduleController extends Controller
             $user_model = $this->userService->getByIdandTwichId($this->user['id']);
         }
         
-        $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model->id);
+        $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
         if (!isset($schedules_by_user)) {
             $hours_for_week = 0;
         } else {
@@ -278,12 +215,12 @@ class ScheduleController extends Controller
 
         foreach ($this->data['days'] as $key => $value) {
 
-            Log::debug(json_encode(($value)));
-            Log::debug(json_encode(count(($value['horarios']))));
+            Log::debug('value '. json_encode(($value)));
+            Log::debug('cantidad de horarios: '.json_encode(count(($value['horarios']))));
 
             if($value['day'] == "1"){
 
-                if (count(($value['horarios'])) +  $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::MONDAY) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::MONDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -291,7 +228,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "2"){
                 
-                if (count(($value['horarios'])) +  $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::TUESDAY) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::TUESDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -299,7 +236,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "3"){
                 
-                if (count(($value['horarios'])) +  $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::WEDNESDAY) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::WEDNESDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -307,7 +244,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "4"){
                 
-                if (count(($value['horarios'])) +  $this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::THURSDAY) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::THURSDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -315,7 +252,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "5"){
                 
-                if (count(($value['horarios'])) +  $this->scheduleService->getSchedulerDayEndByUser($user_model->id,Carbon::FRIDAY) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayEndByUser($user_model,Carbon::FRIDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -323,7 +260,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "6"){
                 
-                if (count(($value['horarios'])) +  $this->scheduleService->getSchedulerDayEndByUser($user_model->id,Carbon::SATURDAY) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayEndByUser($user_model,Carbon::SATURDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -337,24 +274,53 @@ class ScheduleController extends Controller
             $this->data['status'] = 'error';
             $this->data['message'] = 'Supera las horas semanales permitidas';
         }
-        if ($this->data['status'] == 'ok') {
-            $date = CarbonImmutable::now()->locale('en_US');
+        elseif ($this->data['status'] == 'ok') {
+
+            $date  = $this->scheduleService->setSunday();
+            // $date = CarbonImmutable::now()->locale('en_US');
             foreach ($this->data['days'] as $key => $value) {
                 Log::debug(json_encode($value['day']));
                 if (count(($value['horarios'])) > 0) {
                     foreach ($value['horarios'] as $key => $time) {
 
                         $scheduleNewItem['user_id'] = $user_model->id;
-                        $scheduleNewItem['start'] =  new Carbon($date->setDaysFromStartOfWeek($value['day'])->format('Y-m-d') . $time);
+                        //$monday->tz = 'America/Argentina/Buenos_Aires';
+                        // $start =  new Carbon($date->setDaysFromStartOfWeek($value['day'])->format('Y-m-d') . $time);
+                        $new_start = $this->parseToCountry($date,$value['day'],$time,$user_model->time_zone);
+                        $scheduleNewItem['start'] = $new_start;
+                        
+
+                
                         array_push($scheduleNew, $scheduleNewItem);
                     }
                 }
             }
-
-            $this->scheduleService->bulkCreate($scheduleNew);
+            Log::debug('scheduleNew------------------');
+            Log::debug(json_encode($scheduleNew));
+            $ids = $this->scheduleService->bulkCreate($scheduleNew);
+            Log::debug('ids');
+            Log::debug(json_encode($ids));
+            
         }
         Log::debug('data');
         Log::debug(json_encode($this->data));
         return $this->data;
+    }
+
+    public function parseToCountry($date,$day_param,$time,$time_zone){
+
+      
+        $start =  new Carbon($date->setDaysFromStartOfWeek($day_param)->format('Y-m-d') . $time);
+        $start->tz = $time_zone;
+        
+        $start_utc_country =  new Carbon($start->format('Y-m-d H:i'));
+       
+        $utc =  new Carbon($date->setDaysFromStartOfWeek($day_param)->format('Y-m-d') . $time);
+       
+        $diff = $start_utc_country->diffInHours($utc,false);   
+        
+        $utc->addHours($diff);
+        
+        return $utc;
     }
 }

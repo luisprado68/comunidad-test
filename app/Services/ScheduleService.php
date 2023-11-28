@@ -8,6 +8,7 @@ use Broobe\Services\Service;
 use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Carbon\Factory;
 use Error;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -50,12 +51,17 @@ final class ScheduleService
         }
     }
 
-    public function getScheduleorThisWeek()
+    public function getScheduleorThisWeek($user)
     {
         $this->setModel();
-        $en = CarbonImmutable::now()->locale('en_US');
-        $start = $en->startOfWeek(Carbon::MONDAY);
-        $end = $en->endOfWeek(Carbon::SATURDAY);
+        // $en = CarbonImmutable::now()->locale('en_US');
+        $en = $this->setSunday();
+        $hour_first = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
+        $start = $en->startOfWeek(Carbon::MONDAY)->addHours($hour_first)->format('Y-m-d H:00:00');
+        // dump($start);
+        $hour_end = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
+        $end = $en->endOfWeek(Carbon::SATURDAY)->addHours($hour_end)->format('Y-m-d H:00:00');
+        // dump($end);
         $week = $this->model::whereBetween('start', [$start, $end])->get();
 
         if (count($week) > 0) {
@@ -65,49 +71,147 @@ final class ScheduleService
         }
     }
 
-    public function getScheduleorThisWeekByUser($id)
+    public function setSunday(){
+
+        if(env('APP_ENV') == 'local'){
+            $toDisplay = Carbon::parse('2023-11-19 00:00:00', 'UTC');
+            $martinDateFactory = new Factory([
+                'locale' => 'en_US'
+            ]);
+            $toDisplay->addDays(1);
+            $en = $martinDateFactory->make($toDisplay);
+        }else{
+            $en = CarbonImmutable::now()->locale('en_US');
+            $en->addDays(1);
+        }   
+        
+        return $en;
+    }
+    public function getScheduleorThisWeekByUser($user)
     {
         $this->setModel();
-        $en = CarbonImmutable::now()->locale('en_US');
-        $start = $en->startOfWeek(Carbon::MONDAY);
-        $end = $en->endOfWeek(Carbon::SATURDAY);
-        $week = $this->model::whereBetween('start', [$start, $end])->where('user_id',$id)->get();
+        // $en = CarbonImmutable::now()->locale('en_US');
+        $en = $this->setSunday();
+        $hour_first = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
+        // dump($id);
+        $start = $en->startOfWeek(Carbon::MONDAY)->addHours($hour_first)->format('Y-m-d H:00:00');
+        // dump('------ week -----------------start');
+        // dump($start);
+        $hour_end = $this->parseHoursToCountry($en->startOfWeek(Carbon::MONDAY),$user->time_zone);
+        $end = $en->endOfWeek(Carbon::SATURDAY)->addHours($hour_first)->format('Y-m-d H:00:00');
 
+        // dump('------ week -----------------end');
+        // dump($end);
+        
+        // $end = $en->startOfWeek(Carbon::SATURDAY);
+       
+        $week = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->get();
+        // dump($week);
         if (count($week) > 0) {
             return $week;
         } else {
             return null;
         }
     }
-    public function getSchedulerDayByUser($id,$date)
+    public function getScheduleorThisWeekByUserString($user)
     {
+
         $this->setModel();
-        $hours = 0;
-        $en = CarbonImmutable::now()->locale('en_US');
-        $start = $en->startOfWeek($date)->format('Y-m-d H:00:00');
+        $en = $this->setSunday();
+        
+        // $en = CarbonImmutable::now()->locale('en_US');
+       
+        // dump($id);
+       
+        // dump($start);
+        
+        $hour_first = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
+        $start = $en->startOfWeek(Carbon::MONDAY)->addHours($hour_first)->format('Y-m-d H:00:00');
+        // $end = $en->startOfWeek(Carbon::SATURDAY);
+        // dump($start);
+        $hour_end = $this->parseHoursToCountry($en->startOfWeek(Carbon::MONDAY),$user->time_zone);
+        $end = $en->endOfWeek(Carbon::SATURDAY)->addHours($hour_end);
+        $end->format('Y-m-d H:00:00');
+        // dump($end);
+        $week = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->get();
+        // dump($week);
+        if (count($week) > 0) {
+            return $week;
+        } else {
+            return null;
+        }
+    }
+
+    public function parseHoursToCountry($end,$time_zone = null){
+        // dump($time_zone);
+        // dump($end);
+        
+        $start =  $end;
+        // dump($start);
+        $start->tz = $time_zone;
+        // dump($start);
+        $start_utc_country =  new Carbon($start->format('Y-m-d H:i'));
+        // dump($start_utc_country);
+        $utc =  $end;
+       
+        $diff = $start_utc_country->diffInHours($utc,false);   
+        // dd($diff);
+       
+        
+        return $diff;
+    }
+    public function getSchedulerDayByUser($user,$date)
+    {   
+        // dump('day');
+       
+        // dump($date);
+        $this->setModel();
+        $dates = null;
+       
+        $en = $this->setSunday();
+        $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
+        if($date != 1){
+            $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
+            $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
+        }
+        else{
+            $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
+            $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
+        }
         // dump('start');
         // dump($start);
-        $end = $en->startOfWeek($date)->addHour(23)->format('Y-m-d H:00:00');
         // dump('end');
         // dump($end);
   
-        $hours = count($this->model::whereBetween('start', [$start, $end])->where('user_id',$id)->get());
+        $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->get();
+        // dump('hours');
         // dump($hours);
-        return $hours;
+        return $dates;
 
     }
-    public function getSchedulerDayEndByUser($id,$date)
+    public function getSchedulerDayEndByUser($user,$date)
     {
+        $en = $this->setSunday();
+        $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
+        // dump('day--------------------------------');
+        // dump($date);
         $this->setModel();
-        $hours = 0;
-        $en = CarbonImmutable::now()->locale('en_US');
-        $start = $en->endOfWeek($date)->addHours(-23)->format('Y-m-d H:00:00');
+        $dates = null;
         
-        $end = $en->endOfWeek($date)->format('Y-m-d H:00:00');
-       
-        $hours = count($this->model::whereBetween('start', [$start, $end])->where('user_id',$id)->get());
+        $start = $en->endOfWeek($date)->addHours(-23 + $hour_diff )->format('Y-m-d H:00:00');
+        // dump('start--------------------------------');
+        // dump($start);
+
+        
+        $end = $en->endOfWeek($date)->addHours($hour_diff);
+        $end = $end->format('Y-m-d H:00:00');
+        // dump('end--------------------------------');
+        // dump($end);
+        $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->get();
         // dump($hours);
-        return $hours;
+        // dump('hours--------------');
+        // dump($hours);
+        return $dates;
 
     }
 
