@@ -16,7 +16,7 @@
                                     <div class=" col-12 py-2">
                                         <div class="card banner">
                                             <div class="card-body text-start">
-                                                <h3 class="text-light text-center">Mis Agenda</h3>
+                                                <h3 class="text-light text-center">Mis Agenda Semanal</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -27,7 +27,7 @@
                                                 {{-- @dump($key) --}}
                                                 <div class="col-4 my-4">
                                                     <input class="form-control form-control-lg bg-warning text-center"
-                                                                type="text" placeholder="{{$key}}" disabled>
+                                                                type="text" placeholder="{{trans('user.create.'.$key)}}" disabled>
                                                                 {{-- @dump($days) --}}
                                                 @foreach ($days['times'] as $time)
                                                     
