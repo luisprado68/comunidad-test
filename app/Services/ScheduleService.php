@@ -53,6 +53,7 @@ final class ScheduleService
 
     public function getScheduleorThisWeek($user)
     {
+        //para testeAR*****
         $this->setModel();
         // $en = CarbonImmutable::now()->locale('en_US');
         $en = $this->setSunday();
@@ -62,8 +63,8 @@ final class ScheduleService
         $hour_end = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
         $end = $en->endOfWeek(Carbon::SATURDAY)->addHours($hour_end)->format('Y-m-d H:00:00');
         // dump($end);
-        $week = $this->model::whereBetween('start', [$start, $end])->get();
-
+        // $week = $this->model::whereBetween('start', [$start, $end])->get();
+        $week = $this->model::all();
         if (count($week) > 0) {
             return $week;
         } else {

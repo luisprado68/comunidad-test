@@ -136,6 +136,18 @@ final class UserService
         }
     }
 
+    public function getUsersModel()
+    {
+        $this->setModel();
+
+        $users = $this->model::all();
+
+        if (count($users) > 0) {
+            return $users;
+        } else {
+            return false;
+        }
+    }
     /**
      * @param $userArray
      * @return false|mixed
@@ -152,6 +164,7 @@ final class UserService
             $user->name = isset($userArray['name']) ? $userArray['name'] : $userArray['display_name'];
             $user->email = $userArray['email'] ?? $userArray['display_name'] . '@gmail.com';
             $user->range_id = 1;
+            $user->role_id = 2;
             $user->channel = $userArray['display_name'];
             $user->password = $userArray['display_name']; //TODO
             $user->status = $userArray['status'] ?? 0;

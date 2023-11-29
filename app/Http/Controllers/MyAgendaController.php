@@ -29,7 +29,7 @@ class MyAgendaController extends Controller
     {
         $active = false;
         if (env('APP_ENV') == 'local') {
-            $this->user_model = $this->userService->getById(9);
+            $this->user_model = $this->userService->getById(env('USER_TEST'));
         }
         if (session()->exists('user')) {
             $user = session('user');
@@ -44,40 +44,16 @@ class MyAgendaController extends Controller
             }
         }
         if (!empty($this->user_model)) {
-            $this->schedules_by_user_new = [];
-            $this->week = [];
-            $this->day['time'] = [];
-            $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUserString($this->user_model);
-            // dump($schedules_by_user);
-            if (isset($schedules_by_user)) {
-                $order_schedules = $schedules_by_user;
-                $schedules_by_user_day = $order_schedules->groupBy(function ($date) {
-                    return Carbon::parse($date->start)->format('d'); // grouping by years
-
-                });
-
-                foreach ($schedules_by_user_day as $key => $item) {
-
-                    $date =  new Carbon($item[0]->start);
-                    foreach ($item as $key => $value) {
-
-                        $start =  new Carbon($value->start);
-                        $start->tz = $this->user_model->time_zone;
-
-                        array_push($this->day['time'], $start->format('H:i'));
-                    }
-                    $this->day['day'] = $date->dayName == 'Sunday' ? 'Saturday' : $date->dayName;
-                    array_push($this->week, $this->day);
-                    $this->day['time'] = [];
-                }
+            $week = $this->getDays();
+            
+            if(count($week) > 0){
+                $this->showAgendas = true;
             }
+            
         }
-        // dd($this->getDays());
-        // foreach ($this->getDays() as $key => $value) {
-        //     # code...
-        // }
-        $this->showAgendas = true;
-        return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $this->getDays()]);
+       
+        
+        return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week]);
     }
 
     public function getDays()

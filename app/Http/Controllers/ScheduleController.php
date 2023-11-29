@@ -45,7 +45,7 @@ class ScheduleController extends Controller
         // dump($ar = CarbonImmutable::now()->locale('ar'));
 
         if(env('APP_ENV') == 'local'){
-            $user_model = $this->userService->getById(9);
+            $user_model = $this->userService->getById(env('USER_TEST'));
            
         }
         //validar que el mismo usuario no carge otra vez en la mismo dia si tiene una hora diaria
@@ -148,6 +148,7 @@ class ScheduleController extends Controller
                         foreach ($day_with_time['times'] as $key_time => $time) {
                             
                             $new_start = $this->parseToCountry($www,$day_with_time['day'],$time['hour'],$user_model->time_zone);
+                            // dump($new_start);
                             if (count($schedules->where('start',$new_start)->where('user_id', $user_model->id)) == 1) {
                                 // dump($this->days_with_time[$key_day]['times'][$key_time]['disabled']);
                                 $this->days_with_time[$key_day]['times'][$key_time]['disabled'] = true;
@@ -191,7 +192,7 @@ class ScheduleController extends Controller
         $this->user = session('user');
 
         if(env('APP_ENV') == 'local'){
-            $user_model = $this->userService->getById(9);
+            $user_model = $this->userService->getById(env('USER_TEST'));
             
         }else{
             $user_model = $this->userService->getByIdandTwichId($this->user['id']);
@@ -220,7 +221,7 @@ class ScheduleController extends Controller
 
             if($value['day'] == "1"){
 
-                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::MONDAY)) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::MONDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -228,7 +229,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "2"){
                 
-                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::TUESDAY)) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::TUESDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -236,7 +237,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "3"){
                 
-                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::WEDNESDAY)) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::WEDNESDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;
@@ -244,7 +245,7 @@ class ScheduleController extends Controller
             }
             if($value['day'] == "4"){
                 
-                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model->id,Carbon::THURSDAY)) > $user_model->range->hours_for_day) {
+                if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayByUser($user_model,Carbon::THURSDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';
                     break;

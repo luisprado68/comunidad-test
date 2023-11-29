@@ -59,7 +59,7 @@ class AdminController extends Controller
     public function list()
     {
         if (Session::has('user-log')) {
-            $users = $this->userService->getUsers();
+            $users = $this->userService->getUsersModel();
             // dd($users);
             return view('admin.list', ['users' => $users]);
         } else {

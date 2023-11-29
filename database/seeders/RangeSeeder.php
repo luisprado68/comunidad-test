@@ -16,13 +16,13 @@ class RangeSeeder extends Seeder
     {
         DB::table('ranges');
  
-        $countries = [
+        $ranges = [
             ['name' => 'Bronce', 'hours_for_day' => 1,'hours_for_week' => 3],
             ['name' => 'Plata', 'hours_for_day' => 1,'hours_for_week' => 6],
             ['name' => 'Oro', 'hours_for_day' => 2,'hours_for_week' => 12],
             ['name' => 'Platino', 'hours_for_day' => 3,'hours_for_week' => 18],
         ];
  
-        DB::table('ranges')->insert($countries);
+        DB::table('ranges')->insert($ranges);
     }
 }

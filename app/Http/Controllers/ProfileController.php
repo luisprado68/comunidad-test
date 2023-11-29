@@ -11,6 +11,7 @@ class ProfileController extends Controller
 {
     private $userService;
     private $countryService;
+    public $user;
     public function __construct(UserService $userService,CountryService $countryService)
     {
         
@@ -50,12 +51,12 @@ class ProfileController extends Controller
             date_default_timezone_set($value);
             $timezone[$value] = $value . ' (UTC ' . date('P', $timestamp) . ')';
         }
-
-        if(session()->exists('user')){
+       
+        if(session()->exists('user') || env('APP_ENV') == 'local'){
             
-            $user = session('user');
+            $this->user = session('user');
             
-            $active = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
+            
            
             if($active){
                
@@ -64,7 +65,15 @@ class ProfileController extends Controller
             else{
                 session(['status' => 0]);
             }
-            $user_model = $this->userService->getByIdandTwichId($user['id']);
+            
+            if(env('APP_ENV') == 'local'){
+                $user_model = $this->userService->getById(env('USER_TEST'));
+                $active = true;
+            }else{
+                $user_model = $this->userService->getByIdandTwichId($this->user['id']);
+                $active = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
+            }
+            
             // dump($user_model);
             return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model]);
         }else{
@@ -85,13 +94,13 @@ class ProfileController extends Controller
     public function editUser(Request $request)
     {
         $limit = '';
-        $user = $request->all();
-        if($user['area'] == '+54'){
+        $this->user = $request->all();
+        if($this->user['area'] == '+54'){
             $limit = '|digits_between:1,10';
-        }elseif($user['area'] == '+51'){
+        }elseif($this->user['area'] == '+51'){
             $limit = '|digits_between:1,9';
         }
-        elseif($user['area'] == '+57'){
+        elseif($this->user['area'] == '+57'){
             $limit = '|digits_between:1,10';
         }
         $validated = $request->validate([
@@ -105,7 +114,7 @@ class ProfileController extends Controller
 
         // 'phone' => 'required|numeric|unique:users,phone',
         Log::debug('edit-------');
-        $user = $this->userService->updateUser($user);
+        $user = $this->userService->updateUser($this->user);
         return redirect('summary');
     }
 }

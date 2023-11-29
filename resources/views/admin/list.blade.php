@@ -34,6 +34,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Id</th>
+                                    <th scope="col">Role</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Active</th>
@@ -44,10 +45,11 @@
 
                                 @foreach ($users as $user)
                                     <tr>
-                                        <th scope="row">{{ $user['id'] }}</th>
-                                        <td>{{ $user['name'] }}</td>
-                                        <td>{{ $user['email'] }}</td>
-                                        <td>{{ $user['status'] }}</td>
+                                        <th scope="row">{{ $user->id }}</th>
+                                        <td>{{ $user->role->name }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email}}</td>
+                                        <td>{{ $user->status }}</td>
                                         <td><button type="submit" class="btn btn-primary"><a class="dropdown-item" href="{{ route('admin-edit',$user['id']) }}">Edit</a></button></td>
                                     </tr>
                                 @endforeach
