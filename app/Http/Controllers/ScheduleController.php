@@ -142,7 +142,7 @@ class ScheduleController extends Controller
                 
                 if (isset($schedules)) {
                     Log::debug('schedules' . json_encode($schedules));
-                    $www = CarbonImmutable::now()->locale('en_US');
+                    $www = $this->scheduleService->setSunday();
 
                     foreach ($this->days_with_time as $key_day => $day_with_time) {
                         foreach ($day_with_time['times'] as $key_time => $time) {
@@ -309,17 +309,11 @@ class ScheduleController extends Controller
 
     public function parseToCountry($date,$day_param,$time,$time_zone){
 
-      
-        $start =  new Carbon($date->setDaysFromStartOfWeek($day_param)->format('Y-m-d') . $time);
-        $start->tz = $time_zone;
-        
-        $start_utc_country =  new Carbon($start->format('Y-m-d H:i'));
-       
+        Log::debug('date-------------');
+        Log::debug(json_encode($date));
+        $hour_diff = $this->scheduleService->parseHoursToCountry($date->endOfWeek($day_param),$time_zone);
         $utc =  new Carbon($date->setDaysFromStartOfWeek($day_param)->format('Y-m-d') . $time);
-       
-        $diff = $start_utc_country->diffInHours($utc,false);   
-        
-        $utc->addHours($diff);
+        $utc->addHours($hour_diff);
         
         return $utc;
     }
