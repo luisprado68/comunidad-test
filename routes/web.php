@@ -41,7 +41,7 @@ Route::group(['/'], function () {
     Route::get('/welcome', function () {
         return view('welcome');
     });
-    Route::get('login_token', [LoginController::class, 'getToken'])->name('getToken');
+   
     // Route::get('send/', [LoginController::class, 'getToken'])->name('getToken');
 
     Route::get('summary', [SummaryController::class, 'index'])->name('summary');
@@ -57,11 +57,16 @@ Route::group(['/'], function () {
     Route::post('schedule/update', [ScheduleController::class, 'updateScheduler'])->name('schedule-update');
     Route::get('test', [ScheduleController::class, 'test'])->name('test');
     Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
+
     Route::get('login', [LoginController::class, 'login'])->name('login');
+    Route::get('login_token', [LoginController::class, 'getToken'])->name('getToken');
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('admin', [AdminController::class, 'index'])->name('admin-login');
     Route::post('admin-login', [AdminController::class, 'login'])->name('admin-login');
+
+    Route::get('login_test', [LoginController::class, 'login_test'])->name('login-test');
+    Route::post('login-test-login', [LoginController::class, 'login_post'])->name('login-post');
 
     Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
     Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');

@@ -44,7 +44,7 @@
                                                 <div class="col">
                                                     <div class="card-body text-center">
                                                         @if (env('APP_ENV') == 'local')
-                                                            <a class="dropdown-item" href="{{ route('login') }}"><button
+                                                            <a class="dropdown-item" href="{{ route('login-test') }}"><button
                                                                     type="button" class="btn btn-lg twich-button"
                                                                     style=""><i class="fa-brands fa-twitch"></i> Únete
                                                                     con

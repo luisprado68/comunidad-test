@@ -74,17 +74,18 @@ final class ScheduleService
 
     public function setSunday(){
 
-        if(env('APP_ENV') == 'local'){
-            $toDisplay = Carbon::parse('2023-11-19 00:00:00', 'UTC');
+        if(env('APP_ENV') == 'local' || env('APP_ENV') == 'prod' ){
+            $toDisplay = CarbonImmutable::parse('2023-11-19 00:00:00', 'UTC');
             $martinDateFactory = new Factory([
                 'locale' => 'en_US'
             ]);
             $toDisplay->addDays(1);
             $en = $martinDateFactory->make($toDisplay);
-        }else{
-            $en = CarbonImmutable::now()->locale('en_US');
-            $en->addDays(1);
-        }   
+        }
+        //else{
+        //     $en = CarbonImmutable::now()->locale('en_US');
+        //     $en->addDays(1);
+        // }   
         
         return $en;
     }

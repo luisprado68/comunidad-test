@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('time_zone')->nullable();
             $table->integer('hours_buyed')->nullable();
+            $table->string('img_profile')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

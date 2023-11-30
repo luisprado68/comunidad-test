@@ -18,6 +18,7 @@ class MyAgendaController extends Controller
     public $day;
     public $user_model;
     public $agenda;
+    public $user;
     public function __construct(TwichService $twichService, UserService $userService, ScheduleService $scheduleService)
     {
 
@@ -28,13 +29,13 @@ class MyAgendaController extends Controller
     public function index()
     {
         $active = false;
-        if (env('APP_ENV') == 'local') {
-            $this->user_model = $this->userService->getById(env('USER_TEST'));
-        }
+        // if (env('APP_ENV') == 'local') {
+        //     $this->user_model = $this->userService->getById(env('USER_TEST'));
+        // }
         if (session()->exists('user')) {
-            $user = session('user');
-
-            $active = $this->userService->userExistsActive($user['display_name'] . '@gmail.com', $user['id']);
+            $this->user = session('user');
+            $this->user_model = $this->userService->getByIdandTwichId($this->user['id']);
+            $active = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
 
             if ($active) {
 

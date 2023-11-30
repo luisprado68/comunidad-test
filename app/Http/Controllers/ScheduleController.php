@@ -42,31 +42,19 @@ class ScheduleController extends Controller
     }
     public function index()
     {   
-        // dump($ar = CarbonImmutable::now()->locale('ar'));
-
-        if(env('APP_ENV') == 'local'){
-            $user_model = $this->userService->getById(env('USER_TEST'));
-           
-        }
-        //validar que el mismo usuario no carge otra vez en la mismo dia si tiene una hora diaria
-        //si ya cumpkio con la hora del dia deshabilitar el dia
-        if (session()->exists('user') || !empty($user_model )) {
+        
+        if (session()->exists('user') ) {
             $this->user = session('user');
-
-           
-            if(env('APP_ENV') != 'local'){
-                $this->active = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
+            $this->active = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
                
-                if ($this->active) {
-    
-                    session(['status' => $this->active]);
-                } else {
-                    session(['status' => 0]);
-                }
-                $user_model = $this->userService->getByIdandTwichId($this->user['id']);
-            }else{
-                $this->active = true;
+            if ($this->active) {
+
+                session(['status' => $this->active]);
+            } else {
+                session(['status' => 0]);
             }
+            $user_model = $this->userService->getByIdandTwichId($this->user['id']);
+            
             
            
             if (!empty($user_model)) {
@@ -138,7 +126,7 @@ class ScheduleController extends Controller
                 // dump($this->days_with_time);
                 $schedules = $this->scheduleService->getScheduleorThisWeek($user_model);
                 $new_schedules = [];
-                dump($schedules);
+                // dump($schedules);
                 
                 if (isset($schedules)) {
                     Log::debug('schedules' . json_encode($schedules));
@@ -191,12 +179,12 @@ class ScheduleController extends Controller
         Log::debug("updateScheduler");
         $this->user = session('user');
 
-        if(env('APP_ENV') == 'local'){
-            $user_model = $this->userService->getById(env('USER_TEST'));
+        // if(env('APP_ENV') == 'local'){
+        //     $user_model = $this->userService->getById(env('USER_TEST'));
             
-        }else{
+        // }else{
             $user_model = $this->userService->getByIdandTwichId($this->user['id']);
-        }
+        // }
         
         $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
         if (!isset($schedules_by_user)) {

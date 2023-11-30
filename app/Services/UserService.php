@@ -103,10 +103,7 @@ final class UserService
 
     public function userLogin($email, $password)
     {
-        // dump($email);
-        // dump($password);
-        // dd($password);
-        Log::debug('userExists-----');
+     
         $this->setModel();
         if (isset($email) && isset($password)) {
            
@@ -114,7 +111,7 @@ final class UserService
                 ::where('email', $email)
                 ->where('channel',$password)
                 ->first();
-                session(['user-log' => true]);
+               
                 return  $user;
         } else {
             return false;

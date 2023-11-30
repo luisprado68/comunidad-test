@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0">
-
+    {{-- @dd(session('user')['profile_image_url']) --}}
     {{-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0"> --}}
     {{-- <div class="container-fluid"> --}}
     <div class="container-fluid">
@@ -28,31 +28,31 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        @if (env('APP_ENV') == 'local')
+                        {{-- @if (env('APP_ENV') == 'local') --}}
                             {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
                             @if (session()->has('user'))
                                 {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
-                                <img src="{{ session('user') }}" alt="tag" class="profile-img rounded-circle">
+                                <img src="{{ session('user')['profile_image_url']}}" alt="tag" class="profile-img rounded-circle">
                             @else
                                 <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img">
                             @endif
-                        @else
+                        {{-- @else
                             @if (session()->has('user'))
-                                {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
+                            
                                 <img src="{{ session('user')['profile_image_url'] }}" alt="tag"
                                     class="profile-img rounded-circle">
                             @else
                                 <img src="./public/img/logo.webp" alt="tag" class="profile-img">
-                            @endif
+                            @endif --}}
 
-                        @endif
+                        {{-- @endif --}}
 
 
 
                     </a>
                     <ul class="dropdown-menu m-0" aria-labelledby="navbarDropdownMenuLink">
                        
-                        @if (session()->has('user') || env('APP_ENV') == 'local')
+                        @if (session()->has('user'))
                             {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
                             <li><a class="dropdown-item" href="{{ route('profile') }}">Perfil</a></li>
                             <li><a class="dropdown-item" href="{{ route('summary') }}">Resumen</a></li>

@@ -53,7 +53,7 @@ final class TwichService
     public function getToken(Request $request)
     {
         $code = $request->get('code');
-        Session::push('name', 'Bobby');
+        
         $this->url_test = 'http://localhost';
         $this->url = 'https://www.comunidadnc.com/login_token';
         $client = new Client();
@@ -94,7 +94,7 @@ final class TwichService
             // $img = $this->user['profile_image_url'];
             session(['user' => $this->user]);
             return $this->user;
-            $gg = DateTimeZone::ALL;
+           
         }
     }
     // public function all(): Collection

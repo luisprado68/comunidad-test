@@ -347,10 +347,10 @@
                                             Horaria</label>
                                         <select class="form-select" aria-label="Default select example" name="timezone">
                                             @if ($user->time_zone)
-                                                <option selected value="{{ $user->time_zone }}">{{ $user->time_zone }}
+                                                <option  value="{{ $user->time_zone }}">{{ $user->time_zone }}
                                                 </option>
                                             @else
-                                                <option selected>Elige una opción</option>
+                                                <option selected value="{{ null }}">Elige una opción</option>
                                             @endif
                                             @foreach ($timezone as $key => $time)
                                                 <option class="false" data-offset="0" value="{{ $key }}">
@@ -359,6 +359,7 @@
 
                                         </select>
                                         @error('timezone')
+                                        {{'error'}}
                                             <span
                                                 class="text-danger position-absolute">{{ trans('user.create.fields.timezone') }}</span>
                                         @enderror
@@ -367,7 +368,7 @@
 
                                     <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
-                                        <a href="{{ route('summary') }}"><button type="button" class="btn btn-danger">Volver</button></a>
+                                        {{-- <a href="{{ route('summary') }}"><button type="button" class="btn btn-danger">Volver</button></a> --}}
                                     </div>
                                 </div>
                             </form>
