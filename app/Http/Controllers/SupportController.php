@@ -14,6 +14,7 @@ class SupportController extends Controller
     private $twichService;
 
     public $user;
+    public $show_streams = false;
 
     public function __construct(
         UserService $userService,
@@ -24,6 +25,7 @@ class SupportController extends Controller
         
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
+        $this->twichService = $twichService;
     }
     public function index(){
         $active = false;
@@ -41,14 +43,28 @@ class SupportController extends Controller
                 session(['status' => 0]);
             }
             $user_model = $this->userService->getByIdandTwichId($this->user['id']);
+            // dump($user_model);
             $currentStreams = $this->scheduleService->getCurrentStream($user_model);
-            foreach ($currentStreams as $key => $currentStream) {
+            // dump($currentStreams);
+            if(count($currentStreams) > 0){
+                foreach ($currentStreams as $key => $currentStream) {
 
-                $video = $this->twichService->getStream($currentStream->user);
-                array_push($arrayStream,$video);
+                    $video = $this->twichService->getStream($currentStream->user);
+                    if(isset($video) && !empty($video)){
+                        $size['name'] = $video['user_name'];
+                        $size['login'] = $video['user_login'];
+                        $size['img'] = str_replace("%{width}x%{height}", "500x300", $video['thumbnail_url']);
+                        $size['url'] =  $video['url'];
+                        array_push($arrayStream,$size);
+                    }
+                    
+                }
             }
-            dd($arrayStream);
-            return view('support',['streams'=> $currentStreams]);
+            if(count($arrayStream)> 0){
+                $this->show_streams = true;
+            }
+            // dump($arrayStream);
+            return view('support',['streams'=> $arrayStream,'show_streams'=> $this->show_streams]);
         }
         else{
             return redirect('/');

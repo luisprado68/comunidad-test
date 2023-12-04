@@ -8,54 +8,57 @@
             @else
                 @include('status')
                 <div class="col-md-12 pt-1 w-100">
-                    <div class="card bg-secondary">
+                    <div class="card bg-secondary mb-4">
                         <div class="card-body ">
                             <div class="row">
+                                <div class="col-12 mb-4">
+                                    <div class="card bg-success">
+                                        <div class="card-body text-start text-center">
+                                            <h3 class="text-light ">Mis próximos streams</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if ($show_streams)
                                 @foreach ($streams as $streams)
                                 <div class="col-6">
                                     <div class="card banner">
                                         <div class="card-body text-center">
-                                            <h3 class="text-light text-center">Stream Designado</h3>
+                                            <h3 class="text-light text-center">{{$streams['name']}}</h3>
                                             @if (env('APP_ENV') == 'local')
-                                                <img src="{{$streams->user->img_profile}} " alt="tag"
+                                                <img src="{{$streams['img']}} " alt="tag"
                                                     class="w-50 m-1 text-center ">
                                             @else
-                                                <img src=" {{$streams->user->img_profile}}" alt="tag"
+                                                <img src=" {{$streams['img']}}" alt="tag"
                                                     class="w-50 m-1 text-center ">
                                             @endif
+                                            <div class="col">
+                                                <button  class="btn btn-primary"><a href="{{ 'https://www.twitch.tv/' .$streams['login']}}" target="_blank" style="text-decoration: none;color:white">Ver Stream</a></button>
+                                                
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                    
                                 @endforeach
-                                <div class="col-6">
-                                    <div class="card banner">
-                                        <div class="card-body text-center">
-                                            <h3 class="text-light text-center">Stream Designado</h3>
-                                            @if (env('APP_ENV') == 'local')
-                                                <img src="{{ asset('/img/stream.avif') }}" alt="tag"
-                                                    class="w-50 m-1 text-center ">
-                                            @else
-                                                <img src="./public/img/stream.avif" alt="tag"
-                                                    class="w-50 m-1 text-center ">
-                                            @endif
+                                @else
+                                <div class="card-body ">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card ">
+                                                <div class="card-body text-start text-dark">
+                                                    <p>Por ahora no hay streams vuelve en hora puntual, para ver los streams asignados de la hora. 
+
+                                                    </p>
+                                                    <p><b>Siguiente stream:</b> </p>
+                                                </div>
+                                            </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="card banner ">
-                                        <div class="card-body text-center">
-                                            <h3 class="text-light text-center">Stream Designado</h3>
-                                            @if (env('APP_ENV') == 'local')
-                                                <img src="{{ asset('/img/stream.avif') }}" alt="tag"
-                                                    class="w-50 m-1 text-center ">
-                                            @else
-                                                <img src="./public/img/stream.avif" alt="tag"
-                                                    class="w-50 m-1 text-center ">
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
+                                @endif
+                                
+                              
                                 <div class="col-6 text-center">
 
                                 </div>

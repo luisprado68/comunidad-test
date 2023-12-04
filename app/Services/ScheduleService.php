@@ -75,7 +75,7 @@ final class ScheduleService
     public function setSunday(){
 
         if(env('APP_ENV') == 'local' || env('APP_ENV') == 'prod' ){
-            $toDisplay = CarbonImmutable::parse('2023-11-26 00:00:00', 'UTC');
+            $toDisplay = CarbonImmutable::parse('2023-12-03 00:00:00', 'UTC');
             $martinDateFactory = new Factory([
                 'locale' => 'en_US'
             ]);
@@ -158,13 +158,15 @@ final class ScheduleService
         $actual = new Carbon($dates.' ' .$hour.':00:00');
         // dump('actual');
         // dump($actual);
-        $start = $actual->addMinutes(-15);
+        $start = $actual->addMinutes(-10);
         // dump('start');
         $start_string = $start->format('Y-m-d H:i:s');
-        $end = $actual->addMinutes(25);
+        //  dump('start_string');
+        //  dump($start_string);
+        $end = $actual->addMinutes(20);
         $end_string = $end->format('Y-m-d H:i:s');
         // dump('end');
-        // dump($end);
+        // dump($end_string);
         // dump($user);
         // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
