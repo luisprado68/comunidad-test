@@ -83,6 +83,7 @@ class ScheduleController extends Controller
                     11 => ['hour' => '11:00', 'duplicated' => false, 'disabled' => false],
                     12 => ['hour' => '12:00', 'duplicated' => false, 'disabled' => false],
                     13 => ['hour' => '13:00', 'duplicated' => false, 'disabled' => false],
+                    14 => ['hour' => '14:00', 'duplicated' => false, 'disabled' => false],
                     15 => ['hour' => '15:00', 'duplicated' => false, 'disabled' => false],
                     16 => ['hour' => '16:00', 'duplicated' => false, 'disabled' => false],
                     17 => ['hour' => '17:00', 'duplicated' => false, 'disabled' => false],

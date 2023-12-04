@@ -64,7 +64,7 @@ final class TwichService
         $options = [
             'form_params' => [
                 'client_id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
-                'client_secret' => 'vpvr7hq1idvfj91j04327lbji513cp',
+                'client_secret' => 'b6jng7psl6bcqztt3huqlj9uwj6txy',
                 'grant_type' => 'authorization_code',
                 'redirect_uri' => $this->url,
                 'code' =>  $code,
@@ -96,6 +96,28 @@ final class TwichService
             return $this->user;
            
         }
+    }
+
+    public function getStream($user){
+        // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
+        if (!empty(session('access_token'))) {
+            $client = new Client();
+            $headers = [
+                'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
+                'Authorization' => 'Bearer ' . session('access_token'),
+                'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
+            ];
+            $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/videos?user_id='.$user->twich_id, $headers);
+            $res = $client->sendAsync($request)->wait();
+            $result = json_decode($res->getBody(), true);
+            $video= $result['data'][0];
+           
+            // $img = $this->user['profile_image_url'];
+            // session(['video' => $video]);
+            return $video;
+           
+        }
+
     }
     // public function all(): Collection
     // {

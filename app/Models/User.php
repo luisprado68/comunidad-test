@@ -28,6 +28,7 @@ class User extends Authenticatable
         'time_zone',
         'status',
         'hours_buyed',
+        'img_profile',
         'password',
     ];
 

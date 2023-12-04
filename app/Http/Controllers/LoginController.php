@@ -73,7 +73,13 @@ class LoginController extends Controller
         $user = $this->userService->userLogin($credentials['email'], $credentials['password']);
         $user_response['display_name'] = $user->channel;
         $user_response['id'] = $user->twich_id;
-        $user_response['profile_image_url'] = 'https://static-cdn.jtvnw.net/jtv_user_pictures/6471351b-ea90-4cd2-828b-406a7dea08e1-profile_image-300x300.png';
+        if(isset($user->img_profile) && !empty($user->img_profile)){
+            $user_response['profile_image_url'] = $user->img_profile;
+        }else{
+            $user_response['profile_image_url'] = 'https://static-cdn.jtvnw.net/jtv_user_pictures/6471351b-ea90-4cd2-828b-406a7dea08e1-profile_image-300x300.png';
+        }
+        
+        // $user_response['profile_image_url'] = 'https://static-cdn.jtvnw.net/jtv_user_pictures/6471351b-ea90-4cd2-828b-406a7dea08e1-profile_image-300x300.png';
         // dd($user);
         if ($user) {
             session(['user' => $user_response]);

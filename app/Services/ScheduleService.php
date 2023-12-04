@@ -75,7 +75,7 @@ final class ScheduleService
     public function setSunday(){
 
         if(env('APP_ENV') == 'local' || env('APP_ENV') == 'prod' ){
-            $toDisplay = CarbonImmutable::parse('2023-11-19 00:00:00', 'UTC');
+            $toDisplay = CarbonImmutable::parse('2023-11-26 00:00:00', 'UTC');
             $martinDateFactory = new Factory([
                 'locale' => 'en_US'
             ]);
@@ -144,6 +144,34 @@ final class ScheduleService
         }
     }
 
+    public function getCurrentStream($user){
+
+        $this->setModel();
+        $date = Carbon::now();
+        // $date->tz = $user->time_zone;
+        $dates = $date->format('Y-m-d');
+        $hour = $date->format('H');
+
+        // $test = new Carbon($dates .$hour);
+        // dump($dates);
+        // dump($hour);
+        $actual = new Carbon($dates.' ' .$hour.':00:00');
+        // dump('actual');
+        // dump($actual);
+        $start = $actual->addMinutes(-15);
+        // dump('start');
+        $start_string = $start->format('Y-m-d H:i:s');
+        $end = $actual->addMinutes(25);
+        $end_string = $end->format('Y-m-d H:i:s');
+        // dump('end');
+        // dump($end);
+        // dump($user);
+        // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
+        $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
+
+        // dump($schedule);
+        return $currentStreams;
+    }
     public function parseHoursToCountry($end,$time_zone = null){
         // dump($time_zone);
         // dump($end);
@@ -185,7 +213,7 @@ final class ScheduleService
         // dump('end');
         // dump($end);
   
-        $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->get();
+        $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->orderBy('start', 'ASC')->get();
         // dump('hours');
         // dump($hours);
         return $dates;

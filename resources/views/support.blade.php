@@ -11,6 +11,23 @@
                     <div class="card bg-secondary">
                         <div class="card-body ">
                             <div class="row">
+                                @foreach ($streams as $streams)
+                                <div class="col-6">
+                                    <div class="card banner">
+                                        <div class="card-body text-center">
+                                            <h3 class="text-light text-center">Stream Designado</h3>
+                                            @if (env('APP_ENV') == 'local')
+                                                <img src="{{$streams->user->img_profile}} " alt="tag"
+                                                    class="w-50 m-1 text-center ">
+                                            @else
+                                                <img src=" {{$streams->user->img_profile}}" alt="tag"
+                                                    class="w-50 m-1 text-center ">
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                   
+                                @endforeach
                                 <div class="col-6">
                                     <div class="card banner">
                                         <div class="card-body text-center">

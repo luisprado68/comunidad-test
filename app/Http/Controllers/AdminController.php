@@ -47,7 +47,10 @@ class AdminController extends Controller
         // dd($credentials);
         $user = $this->twichService->getUser();
         $exist = $this->userService->userLogin($credentials['email'], $credentials['password']);
-        if ($exist) {
+
+       
+        if (!empty($exist)){
+            // dd($exist);
             Log::debug('exist-----');
             return redirect('admin/list');
         } else {
