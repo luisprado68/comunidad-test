@@ -58,6 +58,7 @@ class LoginController extends Controller
         session()->forget('points_day');
         session()->forget('points_week');
         session()->forget('status');
+        session()->forget('neo_coins');
         return redirect('/');
     }
 
@@ -88,6 +89,8 @@ class LoginController extends Controller
             session(['user' => $user_response]);
             session(['points_day' => $user->score->points_day ?? 0]);
             session(['points_week' => $user->score->points_week ?? 0]);
+            session(['neo_coins' => $user->score->neo_coins ?? 0]);
+            
             Log::debug('exist-----');
             if(isset($user->time_zone) && !empty($user->time_zone)){
                 return redirect('summary');

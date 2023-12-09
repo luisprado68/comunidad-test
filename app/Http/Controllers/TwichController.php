@@ -62,7 +62,7 @@ class TwichController extends Controller
             $this->user_model = $this->userService->getByIdandTwichId($this->user['id']);
 
             $users = $this->twichService->getUserChatters($this->user_model);
-            $users = $data;
+            // $users = $data;
             if (count($users) > 0) {
 
                 foreach ($users as $key => $item) {
@@ -90,6 +90,7 @@ class TwichController extends Controller
                                
                                 session(['points_day' => $score->points_day ?? 0]);
                                 session(['points_week' => $score->points_week ?? 0]);
+                                session(['neo_coins' => $score->neo_coins ?? 0]);
                             }
                            
                             // dump($score);
@@ -104,6 +105,7 @@ class TwichController extends Controller
                             $created = $this->scoreService->create($score);
                             session(['points_day' => $created->points_day ?? 0]);
                             session(['points_week' => $created->points_week ?? 0]);
+                            session(['neo_coins' => $created->neo_coins ?? 0]);
                             // dump($score);
                         }
                     

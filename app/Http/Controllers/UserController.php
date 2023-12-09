@@ -58,6 +58,7 @@ class UserController extends Controller
         session()->forget('user-log');
         session()->forget('points_day');
         session()->forget('points_week');
+        session()->forget('neo_coins');
         session()->forget('status');
         return redirect('/');
     }

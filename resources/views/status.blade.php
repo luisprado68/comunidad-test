@@ -31,7 +31,7 @@
                         <div class="input-group-prepend bg-dark">
                             <span class="input-group-text bg-primary text-light" id="basic-addon1">NeoCoins</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="0" aria-label="0"
+                        <input type="text" class="form-control" placeholder="{{session('neo_coins')}}" aria-label="0"
                             aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
