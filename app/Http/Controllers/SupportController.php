@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ScheduleService;
 use App\Services\TwichService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller
@@ -29,6 +30,7 @@ class SupportController extends Controller
     }
     public function index(){
         $active = false;
+        $date_string = ' --';
         $arrayStream = [];
         if(session()->exists('user')){
             $this->user = session('user');
@@ -45,7 +47,17 @@ class SupportController extends Controller
             $user_model = $this->userService->getByIdandTwichId($this->user['id']);
             // dump($user_model);
             $currentStreams = $this->scheduleService->getCurrentStream($user_model);
+            $nextHour = $this->scheduleService->getNextStream($user_model);
+            if(!empty($nextHour) && isset($nextHour)){
+                $next =  new Carbon($nextHour->start);
+            $day = $next->format('l');
+            $date = $next->format('d-m ');
+            $hour = $next->format('H:i');
+            // dump($next->format('l'));
             // dump($currentStreams);
+            $date_string = ' '.trans('user.create.'.strtolower($day)).' ' . $date .'a las '. $hour;
+            }
+            
             if(count($currentStreams) > 0){
                 foreach ($currentStreams as $key => $currentStream) {
 
@@ -64,7 +76,7 @@ class SupportController extends Controller
                 $this->show_streams = true;
             }
             // dump($arrayStream);
-            return view('support',['streams'=> $arrayStream,'show_streams'=> $this->show_streams]);
+            return view('support',['streams'=> $arrayStream,'show_streams'=> $this->show_streams,'date_string' => $date_string]);
         }
         else{
             return redirect('/');

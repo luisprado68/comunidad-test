@@ -75,6 +75,11 @@ final class UserService
         }
 
         if ($user) {
+
+            session(['points_day' => $user->score->points_day ?? 0]);
+            session(['points_week' => $user->score->points_week ?? 0]);
+            $user->token = session('access_token') ?? '';
+            $user->update();
             return $user->id;
         } else {
             return false;
@@ -167,6 +172,9 @@ final class UserService
             $user->status = $userArray['status'] ?? 0;
             $user->country_id = $userArray['country_id'] ?? 1;
             $user->save();
+
+            $user->token = session('access_token') ?? '';
+            $user->update();
             return $user->id;
         } catch (Error $e) {
             return false;

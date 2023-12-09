@@ -104,8 +104,11 @@ class AdminController extends Controller
     }
     public function logout()
     {
-        session()->forget('user');
+        // session()->forget('user');
         session()->forget('user-log');
+        // session()->forget('points_day');
+        // session()->forget('points_week');
+        // session()->forget('status');
         return redirect('/');
     }
 }

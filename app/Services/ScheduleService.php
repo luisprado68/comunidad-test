@@ -162,6 +162,48 @@ final class ScheduleService
         // dump('start');
         $start_string = $start->format('Y-m-d H:i:s');
         //  dump('start_string');
+        // dump($start_string);
+        $end = $actual->addMinutes(20);
+        $end_string = $end->format('Y-m-d H:i:s');
+        $minutes = $end->format('i');
+
+        $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
+
+        if($minutes <= Carbon::now()->format('i')){
+            // dump(Carbon::now()->format('i'));
+            $currentStreams = collect([]);
+        }
+        
+        // dump('minutes');
+        // dump($minutes);
+        //  dump($end_string);
+        // dump($user);
+        // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
+       
+
+        // dump($currentStreams);
+        return $currentStreams;
+    }
+
+    public function getNextStream($user){
+
+        $this->setModel();
+        $date = Carbon::now();
+        $date->addHour(1);
+        // $date->tz = $user->time_zone;
+        $dates = $date->format('Y-m-d');
+        $hour = $date->format('H');
+
+        // $test = new Carbon($dates .$hour);
+        // dump($dates);
+        // dump($hour);
+        $actual = new Carbon($dates.' ' .$hour.':00:00');
+        // dump('actual');
+        // dump($actual);
+        $start = $actual->addMinutes(-10);
+        // dump('start');
+        $start_string = $start->format('Y-m-d H:i:s');
+        //  dump('start_string');
         //  dump($start_string);
         $end = $actual->addMinutes(20);
         $end_string = $end->format('Y-m-d H:i:s');
@@ -169,11 +211,12 @@ final class ScheduleService
         // dump($end_string);
         // dump($user);
         // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
-        $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
+        $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->first();
 
         // dump($schedule);
         return $currentStreams;
     }
+
     public function parseHoursToCountry($end,$time_zone = null){
         // dump($time_zone);
         // dump($end);

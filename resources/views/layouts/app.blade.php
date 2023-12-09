@@ -53,11 +53,13 @@
         <script src="{{ asset('/js/mobiscroll.javascript.min.js') }}"></script>
         <script src="{{ asset('/js/custom.js') }}"></script>
         @stack('schedule')
+        @stack('chatters')
     @else
        
         <script src="./public/js/mobiscroll.javascript.min.js"></script>
         <script src="./public/js/custom.js"></script>
         @stack('schedule')
+        @stack('chatters')
     @endif
    
 </body>

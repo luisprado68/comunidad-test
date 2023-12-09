@@ -56,6 +56,9 @@ class UserController extends Controller
     {
         session()->forget('user');
         session()->forget('user-log');
+        session()->forget('points_day');
+        session()->forget('points_week');
+        session()->forget('status');
         return redirect('/');
     }
     public function update(){

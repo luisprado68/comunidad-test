@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Score extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -18,19 +18,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'twich_id',
-        'channel',
-        'status',
-        'email',
-        'area',
-        'phone',
-        'time_zone',
-        'status',
-        'hours_buyed',
-        'img_profile',
-        'password',
-        'token',
+
+        'user_id',
+        'points_day',
+        'points_week',
+        'neo_coins',
+        'users_data',
+        'count_users',
+     
     ];
 
     /**
@@ -53,24 +48,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function country()
+    
+    public function user()
     {
-        return $this->belongsTo(Country::class);
-    }
-    public function schedules()
-    {
-        return $this->belongsTo(Schedule::class);
-    }
-    public function range()
-    {
-        return $this->belongsTo(Range::class);
-    }
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-    public function score()
-    {
-        return $this->hasOne(Score::class);
+        return $this->belongsTo(User::class);
     }
 }

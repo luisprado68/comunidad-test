@@ -55,6 +55,9 @@ class LoginController extends Controller
     {
         session()->forget('user');
         session()->forget('user-log');
+        session()->forget('points_day');
+        session()->forget('points_week');
+        session()->forget('status');
         return redirect('/');
     }
 
@@ -83,6 +86,8 @@ class LoginController extends Controller
         // dd($user);
         if ($user) {
             session(['user' => $user_response]);
+            session(['points_day' => $user->score->points_day ?? 0]);
+            session(['points_week' => $user->score->points_week ?? 0]);
             Log::debug('exist-----');
             if(isset($user->time_zone) && !empty($user->time_zone)){
                 return redirect('summary');

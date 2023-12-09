@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\TwichController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,7 @@ Route::group(['/'], function () {
         return view('welcome');
     });
    
+    Route::get('chatters', [TwichController::class, 'getChatters'])->name('get-chatters');
     // Route::get('send/', [LoginController::class, 'getToken'])->name('getToken');
 
     Route::get('summary', [SummaryController::class, 'index'])->name('summary');

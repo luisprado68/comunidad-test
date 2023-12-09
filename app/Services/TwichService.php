@@ -44,8 +44,8 @@ final class TwichService
         $this->url = 'https://www.comunidadnc.com/login_token';
         $this->client_id = 'vjl5wxupylcsiaq7kp5bjou29solwc';
         $this->force_verify = 'true';
-        $this->complete_url = $this->url_twitch . '?response_type=' . $this->code . '&client_id=' . $this->client_id . '&redirect_uri=' . $this->url . '&scope=channel%3Amanage%3Apolls+channel%3Aread%3Apolls&state=c3ab8aa609ea11e793ae92361f002671';
-        $this->test_url = $this->url_twitch . '?response_type=' . $this->code_test . '&client_id=' . $this->client_id . '&force_verify=' . $this->force_verify . '&redirect_uri=' . $this->url . '&scope=channel%3Amanage%3Apolls+channel%3Aread%3Apolls&state=c3ab8aa609ea11e793ae92361f002671';
+        $this->complete_url = $this->url_twitch . '?response_type=' . $this->code . '&client_id=' . $this->client_id . '&redirect_uri=' . $this->url . '&scope=channel%3Amanage%3Amoderators+moderator%3Aread%3Achatters+user%3Aread%3Afollows+channel%3Aread%3Apolls+user%3Aread%3Aemail+chat%3Aedit+chat%3Aread&state=c3ab8aa609ea11e793ae92361f002671';
+        $this->test_url = $this->url_twitch . '?response_type=' . $this->code_test . '&client_id=' . $this->client_id . '&force_verify=' . $this->force_verify . '&redirect_uri=' . $this->url . '&scope=channel%3Amanage%3Amoderators+moderator%3Aread%3Achatters+user%3Aread%3Afollows+channel%3Aread%3Apolls+user%3Aread%3Aemail+chat%3Aedit+chat%3Aread&state=c3ab8aa609ea11e793ae92361f002671';
         return $this->test_url;
     }
     
@@ -75,7 +75,7 @@ final class TwichService
         $result = json_decode($res->getBody(),true);
         // Log::debug("json");
         session(['access_token' => $result['access_token']]);
-
+        
     }
     public function getUser(){
 
@@ -115,6 +115,28 @@ final class TwichService
             // $img = $this->user['profile_image_url'];
             // session(['video' => $video]);
             return $video;
+           
+        }
+
+    }
+
+    public function getUserChatters($user){
+        // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
+        if (!empty(session('access_token'))) {
+            $client = new Client();
+            $headers = [
+                'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
+                'Authorization' => 'Bearer ' . session('access_token'),
+                'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
+            ];
+            $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/chat/chatters?broadcaster_id='.$user->twich_id.'&moderator_id='.$user->twich_id, $headers);
+            $res = $client->sendAsync($request)->wait();
+            $result = json_decode($res->getBody(), true);
+            $users= $result['data'];
+           
+            // $img = $this->user['profile_image_url'];
+            // session(['video' => $video]);
+            return $users;
            
         }
 

@@ -59,7 +59,6 @@ class MyAgendaController extends Controller
 
     public function getDays()
     {
-
         $agenda = [];
         if(count( $this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::MONDAY))) > 0){
             $agenda['monday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::MONDAY));
@@ -80,8 +79,24 @@ class MyAgendaController extends Controller
             $agenda['saturday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayEndByUser($this->user_model, Carbon::SATURDAY));
         }
         
-        // dd($agenda);
-
+        
+        // dump($hour_diff);
+        // dump($agenda);
+        $current_time = Carbon::now();
+        $current_time->tz = $this->user_model->time_zone;
+        foreach ($agenda as $key => $day) {
+            // dump($current_time);
+            // dump($key);
+            // dump(strtolower($current_time->format('l')));
+            
+            if(strtolower($current_time->format('l')) == $key){
+                // unset($agenda[$key]);
+                break;
+            }else{
+                unset($agenda[$key]);
+            }
+        }
+       
         return $agenda;
     }
     public function getDateAndTime($days)

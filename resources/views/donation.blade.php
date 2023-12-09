@@ -34,7 +34,8 @@
                                     <p>Si tu economía personal, no te permite apoyarnos, no te preocupes, tu presencia y
                                         actividad en la comunidad ya nos ayuda muchísimo</p>
                                     <div class="text-center">
-                                        <button type="button" class="btn btn-warning">Donar</button>
+                                        
+                                        <button type="button" class="btn btn-warning"><a href="https://liberapay.com/NeoCommunty/donate"  target="_blank" style="text-decoration: none;color:black">Donar</a></button>
                                     </div>
 
                                 </div>

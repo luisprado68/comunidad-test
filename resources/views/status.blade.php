@@ -16,12 +16,12 @@
                         <div class="col">
                             <label class="text-light" for="">Puntaje Día</label>
                             <input class="form-control form-control-lg bg-warning text-center" type="text"
-                                placeholder="0/10" disabled>
+                                placeholder="{{session('points_day'). '/10'}}" disabled>
                         </div>
                         <div class="col">
                             <label class="text-light" for="">Puntaje Semanal</label>
                             <input class="form-control form-control-lg bg-warning text-center" type="text"
-                                placeholder="0/60" disabled>
+                                placeholder="{{session('points_week'). '/60'}}" disabled>
                         </div>
                     </div>
 

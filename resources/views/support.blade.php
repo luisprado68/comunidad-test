@@ -49,7 +49,7 @@
                                                     <p>Por ahora no hay streams vuelve en hora puntual, para ver los streams asignados de la hora. 
 
                                                     </p>
-                                                    <p><b>Siguiente stream:</b> </p>
+                                                    <p><b>Siguiente stream:</b>{{$date_string }}</p>
                                                 </div>
                                             </div>
                                         </div>
