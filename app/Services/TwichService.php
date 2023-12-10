@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\User;
@@ -14,7 +15,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-final class TwichService 
+final class TwichService
 {
     public $code;
     public $code_test;
@@ -48,12 +49,12 @@ final class TwichService
         $this->test_url = $this->url_twitch . '?response_type=' . $this->code_test . '&client_id=' . $this->client_id . '&force_verify=' . $this->force_verify . '&redirect_uri=' . $this->url . '&scope=channel%3Amanage%3Amoderators+moderator%3Aread%3Achatters+user%3Aread%3Afollows+channel%3Aread%3Apolls+user%3Aread%3Aemail+chat%3Aedit+chat%3Aread&state=c3ab8aa609ea11e793ae92361f002671';
         return $this->test_url;
     }
-    
+
 
     public function getToken(Request $request)
     {
         $code = $request->get('code');
-        
+
         $this->url_test = 'http://localhost';
         $this->url = 'https://www.comunidadnc.com/login_token';
         $client = new Client();
@@ -72,33 +73,68 @@ final class TwichService
         ];
         $request = new Psr7Request('POST', 'https://id.twitch.tv/oauth2/token', $headers);
         $res = $client->sendAsync($request, $options)->wait();
-        $result = json_decode($res->getBody(),true);
+        $result = json_decode($res->getBody(), true);
         // Log::debug("json");
         session(['access_token' => $result['access_token']]);
-        
     }
-    public function getUser(){
+    public function getUser()
+    {
 
-        if (!empty(session('access_token'))) {
-            $client = new Client();
-            $headers = [
-                'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
-                'Authorization' => 'Bearer ' . session('access_token'),
-                'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
-            ];
-            $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/users', $headers);
-            $res = $client->sendAsync($request)->wait();
-            $result = json_decode($res->getBody(), true);
-            $this->user = $result['data'][0];
-           
-            // $img = $this->user['profile_image_url'];
-            session(['user' => $this->user]);
-            return $this->user;
-           
+        try {
+            if (!empty(session('access_token'))) {
+                $client = new Client();
+                $headers = [
+                    'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
+                    'Authorization' => 'Bearer ' . session('access_token'),
+                    'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
+                ];
+                $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/users', $headers);
+                $res = $client->sendAsync($request)->wait();
+                $result = json_decode($res->getBody(), true);
+                $this->user = $result['data'][0];
+
+                // $img = $this->user['profile_image_url'];
+                session(['user' => $this->user]);
+                return $this->user;
+            }
+        } catch (\Exception $e) {
+            session()->forget('user');
+            return null;
+            Log::debug($e->getMessage());
         }
     }
 
-    public function getStream($user){
+    public function getStream($user)
+    {
+        // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
+        try {
+
+            if (!empty(session('access_token'))) {
+                $client = new Client();
+                $headers = [
+                    'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
+                    'Authorization' => 'Bearer ' . session('access_token'),
+                    'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
+                ];
+                $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/videos?user_id=' . $user->twich_id, $headers);
+                $res = $client->sendAsync($request)->wait();
+                $result = json_decode($res->getBody(), true);
+                $video = $result['data'][0];
+
+                // $img = $this->user['profile_image_url'];
+                // session(['video' => $video]);
+                return $video;
+            }
+        } catch (\Exception $e) {
+            
+            return null;
+            Log::debug($e->getMessage());
+        }
+    }
+
+    public function getUserChatters($user)
+    {
+        try {
         // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
         if (!empty(session('access_token'))) {
             $client = new Client();
@@ -107,46 +143,27 @@ final class TwichService
                 'Authorization' => 'Bearer ' . session('access_token'),
                 'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
             ];
-            $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/videos?user_id='.$user->twich_id, $headers);
+            $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/chat/chatters?broadcaster_id=' . $user->twich_id . '&moderator_id=' . $user->twich_id, $headers);
             $res = $client->sendAsync($request)->wait();
             $result = json_decode($res->getBody(), true);
-            $video= $result['data'][0];
-           
-            // $img = $this->user['profile_image_url'];
-            // session(['video' => $video]);
-            return $video;
-           
-        }
+            $users = $result['data'];
 
-    }
-
-    public function getUserChatters($user){
-        // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
-        if (!empty(session('access_token'))) {
-            $client = new Client();
-            $headers = [
-                'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
-                'Authorization' => 'Bearer ' . session('access_token'),
-                'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
-            ];
-            $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/chat/chatters?broadcaster_id='.$user->twich_id.'&moderator_id='.$user->twich_id, $headers);
-            $res = $client->sendAsync($request)->wait();
-            $result = json_decode($res->getBody(), true);
-            $users= $result['data'];
-           
             // $img = $this->user['profile_image_url'];
             // session(['video' => $video]);
             return $users;
-           
         }
-
+    } catch (\Exception $e) {
+            
+        return null;
+        Log::debug($e->getMessage());
+    }
     }
     // public function all(): Collection
     // {
     //     // return $this->model::all();
     // }
 
-   
+
     // public function getById($billingId)
     // {
     //     return $this->model::where('id', $billingId)
@@ -189,9 +206,9 @@ final class TwichService
     //     }
     // }
 
-    
 
-    
+
+
 
     // public function addDaytoDate($date)
     // {

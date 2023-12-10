@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container bg-primary">
+    <div class="container">
         <div class="row">
             @if (session()->has('user') && session('status') == 0)
                 @include('link')

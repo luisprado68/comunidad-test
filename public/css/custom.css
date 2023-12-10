@@ -1,4 +1,11 @@
 
+body{
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-image: url("../img/fondo.jpg");
+  background-size: cover;
+}
 .nav-item {
     font-size:18px;
     text-transform:uppercase;

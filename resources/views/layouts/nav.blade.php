@@ -88,30 +88,6 @@
     <script>
         console.log('test');
 
-        var now = new Date();
-      
-        console.log('manual');
-        var manual = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0, 0);
-        console.log(manual);
-
-        console.log('manual_two');
-        var manual_two = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 15, 0, 0);
-        console.log(manual_two);
-
-
-
-        if (now > manual && now <= manual_two) {
-
-        }
-        var xmas95 = new Date("2023-12-08T18:16:00");
-        console.log('xmas95');
-        console.log(xmas95);
-
-        var dos = xmas95.getTime();
-
-        console.log('dos');
-        console.log(dos);
-        let chattersObteined = false;
 
         const id = setInterval(() => {
 
@@ -121,7 +97,7 @@
             var minute = current.getMinutes();
             console.log(hour + ':' + minute);
 
-            if (minute >= 50 && minute <= 52) {
+            if (minute >= 10 && minute <= 41) {
                 console.log('entro');
                 clearInterval(id);
                

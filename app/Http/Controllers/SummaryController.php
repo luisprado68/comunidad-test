@@ -16,6 +16,7 @@ class SummaryController extends Controller
     public function index(){
 
         $active = false;
+        // dd(session('user'));
         if(session()->exists('user')){
             $user = session('user');
             

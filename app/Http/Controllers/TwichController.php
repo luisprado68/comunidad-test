@@ -88,9 +88,9 @@ class TwichController extends Controller
                                 $score->count_users = count($users);
                                 $score->update();
                                
-                                session(['points_day' => $score->points_day ?? 0]);
-                                session(['points_week' => $score->points_week ?? 0]);
-                                session(['neo_coins' => $score->neo_coins ?? 0]);
+                                session(['points_day' => $score->points_day ?? '0']);
+                                session(['points_week' => $score->points_week ?? '0']);
+                                session(['neo_coins' => $score->neo_coins ?? '0']);
                             }
                            
                             // dump($score);
@@ -103,9 +103,9 @@ class TwichController extends Controller
                             $score['count_users'] = count($users);
                             
                             $created = $this->scoreService->create($score);
-                            session(['points_day' => $created->points_day ?? 0]);
-                            session(['points_week' => $created->points_week ?? 0]);
-                            session(['neo_coins' => $created->neo_coins ?? 0]);
+                            session(['points_day' => $created->points_day ?? '0']);
+                            session(['points_week' => $created->points_week ?? '0']);
+                            session(['neo_coins' => $created->neo_coins ?? '0']);
                             // dump($score);
                         }
                     

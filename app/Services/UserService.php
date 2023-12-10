@@ -76,9 +76,9 @@ final class UserService
 
         if ($user) {
 
-            session(['points_day' => $user->score->points_day ?? 0]);
-            session(['points_week' => $user->score->points_week ?? 0]);
-            session(['neo_coins' => $user->score->neo_coins ?? 0]);
+            session(['points_day' => $user->score->points_day ?? '0']);
+            session(['points_week' => $user->score->points_week ?? '0']);
+            session(['neo_coins' => $user->score->neo_coins ?? '0']);
             $user->token = session('access_token') ?? '';
             $user->update();
             return $user->id;
