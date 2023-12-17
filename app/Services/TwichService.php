@@ -104,7 +104,7 @@ final class TwichService
         }
     }
 
-    public function getStream($user)
+    public function getVideo($user)
     {
         // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
         try {
@@ -117,6 +117,34 @@ final class TwichService
                     'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
                 ];
                 $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/videos?user_id=' . $user->twich_id, $headers);
+                $res = $client->sendAsync($request)->wait();
+                $result = json_decode($res->getBody(), true);
+                $video = $result['data'][0];
+
+                // $img = $this->user['profile_image_url'];
+                // session(['video' => $video]);
+                return $video;
+            }
+        } catch (\Exception $e) {
+            
+            return null;
+            Log::debug($e->getMessage());
+        }
+    }
+
+    public function getStream($user)
+    {
+        // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
+        try {
+
+            if (!empty(session('access_token'))) {
+                $client = new Client();
+                $headers = [
+                    'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
+                    'Authorization' => 'Bearer ' . session('access_token'),
+                    'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
+                ];
+                $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/streams?user_login=' . $user->channel, $headers);
                 $res = $client->sendAsync($request)->wait();
                 $result = json_decode($res->getBody(), true);
                 $video = $result['data'][0];

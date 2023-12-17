@@ -23,6 +23,7 @@ class Score extends Authenticatable
         'points_day',
         'points_week',
         'neo_coins',
+        'points_support',
         'users_data',
         'count_users',
      

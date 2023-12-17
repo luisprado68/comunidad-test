@@ -6,7 +6,7 @@
             @if (session()->has('user') && session('status') == 0)
                 @include('link')
             @else
-                @include('status')
+                @include('status',['user' => $user])
                 <div class="col-md-12 pt-1 w-100">
                     <div class="card bg-secondary mb-4">
                         <div class="card-body ">
@@ -26,10 +26,10 @@
                                             <h3 class="text-light text-center">{{$streams['name']}}</h3>
                                             @if (env('APP_ENV') == 'local')
                                                 <img src="{{$streams['img']}} " alt="tag"
-                                                    class="w-50 m-1 text-center ">
+                                                    class="w-50  m-1 text-center " style="height: 200px" >
                                             @else
                                                 <img src=" {{$streams['img']}}" alt="tag"
-                                                    class="w-50 m-1 text-center ">
+                                                    class="w-50 m-1 text-center " style="height: 200px">
                                             @endif
                                             <div class="col">
                                                 <button  class="btn btn-primary"><a href="{{ 'https://www.twitch.tv/' .$streams['login']}}" target="_blank" style="text-decoration: none;color:white">Ver Stream</a></button>

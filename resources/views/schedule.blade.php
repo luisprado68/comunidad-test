@@ -6,7 +6,7 @@
             @if (session()->has('user') && session('status') == 0)
                 @include('link')
             @else
-                @include('status')
+                @include('status',['user' => $user])
                 <div class="col-md-12 pt-1 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">

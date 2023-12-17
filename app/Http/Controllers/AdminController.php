@@ -83,7 +83,7 @@ class AdminController extends Controller
         $user = $request->all();
         $user = $this->userService->update($user);
 
-        $users = $this->userService->getUsers();
+        $users = $this->userService->getUsersModel();
         // dd($users);
         return view('admin.list', ['users' => $users]);
     }

@@ -33,13 +33,14 @@ class ProfileController extends Controller
         if(session()->exists('user')){
             
             $this->user = session('user');
-            $user_model = $this->userService->getByIdandTwichId($this->user['id']);
-            $active = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
+          
+            $user_model = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
             
-           
-            if($active){
+            // @dd($active);
+            if($user_model->status){
                
-                session(['status' =>$active]);
+                session(['status' => $user_model->status]);
+            
             }
             else{
                 session(['status' => 0]);

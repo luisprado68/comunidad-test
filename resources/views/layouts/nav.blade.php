@@ -1,4 +1,31 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0">
+    @if (session()->has('user'))
+        @if (env('APP_ENV') == 'local')
+            <img src="{{asset('/img/logo_co.png')}}" alt="tag"
+            class="logo rounded-circle">
+        @else
+            <img src="{{'./public/img/logo_co.png'}}" alt="tag"
+            class="logo rounded-circle">
+        @endif
+        
+    @else
+        @if (env('APP_ENV') == 'local')
+            <img src="{{asset('/img/logo_co.png')}}" alt="tag"
+        class="logo rounded-circle">
+        @else
+            <img src="{{'./public/img/logo_co.png'}}" alt="tag"
+            class="logo rounded-circle">
+        @endif
+      
+    @endif
+        @if (env('APP_ENV') == 'local')
+            <img src="{{asset('/img/banner.png')}}" alt="tag"
+            class="banner-fondo mr-4">
+        @else
+        <img src="{{'./public/img/banner.png'}}" alt="tag"
+        class="banner-fondo mr-4">
+        @endif
+    
     {{-- @dd(session('user')['profile_image_url']) --}}
     {{-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0"> --}}
     {{-- <div class="container-fluid"> --}}
@@ -97,7 +124,7 @@
             var minute = current.getMinutes();
             console.log(hour + ':' + minute);
 
-            if (minute >= 10 && minute <= 41) {
+            if (minute >= 50 && minute <= 55) {
                 console.log('entro');
                 clearInterval(id);
                
@@ -115,9 +142,9 @@
                             console.log('okkkk');
                             console.log(response);
                             window.location.href = "{{ route('my_agendas') }}";
-                        } else {
+                        } else if(response.status === 'error'){
                             console.log('error');
-                            window.alert(response.message);
+                            // window.alert(response.message);
                             // window.location.href = "{{ route('schedule') }}";
                             location.reload()
                         }

@@ -35,11 +35,11 @@ class SupportController extends Controller
         if(session()->exists('user')){
             $this->user = session('user');
             
-            $active = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
+            $userModel = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
           
-            if($active){
+            if($userModel->status){
                
-                session(['status' =>$active]);
+                session(['status' => $userModel->status]);
             }
             else{
                 session(['status' => 0]);
@@ -50,23 +50,37 @@ class SupportController extends Controller
             $nextHour = $this->scheduleService->getNextStream($user_model);
             if(!empty($nextHour) && isset($nextHour)){
                 $next =  new Carbon($nextHour->start);
+                $next->tz= $user_model->time_zone;
             $day = $next->format('l');
             $date = $next->format('d-m ');
             $hour = $next->format('H:i');
             // dump($next->format('l'));
             // dump($currentStreams);
             $date_string = ' '.trans('user.create.'.strtolower($day)).' ' . $date .'a las '. $hour;
+            // dump($date_string);
             }
             
             if(count($currentStreams) > 0){
+                //levante la imagen del canal en base de datos y cuando esta en on live muestre la img del directo
+                
                 foreach ($currentStreams as $key => $currentStream) {
 
-                    $video = $this->twichService->getStream($currentStream->user);
-                    if(isset($video) && !empty($video)){
-                        $size['name'] = $video['user_name'];
-                        $size['login'] = $video['user_login'];
-                        $size['img'] = str_replace("%{width}x%{height}", "500x300", $video['thumbnail_url']);
-                        $size['url'] =  $video['url'];
+                    
+
+                    $stream = $this->twichService->getStream($currentStream->user);
+                    // $userTwich = $this->twichService->getUser($currentStream->user);
+                    if(isset($stream) && !empty($stream)){
+                        $size['name'] = $stream['user_name'];
+                        $size['login'] = $stream['user_login'];
+                        // dump($stream['thumbnail_url']);
+                        $size['img'] = str_replace("{width}x{height}", "500x300", $stream['thumbnail_url']);
+                       
+                        array_push($arrayStream,$size);
+                    }else{
+                        $size['name'] = $currentStream->user->channel;
+                        $size['login'] =  $currentStream->user->channel;
+                        $size['img'] =  $currentStream->user->img_profile;
+                       
                         array_push($arrayStream,$size);
                     }
                     
@@ -76,7 +90,7 @@ class SupportController extends Controller
                 $this->show_streams = true;
             }
             // dump($arrayStream);
-            return view('support',['streams'=> $arrayStream,'show_streams'=> $this->show_streams,'date_string' => $date_string]);
+            return view('support',['streams'=> $arrayStream,'show_streams'=> $this->show_streams,'date_string' => $date_string,'user' => $user_model]);
         }
         else{
             return redirect('/');

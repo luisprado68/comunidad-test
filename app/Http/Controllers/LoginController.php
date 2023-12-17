@@ -44,12 +44,17 @@ class LoginController extends Controller
     {
         $this->twichService->getToken($request);
         $user = $this->twichService->getUser();
-        $exist = $this->userService->userExists($user['display_name'] . '@gmail.com', $user['id']);
-        if ($exist == false) {
-            $this->userService->create($user);
+        $user_model = $this->userService->userExists($user['display_name'] . '@gmail.com', $user['id']);
+        
+        if ($user_model == false) {
+          $user_model = $this->userService->create($user);
         }
-
-        return redirect('/profile');
+        if (isset($user_model->time_zone) && !empty($user_model->time_zone)) {
+            return redirect('summary');
+        } else {
+            return redirect('profile');
+        }
+        // return redirect('/profile');
     }
     public function logout()
     {

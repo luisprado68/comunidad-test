@@ -35,11 +35,12 @@ class MyAgendaController extends Controller
         if (session()->exists('user')) {
             $this->user = session('user');
             $this->user_model = $this->userService->getByIdandTwichId($this->user['id']);
-            $active = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
+            $this->user_model = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
 
-            if ($active) {
-
-                session(['status' => $active]);
+            if($this->user_model->status){
+               
+                session(['status' =>$this->user_model->status]);
+        
             } else {
                 session(['status' => 0]);
             }
@@ -54,7 +55,7 @@ class MyAgendaController extends Controller
         }
        
         
-        return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week]);
+        return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week,'user' => $this->user_model]);
     }
 
     public function getDays()

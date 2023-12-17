@@ -81,7 +81,7 @@ final class UserService
             session(['neo_coins' => $user->score->neo_coins ?? '0']);
             $user->token = session('access_token') ?? '';
             $user->update();
-            return $user->id;
+            return $user;
         } else {
             return false;
         }
@@ -101,7 +101,7 @@ final class UserService
         }
 
         if ($user) {
-            return $user->status;
+            return $user;
         } else {
             return false;
         }
@@ -172,6 +172,7 @@ final class UserService
             $user->password = $userArray['display_name']; //TODO
             $user->status = $userArray['status'] ?? 0;
             $user->country_id = $userArray['country_id'] ?? 1;
+            $user->img_profile = $userArray['profile_image_url'] ?? null;
             $user->save();
 
             $user->token = session('access_token') ?? '';

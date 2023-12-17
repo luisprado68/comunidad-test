@@ -18,11 +18,11 @@ class PrivacyController extends Controller
         if(session()->exists('user')){
             $user = session('user');
             
-            $active = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
+            $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
           
-            if($active){
+            if($userModel->status){
                
-                session(['status' =>$active]);
+                session(['status' =>$userModel->status]);
             }
             else{
                 session(['status' => 0]);

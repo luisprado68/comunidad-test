@@ -6,7 +6,7 @@
             @if (session()->has('user') && session('status') == 0)
                 @include('link')
             @else
-                @include('status')
+                @include('status',['user' => $user])
                 <div class="col-md-12 pt-1 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">
@@ -59,12 +59,12 @@
                                     <div class="row">
                                         
                                             @foreach ($week as $key => $days)
-                                                {{-- @dump($key) --}}
+                                                
                                                 <div class="col-4 my-4">
                                                     <input class="form-control form-control-lg bg-warning text-center"
                                                         type="text" placeholder="{{ trans('user.create.' . $key) }}"
                                                         disabled>
-                                                    {{-- @dump($days) --}}
+                                                    
                                                     @foreach ($days['times'] as $time)
                                                         <input class="form-control form-control-lg bg-light text-center"
                                                             type="text" placeholder="{{ $time }}" disabled>

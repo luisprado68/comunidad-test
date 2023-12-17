@@ -25,11 +25,11 @@ class HomeController extends Controller
         if(session()->exists('user')){
             $user = session('user');
             
-            $active = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
-          
-            if($active){
+            $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
+            // @dd($active);
+            if($userModel->status){
                
-                session(['status' =>$active]);
+                session(['status' => $userModel->status]);
             }
             else{
                 session(['status' => 0]);

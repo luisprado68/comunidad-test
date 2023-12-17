@@ -27,7 +27,7 @@
 
 </head>
 
-<body class="" style="width: 100%">
+<body class="fondo_general" style="width: 100%">
 
     @if (session()->has('user'))
         @include('layouts.nav', ['user' => session('user')])

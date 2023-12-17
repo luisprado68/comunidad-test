@@ -16,12 +16,12 @@
                         <div class="col">
                             <label class="text-light" for="">Puntaje Día</label>
                             <input class="form-control form-control-lg bg-warning text-center" type="text"
-                                placeholder="{{session('points_day'). '/10'}}" disabled>
+                                placeholder="{{$user->score->points_day . '/10'}}" disabled>
                         </div>
                         <div class="col">
                             <label class="text-light" for="">Puntaje Semanal</label>
                             <input class="form-control form-control-lg bg-warning text-center" type="text"
-                                placeholder="{{session('points_week'). '/60'}}" disabled>
+                                placeholder="{{$user->score->points_week . '/60'}}" disabled>
                         </div>
                     </div>
 
@@ -31,14 +31,14 @@
                         <div class="input-group-prepend bg-dark">
                             <span class="input-group-text bg-primary text-light" id="basic-addon1">NeoCoins</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="{{session('neo_coins')}}" aria-label="0"
+                        <input type="text" class="form-control" placeholder="{{$user->score->neo_coins ?? 0}}" aria-label="0"
                             aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend bg-dark">
                             <span class="input-group-text bg-primary text-light" id="basic-addon1" style="font-size: 1rem;">Apoyo Máx</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="0" aria-label="Username"
+                        <input type="text" class="form-control" placeholder="{{$user->score->points_support ?? 0}}" aria-label="Username"
                             aria-describedby="basic-addon1">
                     </div>
                 </div>

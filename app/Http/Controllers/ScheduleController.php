@@ -45,15 +45,16 @@ class ScheduleController extends Controller
         
         if (session()->exists('user') ) {
             $this->user = session('user');
-            $this->active = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
+            $user_model = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
                
-            if ($this->active) {
+            if($user_model->status){
+               
+                session(['status' =>$user_model->status]);
 
-                session(['status' => $this->active]);
             } else {
                 session(['status' => 0]);
             }
-            $user_model = $this->userService->getByIdandTwichId($this->user['id']);
+            // $user_model = $this->userService->getByIdandTwichId($this->user['id']);
             
             
            
@@ -164,7 +165,7 @@ class ScheduleController extends Controller
                 }
             }
             return view('schedule', ['times' => $this->times, 'days' => $this->days, 'days_with_time' => $this->days_with_time, 'schedule_avaible' => $this->schedule_avaible
-            ,'day_status'=>$this->day_status]);
+            ,'day_status'=>$this->day_status,"user"=>$user_model]);
         } else {
             return redirect('/');
         }

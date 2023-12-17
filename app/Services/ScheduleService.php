@@ -74,17 +74,25 @@ final class ScheduleService
 
     public function setSunday(){
 
-        if(env('APP_ENV') == 'local' || env('APP_ENV') == 'prod' ){
-            $toDisplay = CarbonImmutable::parse('2023-12-03 00:00:00', 'UTC');
+        // if(env('APP_ENV') == 'local' || env('APP_ENV') == 'prod' ){
+        //     $toDisplay = CarbonImmutable::parse('2023-12-10 00:00:00', 'UTC');
+        //     $martinDateFactory = new Factory([
+        //         'locale' => 'en_US'
+        //     ]);
+        //     $toDisplay->addDays(1);
+        //     $en = $martinDateFactory->make($toDisplay);
+        //     dd($en);
+        // }
+        // else{
+            $now =  CarbonImmutable::now();
+            $en = $now->startOfWeek(Carbon::SUNDAY);
             $martinDateFactory = new Factory([
-                'locale' => 'en_US'
-            ]);
-            $toDisplay->addDays(1);
-            $en = $martinDateFactory->make($toDisplay);
-        }
-        //else{
-        //     $en = CarbonImmutable::now()->locale('en_US');
-        //     $en->addDays(1);
+                        'locale' => 'en_US'
+                    ]);
+            //         // $now->addDays(1);
+             $en = $martinDateFactory->make($en);
+            // dump($en);
+            // $en->addDays(1);
         // }   
         
         return $en;
@@ -151,36 +159,53 @@ final class ScheduleService
         // $date->tz = $user->time_zone;
         $dates = $date->format('Y-m-d');
         $hour = $date->format('H');
+        $minutes = $date->format('i');
+        $backHour = $hour - 1;
 
+        if($minutes >= 50  || $minutes <= 10 ){
+            $back_minute = 50;
+            $minute = 10;
+        }
+        else{
+            $back_minute = 10;
+            $minute = 10;
+            $hour = $date->format('H');
+            $backHour = $hour;
+        } 
+        // dump($minute);
         // $test = new Carbon($dates .$hour);
         // dump($dates);
         // dump($hour);
-        $actual = new Carbon($dates.' ' .$hour.':00:00');
-        // dump('actual');
-        // dump($actual);
-        $start = $actual->addMinutes(-10);
+        $actual = new Carbon($dates.' ' .$backHour.':'.$back_minute.':00');
+
+        $actual_next = new Carbon($dates.' ' .$hour.':'.$minute.':00');
+    //    dump('actual');
+    //     dump($actual);
+        // $start = $actual->addMinutes(-20);
         // dump('start');
-        $start_string = $start->format('Y-m-d H:i:s');
-        //  dump('start_string');
+        $start_string = $actual->format('Y-m-d H:i:s');
+        // dump('start_string');
         // dump($start_string);
-        $end = $actual->addMinutes(20);
-        $end_string = $end->format('Y-m-d H:i:s');
-        $minutes = $end->format('i');
+        // $end = $actual_next->addMinutes(10);
+        $end_string = $actual_next->format('Y-m-d H:i:s');
+
+        // dump('end_string');
+        // dump($end_string);
+
+        // $minutes = $end->format('i');
 
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
 
-        if($minutes <= Carbon::now()->format('i')){
-            // dump(Carbon::now()->format('i'));
-            $currentStreams = collect([]);
-        }
+        // if($minutes <= Carbon::now()->format('i')){
+        //     // dump(Carbon::now()->format('i'));
+        //     $currentStreams = collect([]);
+        // }
         
         // dump('minutes');
         // dump($minutes);
         //  dump($end_string);
         // dump($user);
         // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
-       
-
         // dump($currentStreams);
         return $currentStreams;
     }
@@ -193,27 +218,28 @@ final class ScheduleService
         // $date->tz = $user->time_zone;
         $dates = $date->format('Y-m-d');
         $hour = $date->format('H');
-
+        $hour_next =$hour + 1;
         // $test = new Carbon($dates .$hour);
         // dump($dates);
         // dump($hour);
         $actual = new Carbon($dates.' ' .$hour.':00:00');
+        $actual_next = new Carbon($dates.' ' .$hour_next.':00:00');
         // dump('actual');
         // dump($actual);
-        $start = $actual->addMinutes(-10);
+        // $start = $actual->addMinutes(-10);
         // dump('start');
-        $start_string = $start->format('Y-m-d H:i:s');
+        $start_string = $actual->format('Y-m-d H:i:s');
         //  dump('start_string');
-        //  dump($start_string);
-        $end = $actual->addMinutes(20);
-        $end_string = $end->format('Y-m-d H:i:s');
+        // dump($start_string);
+        // $end = $actual->addMinutes(20);
+        $end_string = $actual_next->format('Y-m-d H:i:s');
         // dump('end');
         // dump($end_string);
         // dump($user);
         // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->first();
 
-        // dump($schedule);
+        //  dump($currentStreams);
         return $currentStreams;
     }
 
