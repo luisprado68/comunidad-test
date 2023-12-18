@@ -6,7 +6,7 @@
             @if (session()->has('user') && session('status') == 0)
                 @include('link')
             @else
-                @include('status',['user' => $user])
+                @include('status', ['user' => $user])
                 <div class="col-md-12 pt-1 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">
@@ -58,42 +58,44 @@
                                                 {{-- @dump($days_with_time) --}}
                                                 @foreach ($days_with_time as $key_day => $day_with_time)
                                                     @if ($day_with_time['status'])
-                                                    <div class="col-4 px-4 my-3">
-                                                        <input class="form-control form-control-lg bg-warning text-center"
-                                                            type="text" placeholder="{{ $key_day }}" disabled>
-                                                        <div class="col">
-                                                            <div mbsc-page class="demo-multiple-select">
-                                                                <div style="height:100%">
-                                                                    <label>
-                                                                        {{-- Lunes --}}
-                                                                        <input mbsc-input
-                                                                            id="{{ 'demo-multiple-select-input-' . $key_day }}"
-                                                                            placeholder="Seleccione horario"
-                                                                            data-dropdown="true" data-input-style="outline"
-                                                                            data-label-style="stacked" data-tags="true"
-                                                                            class="calendar" />
-                                                                    </label>
-                                                                    <select id="{{ 'demo-multiple-select-' . $key_day }}"
-                                                                        multiple>
+                                                        <div class="col-4 px-4 my-3">
+                                                            <input
+                                                                class="form-control form-control-lg bg-warning text-center"
+                                                                type="text" placeholder="{{ $key_day }}" disabled>
+                                                            <div class="col">
+                                                                <div mbsc-page class="demo-multiple-select">
+                                                                    <div style="height:100%">
+                                                                        <label>
+                                                                            {{-- Lunes --}}
+                                                                            <input mbsc-input
+                                                                                id="{{ 'demo-multiple-select-input-' . $key_day }}"
+                                                                                placeholder="Seleccione horario"
+                                                                                data-dropdown="true"
+                                                                                data-input-style="outline"
+                                                                                data-label-style="stacked" data-tags="true"
+                                                                                class="calendar" />
+                                                                        </label>
+                                                                        <select
+                                                                            id="{{ 'demo-multiple-select-' . $key_day }}"
+                                                                            multiple>
 
-                                                                        @foreach ($day_with_time['times'] as $key_time => $time)
-                                                                            @if ($time['disabled'])
-                                                                                <option value="{{ $time['hour'] }}"
-                                                                                    disabled>
-                                                                                    {{ $time['hour'] }}</option>
-                                                                            @else
-                                                                                <option value="{{ $time['hour'] }}">
-                                                                                    {{ $time['hour'] }}</option>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </select>
+                                                                            @foreach ($day_with_time['times'] as $key_time => $time)
+                                                                                @if ($time['disabled'])
+                                                                                    <option value="{{ $time['hour'] }}"
+                                                                                        disabled>
+                                                                                        {{ $time['hour'] }}</option>
+                                                                                @else
+                                                                                    <option value="{{ $time['hour'] }}">
+                                                                                        {{ $time['hour'] }}</option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
 
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                     @endif
-                                                    
                                                 @endforeach
                                                 <div class="col-12 mx-3 py-4">
                                                     <button class="btn btn-primary" type="submit"
@@ -107,6 +109,8 @@
                         </div>
                     </div>
                 </div>
+                <input type="text" class="form-control" aria-label="Default" name="times" id="times"
+                    aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
             @endif
         </div>
     </div>
@@ -413,6 +417,12 @@
 
 
         }
-
     </script>
+@endpush
+@push('chatters')
+    @if (env('APP_ENV') == 'local')
+        <script src="{{ asset('/js/setTime.js') }}"></script>
+    @else
+        <script src="./public/js/setTime.js"></script>
+    @endif
 @endpush

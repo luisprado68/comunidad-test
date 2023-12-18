@@ -32,11 +32,16 @@ class SupportController extends Controller
         $active = false;
         $date_string = ' --';
         $arrayStream = [];
+        $times = [];
         if(session()->exists('user')){
             $this->user = session('user');
             
             $userModel = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
-          
+            $currentStreams = $this->scheduleService->getStreamByUser($userModel);
+            
+            if(count($currentStreams) > 0){
+                $times = $this->scheduleService->getTimes($currentStreams,$userModel);
+            }
             if($userModel->status){
                
                 session(['status' => $userModel->status]);
@@ -90,7 +95,8 @@ class SupportController extends Controller
                 $this->show_streams = true;
             }
             // dump($arrayStream);
-            return view('support',['streams'=> $arrayStream,'show_streams'=> $this->show_streams,'date_string' => $date_string,'user' => $user_model]);
+            return view('support',['streams'=> $arrayStream,'show_streams'=> $this->show_streams,
+            'date_string' => $date_string,'user' => $user_model,'times' => json_encode($times)]);
         }
         else{
             return redirect('/');

@@ -29,14 +29,18 @@ class MyAgendaController extends Controller
     public function index()
     {
         $active = false;
+        $times = [];
         // if (env('APP_ENV') == 'local') {
         //     $this->user_model = $this->userService->getById(env('USER_TEST'));
         // }
         if (session()->exists('user')) {
             $this->user = session('user');
-            $this->user_model = $this->userService->getByIdandTwichId($this->user['id']);
             $this->user_model = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
-
+            $currentStreams = $this->scheduleService->getStreamByUser($this->user_model);
+            
+            if(count($currentStreams) > 0){
+                $times = $this->scheduleService->getTimes($currentStreams,$this->user_model);
+            }
             if($this->user_model->status){
                
                 session(['status' =>$this->user_model->status]);
@@ -55,7 +59,7 @@ class MyAgendaController extends Controller
         }
        
         
-        return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week,'user' => $this->user_model]);
+        return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week,'user' => $this->user_model,'times' => json_encode($times)]);
     }
 
     public function getDays()
@@ -82,20 +86,26 @@ class MyAgendaController extends Controller
         
         
         // dump($hour_diff);
-        // dump($agenda);
+        
         $current_time = Carbon::now();
         $current_time->tz = $this->user_model->time_zone;
         foreach ($agenda as $key => $day) {
             // dump($current_time);
             // dump($key);
             // dump(strtolower($current_time->format('l')));
-            
-            if(strtolower($current_time->format('l')) == $key){
-                // unset($agenda[$key]);
-                break;
+            //si es domingo mostratmos todos los dias
+            if(strtolower($current_time->format('l')) == 'sunday'){
+
             }else{
-                unset($agenda[$key]);
+
+                if(strtolower($current_time->format('l')) == $key){
+                    // unset($agenda[$key]);
+                    break;
+                }else{
+                    unset($agenda[$key]);
+                }
             }
+           
         }
        
         return $agenda;

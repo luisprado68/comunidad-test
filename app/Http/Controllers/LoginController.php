@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\BillingService;
+use App\Services\ScheduleService;
 use App\Services\TwichService;
 use App\Services\UserService;
 use GuzzleHttp\Client;
@@ -27,11 +28,13 @@ class LoginController extends Controller
     public $user;
     private $twichService;
     private $userService;
+    private $scheduleService;
 
-    public function __construct(TwichService $twichService, UserService $userService)
+    public function __construct(TwichService $twichService, UserService $userService,ScheduleService $scheduleService)
     {
         $this->twichService = $twichService;
         $this->userService = $userService;
+        $this->scheduleService = $scheduleService;
     }
 
     public function login()
@@ -46,6 +49,9 @@ class LoginController extends Controller
         $user = $this->twichService->getUser();
         $user_model = $this->userService->userExists($user['display_name'] . '@gmail.com', $user['id']);
         
+        
+        // dump($user_model);
+       
         if ($user_model == false) {
           $user_model = $this->userService->create($user);
         }

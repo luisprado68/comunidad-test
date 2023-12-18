@@ -36,8 +36,7 @@
                                         <label class="block mb-2 text-sm font-medium text-white" for="name">Nombre
                                             Completo</label>
                                         <input type="text" class="form-control" aria-label="Default" name="name"
-                                            aria-describedby="inputGroup-sizing-default"
-                                            value="{{ $user->name }}">
+                                            aria-describedby="inputGroup-sizing-default" value="{{ $user->name }}">
                                         @error('name')
                                             <span
                                                 class="text-danger position-absolute">{{ trans('user.create.fields.name') }}</span>
@@ -334,10 +333,10 @@
                                                 name="phone" aria-describedby="inputGroup-sizing-default"
                                                 value="{{ $user->phone }}">
                                             @error('phone')
-                                            <span
-                                            class="text-danger position-absolute">{{ trans('user.create.fields.phone') }}</span>
+                                                <span
+                                                    class="text-danger position-absolute">{{ trans('user.create.fields.phone') }}</span>
                                             @enderror
-                                          
+
                                         </div>
                                     </div>
 
@@ -347,7 +346,7 @@
                                             Horaria</label>
                                         <select class="form-select" aria-label="Default select example" name="timezone">
                                             @if ($user->time_zone)
-                                                <option  value="{{ $user->time_zone }}">{{ $user->time_zone }}
+                                                <option value="{{ $user->time_zone }}">{{ $user->time_zone }}
                                                 </option>
                                             @else
                                                 <option selected value="{{ null }}">Elige una opción</option>
@@ -359,7 +358,7 @@
 
                                         </select>
                                         @error('timezone')
-                                        {{'error'}}
+                                            {{ 'error' }}
                                             <span
                                                 class="text-danger position-absolute">{{ trans('user.create.fields.timezone') }}</span>
                                         @enderror
@@ -375,8 +374,17 @@
                         </div>
                     </div>
                 </div>
+                <input type="text" class="form-control" aria-label="Default" name="times" id="times"
+                    aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
             @endif
         </div>
     </div>
     @include('layouts.footer')
 @endsection
+@push('chatters')
+    @if (env('APP_ENV') == 'local')
+        <script src="{{ asset('/js/setTime.js') }}"></script>
+    @else
+        <script src="./public/js/setTime.js"></script>
+    @endif
+@endpush

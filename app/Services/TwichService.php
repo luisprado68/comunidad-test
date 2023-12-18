@@ -162,6 +162,7 @@ final class TwichService
 
     public function getUserChatters($user)
     {
+        $users = [];
         try {
         // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
         if (!empty(session('access_token'))) {
@@ -175,14 +176,20 @@ final class TwichService
             $res = $client->sendAsync($request)->wait();
             $result = json_decode($res->getBody(), true);
             $users = $result['data'];
-
+            Log::debug('users services------------------');
+            Log::debug(json_encode($users));
+            // if(empty($users)){
+            //     $users = [];
+            // }
+        
             // $img = $this->user['profile_image_url'];
             // session(['video' => $video]);
             return $users;
         }
+        return $users;
     } catch (\Exception $e) {
             
-        return null;
+        return $users;
         Log::debug($e->getMessage());
     }
     }

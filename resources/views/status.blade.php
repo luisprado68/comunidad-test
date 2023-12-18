@@ -15,13 +15,26 @@
                     <div class="row">
                         <div class="col">
                             <label class="text-light" for="">Puntaje Día</label>
+                            @if ($user->score)
                             <input class="form-control form-control-lg bg-warning text-center" type="text"
-                                placeholder="{{$user->score->points_day . '/10'}}" disabled>
+                            placeholder="{{$user->score->points_day . '/10'}}" disabled>
+                            @else
+                            <input class="form-control form-control-lg bg-warning text-center" type="text"
+                            placeholder="{{ 0 . '/10'}}" disabled>
+                            @endif
+                            
                         </div>
                         <div class="col">
                             <label class="text-light" for="">Puntaje Semanal</label>
-                            <input class="form-control form-control-lg bg-warning text-center" type="text"
-                                placeholder="{{$user->score->points_week . '/60'}}" disabled>
+                            @if ($user->score)
+                                <input class="form-control form-control-lg bg-warning text-center" type="text"
+                                placeholder="{{$user->score->points_week  . '/60'}}" disabled>
+                            @else
+                                <input class="form-control form-control-lg bg-warning text-center" type="text"
+                                placeholder="{{ 0 . '/60'}}" disabled>
+                            @endif
+                           
+                           
                         </div>
                     </div>
 

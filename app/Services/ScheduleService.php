@@ -156,11 +156,21 @@ final class ScheduleService
 
         $this->setModel();
         $date = Carbon::now();
+        $date_next = Carbon::now();
+        $dates_next = $date_next->format('Y-m-d');
         // $date->tz = $user->time_zone;
         $dates = $date->format('Y-m-d');
         $hour = $date->format('H');
         $minutes = $date->format('i');
-        $backHour = $hour - 1;
+        // dd($hour);
+        if($hour == "00"){
+            $backHour = 23;
+            $date->addDays(-1);
+            $dates = $date->format('Y-m-d');
+        }else{
+            $backHour = $hour - 1;
+        }
+        
 
         if($minutes >= 50  || $minutes <= 10 ){
             $back_minute = 50;
@@ -172,44 +182,64 @@ final class ScheduleService
             $hour = $date->format('H');
             $backHour = $hour;
         } 
-        // dump($minute);
-        // $test = new Carbon($dates .$hour);
-        // dump($dates);
-        // dump($hour);
+      
         $actual = new Carbon($dates.' ' .$backHour.':'.$back_minute.':00');
 
-        $actual_next = new Carbon($dates.' ' .$hour.':'.$minute.':00');
-    //    dump('actual');
-    //     dump($actual);
-        // $start = $actual->addMinutes(-20);
-        // dump('start');
+        $actual_next = new Carbon($dates_next.' ' .$hour.':'.$minute.':00');
+  
         $start_string = $actual->format('Y-m-d H:i:s');
-        // dump('start_string');
+      
         // dump($start_string);
-        // $end = $actual_next->addMinutes(10);
+        
         $end_string = $actual_next->format('Y-m-d H:i:s');
 
-        // dump('end_string');
+      
         // dump($end_string);
-
-        // $minutes = $end->format('i');
 
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
 
-        // if($minutes <= Carbon::now()->format('i')){
-        //     // dump(Carbon::now()->format('i'));
-        //     $currentStreams = collect([]);
-        // }
-        
-        // dump('minutes');
-        // dump($minutes);
-        //  dump($end_string);
-        // dump($user);
-        // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
         // dump($currentStreams);
         return $currentStreams;
     }
 
+    public function getStreamByUser($user){
+        $currentStreams = [];
+        $this->setModel();
+        $date = Carbon::now();
+        $dateBefore = $date->addDays(-1);
+        $dates = $dateBefore->format('Y-m-d');
+        $current = Carbon::now();
+        $backHour =23;
+        $back_minute = 59;
+        $actual_before = new Carbon($dates.' ' .$backHour.':'.$back_minute.':00');
+
+        // dump($current->format('Y-m-d'));
+        
+
+        $actual_next = new Carbon($current->format('Y-m-d').' ' .$backHour.':'.$back_minute.':00');
+   
+        $start_string = $actual_before->format('Y-m-d H:i:s');
+       
+        // dump($start_string);
+      
+        $end_string = $actual_next->format('Y-m-d H:i:s');
+        // dump($end_string);
+        $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','=',$user->id)->distinct()->get();
+        // dump($currentStreams);
+        return $currentStreams;
+    }
+
+    public function getTimes($currentStreams,$userModel){
+        $times = [];
+        foreach ($currentStreams as $key => $currentStream) {
+               
+            $time = new Carbon($currentStream->start);
+            $time->tz = $userModel->time_zone;
+            
+            array_push($times,$time->format('H')); 
+        }
+        return $times;
+    }
     public function getNextStream($user){
 
         $this->setModel();
@@ -281,12 +311,12 @@ final class ScheduleService
         }
         // dump('start');
         // dump($start);
-        // dump('end');
-        // dump($end);
+        //dump('end');
+        //  dump($end);
   
         $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->orderBy('start', 'ASC')->get();
         // dump('hours');
-        // dump($hours);
+        //  dump($dates);
         return $dates;
 
     }

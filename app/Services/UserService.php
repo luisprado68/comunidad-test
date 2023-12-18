@@ -63,7 +63,7 @@ final class UserService
 
     public function userExists($email, $twich_id = null)
     {
-        Log::debug('userExists-----');
+        
         $this->setModel();
         if (isset($twich_id)) {
             $user = $this->model
@@ -76,9 +76,6 @@ final class UserService
 
         if ($user) {
 
-            session(['points_day' => $user->score->points_day ?? '0']);
-            session(['points_week' => $user->score->points_week ?? '0']);
-            session(['neo_coins' => $user->score->neo_coins ?? '0']);
             $user->token = session('access_token') ?? '';
             $user->update();
             return $user;
@@ -89,7 +86,7 @@ final class UserService
 
     public function userExistsActive($email, $twich_id = null)
     {
-        Log::debug('userExists-----');
+        
         $this->setModel();
         if (isset($twich_id)) {
             $user = $this->model

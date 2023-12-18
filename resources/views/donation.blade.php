@@ -34,18 +34,29 @@
                                     <p>Si tu economía personal, no te permite apoyarnos, no te preocupes, tu presencia y
                                         actividad en la comunidad ya nos ayuda muchísimo</p>
                                     <div class="text-center">
-                                        
-                                        <button type="button" class="btn btn-warning"><a href="https://liberapay.com/NeoCommunty/donate"  target="_blank" style="text-decoration: none;color:black">Donar</a></button>
+
+                                        <button type="button" class="btn btn-warning"><a
+                                                href="https://liberapay.com/NeoCommunty/donate" target="_blank"
+                                                style="text-decoration: none;color:black">Donar</a></button>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <input type="text" class="form-control" aria-label="Default" name="times" id="times"
+                        aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
                 @endif
             </div>
-           
+
         </div>
     </div>
     @include('layouts.footer')
 @endsection
+@push('chatters')
+    @if (env('APP_ENV') == 'local')
+        <script src="{{ asset('/js/setTime.js') }}"></script>
+    @else
+        <script src="./public/js/setTime.js"></script>
+    @endif
+@endpush

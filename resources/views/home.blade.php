@@ -6,7 +6,7 @@
 
             <div class="col-md-12 pt-5 w-100">
                 @if (session()->has('user') && session('status') == 0)
-               
+
                     @include('link')
                 @else
                     <div class="col text-center pb-3">
@@ -15,7 +15,7 @@
                         <h4 class="text-light">PARA QUE PUEDAN INTERACTUAR,HACER COLABORACIONES, TORNEOS Y EVENTOS.</h4>
                     </div>
                     <div class="card mt-3">
-                        
+
                         <div class="card-body fondo_claro">
                             <div class="row">
 
@@ -28,8 +28,8 @@
                                                 <div class="col-12 m-2">
 
                                                     <h1 class="text-center pb-3">QUE TENGO QUE HACER?</h1>
-                                                   
-                                               
+
+
                                                     <ul style="list-style: none;" class="text-center">
                                                         <li class="pb-2">
                                                             <h5>Apoya los directos de los streamers y genera puntos.</h5>
@@ -42,39 +42,40 @@
                                                     </ul>
                                                 </div>
                                                 @if (!session()->has('user'))
-                                                
-                                                <div class="col">
-                                                    <div class="card-body text-center">
-                                                        @if (env('APP_ENV') == 'local')
-                                                            <a class="dropdown-item" href="{{ route('login-test') }}"><button
-                                                                    type="button" class="btn btn-lg twich-button"
-                                                                    style=""><i class="fa-brands fa-twitch"></i> Únete
-                                                                    con
-                                                                    TWITCH</button></a>
-                                                        @else
-                                                            <a class="dropdown-item" href="{{ route('login') }}"><button
-                                                                    type="button" class="btn btn-lg twich-button"
-                                                                    style=""><i class="fa-brands fa-twitch"></i> Únete
-                                                                    con
-                                                                    TWITCH</button></a>
-                                                        @endif
+                                                    <div class="col">
+                                                        <div class="card-body text-center">
+                                                            @if (env('APP_ENV') == 'local')
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('login-test') }}"><button type="button"
+                                                                        class="btn btn-lg twich-button" style=""><i
+                                                                            class="fa-brands fa-twitch"></i> Únete
+                                                                        con
+                                                                        TWITCH</button></a>
+                                                            @else
+                                                                <a class="dropdown-item" href="{{ route('login') }}"><button
+                                                                        type="button" class="btn btn-lg twich-button"
+                                                                        style=""><i class="fa-brands fa-twitch"></i>
+                                                                        Únete
+                                                                        con
+                                                                        TWITCH</button></a>
+                                                            @endif
 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="card-body text-center">
+                                                    <div class="col">
+                                                        <div class="card-body text-center">
 
-                                                        {{-- <img src="../img/constr.png" alt="" class="construccion"> --}}
-                                                        <button type="button" class="btn btn-lg kick-button"
-                                                            style="">
-                                                            <i class="fa-brands fa-kickstarter"></i> Únete con
-                                                            KICK</button>
                                                             {{-- <img src="../img/constr.png" alt="" class="construccion"> --}}
+                                                            <button type="button" class="btn btn-lg kick-button"
+                                                                style="">
+                                                                <i class="fa-brands fa-kickstarter"></i> Únete con
+                                                                KICK</button>
+                                                            {{-- <img src="../img/constr.png" alt="" class="construccion"> --}}
+                                                        </div>
                                                     </div>
-                                                </div>
                                                 @endif
-                                                
-                                                
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -124,13 +125,22 @@
                             </div>
                         </div>
                     </div>
+                    <input type="text" class="form-control" aria-label="Default" name="times" id="times"
+                        aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
                 @endif
 
 
 
             </div>
-           
+
         </div>
     </div>
     @include('layouts.footer')
 @endsection
+@push('chatters')
+    @if (env('APP_ENV') == 'local')
+        <script src="{{ asset('/js/setTime.js') }}"></script>
+    @else
+        <script src="./public/js/setTime.js"></script>
+    @endif
+@endpush

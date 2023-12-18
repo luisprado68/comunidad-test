@@ -42,11 +42,15 @@ class ScheduleController extends Controller
     }
     public function index()
     {   
-        
+        $times = [];
         if (session()->exists('user') ) {
             $this->user = session('user');
             $user_model = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
-               
+            $currentStreams = $this->scheduleService->getStreamByUser($user_model);
+            
+            if(count($currentStreams) > 0){
+                $times = $this->scheduleService->getTimes($currentStreams,$user_model);
+            }
             if($user_model->status){
                
                 session(['status' =>$user_model->status]);
@@ -165,7 +169,7 @@ class ScheduleController extends Controller
                 }
             }
             return view('schedule', ['times' => $this->times, 'days' => $this->days, 'days_with_time' => $this->days_with_time, 'schedule_avaible' => $this->schedule_avaible
-            ,'day_status'=>$this->day_status,"user"=>$user_model]);
+            ,'day_status'=>$this->day_status,"user"=>$user_model,'times' => json_encode($times)]);
         } else {
             return redirect('/');
         }

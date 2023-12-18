@@ -69,24 +69,14 @@
                             @endif
 
                         @endif
-                        {{-- @else
-                            @if (session()->has('user'))
-                            
-                                <img src="{{ session('user')['profile_image_url'] }}" alt="tag"
-                                    class="profile-img rounded-circle">
-                            @else
-                                <img src="./public/img/logo.webp" alt="tag" class="profile-img">
-                            @endif --}}
-
-                        {{-- @endif --}}
-
-
 
                     </a>
                     <ul class="dropdown-menu m-0" aria-labelledby="navbarDropdownMenuLink">
 
                         @if (session()->has('user'))
-                            {{-- <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img"> --}}
+                            {{-- <input type="text" class="form-control" aria-label="Default" name="name"
+                            aria-describedby="inputGroup-sizing-default"
+                            value="{{ $user->name }}"> --}}
                             <li><a class="dropdown-item" href="{{ route('profile') }}">Perfil</a></li>
                             <li><a class="dropdown-item" href="{{ route('summary') }}">Resumen</a></li>
                             <li><a class="dropdown-item" href="{{ route('support') }}">Apoyar</a></li>
@@ -111,7 +101,7 @@
 
     </div>
 </nav>
-@push('chatters')
+{{-- @push('chatters')
     <script>
         console.log('test');
 
@@ -124,7 +114,7 @@
             var minute = current.getMinutes();
             console.log(hour + ':' + minute);
 
-            if (minute >= 50 && minute <= 55) {
+            if (minute >= 0 && minute <= 55) {
                 console.log('entro');
                 clearInterval(id);
                
@@ -141,7 +131,7 @@
                             // table.draw();
                             console.log('okkkk');
                             console.log(response);
-                            window.location.href = "{{ route('my_agendas') }}";
+                            location.reload()
                         } else if(response.status === 'error'){
                             console.log('error');
                             // window.alert(response.message);
@@ -168,4 +158,4 @@
 
        
     </script>
-@endpush
+@endpush --}}

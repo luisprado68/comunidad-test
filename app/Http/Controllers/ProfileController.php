@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CountryService;
+use App\Services\ScheduleService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -11,18 +12,21 @@ class ProfileController extends Controller
 {
     private $userService;
     private $countryService;
+    private $scheduleService;
     public $user;
     public $update_user;
-    public function __construct(UserService $userService,CountryService $countryService)
+    public function __construct(UserService $userService,CountryService $countryService,ScheduleService $scheduleService)
     {
         
         $this->userService = $userService;
         $this->countryService = $countryService;
+        $this->scheduleService = $scheduleService;
     }
    
     public function index(){
         $countries = $this->countryService->getCountries();
         $user_model = null;
+        $times = [];
         $active = false;
         $timestamp = time();
         foreach (timezone_identifiers_list(\DateTimeZone::ALL) as $key => $value) {
@@ -35,7 +39,11 @@ class ProfileController extends Controller
             $this->user = session('user');
           
             $user_model = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
+            $currentStreams = $this->scheduleService->getStreamByUser($user_model);
             
+            if(count($currentStreams) > 0){
+                $times = $this->scheduleService->getTimes($currentStreams,$user_model);
+            }
             // @dd($active);
             if($user_model->status){
                
@@ -54,7 +62,7 @@ class ProfileController extends Controller
             // }
             
             // dump($user_model);
-            return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model]);
+            return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model,'times' => json_encode($times)]);
         }else{
             return redirect('/');
         }   

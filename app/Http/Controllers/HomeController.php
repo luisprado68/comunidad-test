@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ScheduleService;
 use App\Services\TwichService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -14,18 +15,26 @@ class HomeController extends Controller
     public $response;
     private $twichService;
     private $userService;
-    public function __construct(TwichService $twichService, UserService $userService)
+    private $scheduleService;
+    public function __construct(TwichService $twichService, UserService $userService,ScheduleService $scheduleService)
     {
         $this->twichService = $twichService;
         $this->userService = $userService;
+        $this->scheduleService = $scheduleService;
     }
     public function index()
     {
         $active = false;
+        $times = [];
         if(session()->exists('user')){
             $user = session('user');
             
             $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
+            $currentStreams = $this->scheduleService->getStreamByUser($userModel);
+            
+            if(count($currentStreams) > 0){
+                $times = $this->scheduleService->getTimes($currentStreams,$userModel);
+            }
             // @dd($active);
             if($userModel->status){
                
@@ -37,38 +46,8 @@ class HomeController extends Controller
         }
         // Log::debug("message");
         // Log::debug(session('test'));
-        return view('home');
+        return view('home',['times' => json_encode($times)]);
     }
 
-    // public function test()
-    // {
-    //     $result = [];
-    //     // $this->img_profile = '';
-    //     if (!empty(session('access_token'))) {
-    //         $client = new Client();
-    //         $headers = [
-    //             'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
-    //             'Authorization' => 'Bearer ' . session('access_token'),
-    //             'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
-    //         ];
-    //         $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/users', $headers);
-    //         $res = $client->sendAsync($request)->wait();
-    //         $result = json_decode($res->getBody(), true);
-    //         $this->response = $result['data'][0];
-    //         session(['user' => $this->response]);
-    //         // Log::debug("json");
-    //         // return json_encode($result['data'][0]['profile_image_url']);
-
-    //         if (array_key_exists('profile_image_url',$result['data'][0])) {
-
-    //             $this->profile_image_url = $result['data'][0]['profile_image_url'];
-
-    //             return view('homeTest',  ['profile_image_url' => $this->profile_image_url]);
-    //         } else {
-    //             return view('homeTest');
-    //         }
-    //     } else {
-    //         return view('homeTest');
-    //     }
-    // }
+  
 }

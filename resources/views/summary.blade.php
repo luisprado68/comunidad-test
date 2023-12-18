@@ -6,7 +6,7 @@
             @if (session()->has('user') && session('status') == 0)
                 @include('link')
             @else
-                @include('status',['user' => $user])
+                @include('status', ['user' => $user])
                 <div class="col-md-12 pt-1 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">
@@ -37,11 +37,24 @@
                         </div>
                     </div>
                 </div>
+                <input type="text" class="form-control" aria-label="Default" name="times" id="times"
+                    aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
                 @include('share')
             @endif
-           
-            
+
+
         </div>
     </div>
     @include('layouts.footer')
 @endsection
+@push('chatters')
+
+    @if (env('APP_ENV') == 'local')
+        <script src="{{ asset('/js/setTime.js') }}"></script>
+    @else
+        <script src="./public/js/setTime.js"></script>
+    @endif
+
+    
+
+@endpush

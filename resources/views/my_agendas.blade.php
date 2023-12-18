@@ -6,7 +6,7 @@
             @if (session()->has('user') && session('status') == 0)
                 @include('link')
             @else
-                @include('status',['user' => $user])
+                @include('status', ['user' => $user])
                 <div class="col-md-12 pt-1 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">
@@ -55,16 +55,15 @@
                                     </div>
                                 </div>
                                 @if (count($week) > 0)
-                                <div class="card bg-dark text-light mt-2">
-                                    <div class="row">
-                                        
+                                    <div class="card bg-dark text-light mt-2">
+                                        <div class="row">
+
                                             @foreach ($week as $key => $days)
-                                                
                                                 <div class="col-4 my-4">
                                                     <input class="form-control form-control-lg bg-warning text-center"
                                                         type="text" placeholder="{{ trans('user.create.' . $key) }}"
                                                         disabled>
-                                                    
+
                                                     @foreach ($days['times'] as $time)
                                                         <input class="form-control form-control-lg bg-light text-center"
                                                             type="text" placeholder="{{ $time }}" disabled>
@@ -74,18 +73,20 @@
 
                                                 </div>
                                             @endforeach
-                                      
 
 
 
+
+                                        </div>
                                     </div>
-                                </div>
                                 @endif
                             </div>
                         </div>
 
                     </div>
                 </div>
+                <input type="text" class="form-control" aria-label="Default" name="times" id="times"
+                    aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
             @endif
 
 
@@ -93,3 +94,10 @@
     </div>
     @include('layouts.footer')
 @endsection
+@push('chatters')
+    @if (env('APP_ENV') == 'local')
+        <script src="{{ asset('/js/setTime.js') }}"></script>
+    @else
+        <script src="./public/js/setTime.js"></script>
+    @endif
+@endpush
