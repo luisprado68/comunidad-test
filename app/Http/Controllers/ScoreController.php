@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
-class HomeController extends Controller
+class ScoreController extends Controller
 {
     public $profile_image_url;
     public $response;
@@ -26,9 +26,6 @@ class HomeController extends Controller
     {
         $active = false;
         $times = [];
-        // if(session()->exists('support_to_user')){
-        //     dump(session('support_to_user'));
-        // }
         if(session()->exists('user')){
             $user = session('user');
             
@@ -50,6 +47,13 @@ class HomeController extends Controller
         // Log::debug("message");
         // Log::debug(session('test'));
         return view('home',['times' => json_encode($times)]);
+    }
+
+    public function getPointSupport($user_name){
+        $user = $this->userService->getByChannel($user_name);
+        session(['support_to_user' => $user] );
+        return redirect('/');
+        // dump($user);
     }
 
   

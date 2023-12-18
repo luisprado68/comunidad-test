@@ -10,6 +10,7 @@ use App\Http\Controllers\MyAgendaController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TwichController;
@@ -74,6 +75,8 @@ Route::group(['/'], function () {
     Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
     Route::post('admin/post', [AdminController::class, 'post'])->name('admin-post');
     Route::get('admin/logout', [AdminController::class, 'logoutAdmin'])->name('logout-admin');
+
+    Route::get('referrer/{user_name}', [ScoreController::class, 'getPointSupport'])->name('referrer');
 
     // Route::post('admin-edit', [AdminController::class, 'login'])->name('admin-post');
     // Route::get('login', [LoginController::class, 'login'])->name('login');

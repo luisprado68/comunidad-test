@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Score;
+use App\Models\SupportScore;
 use App\Models\User;
 use Broobe\Services\Service;
 use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
@@ -14,7 +15,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-final class ScoreService
+final class SupportScoreService
 {
     public $model;
     public $code_test;
@@ -33,7 +34,7 @@ final class ScoreService
      */
     protected function setModel(): void
     {
-        $this->model = Score::class;
+        $this->model = SupportScore::class;
     }
 
     public function getById($id)
@@ -78,15 +79,10 @@ final class ScoreService
     public function create($userArray)
     {
         try {
-            $score = new Score();
-          
+            $score = new SupportScore();
             $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
-            $score->points_day = isset($userArray['points_day']) ? $userArray['points_day'] :null;
-            $score->points_week =  isset($userArray['points_week']) ? $userArray['points_week'] : null;
-            $score->neo_coins = isset($userArray['neo_coins']) ? $userArray['neo_coins'] : null;
-            $score->points_support = isset($userArray['points_support']) ? $userArray['points_support'] : null;
-            $score->users_data = isset($userArray['users_data']) ? $userArray['users_data'] : null;
-            $score->count_users = isset($userArray['count_users']) ? $userArray['count_users'] : null;
+            $score->points_day = isset($userArray['point']) ? $userArray['point'] :null;
+            $score->users_data = isset($userArray['user']) ? $userArray['user'] : null;
             $score->save();
 
             return $score;
@@ -103,14 +99,10 @@ final class ScoreService
     {
         // dd($userArray['checkbox']);
         try {
-            $score = Score::find($userArray['id']);
+            $score = SupportScore::find($userArray['id']);
             $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
-            $score->points_day = isset($userArray['points_day']) ? $userArray['points_day'] : null;
-            $score->points_week = isset($userArray['points_week']) ? $userArray['points_week'] : null;
-            $score->neo_coins = isset($userArray['neo_coins']) ? $userArray['neo_coins'] : null;
-            $score->points_support = isset($userArray['points_support']) ? $userArray['points_support'] : null;
-            $score->users_data = isset($userArray['users_data']) ? $userArray['users_data'] : null;
-            $score->count_users = isset($userArray['count_users']) ? $userArray['count_users'] : null;
+            $score->points_day = isset($userArray['point']) ? $userArray['point'] :null;
+            $score->users_data = isset($userArray['user']) ? $userArray['user'] : null;
             $score->update();
             return $score->id;
         } catch (Error $e) {

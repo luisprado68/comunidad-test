@@ -45,6 +45,18 @@ final class UserService
             return null;
         }
     }
+
+    public function getByChannel($channel)
+    {
+        $this->setModel();
+        $user = $this->model::where('channel', $channel)->first();
+        if ($user) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
+
     public function getByIdandTwichId($twich_id)
     {
         $this->setModel();
@@ -96,7 +108,7 @@ final class UserService
         } else {
             $user = $this->model::where('email', $email)->first();
         }
-
+        
         if ($user) {
             return $user;
         } else {

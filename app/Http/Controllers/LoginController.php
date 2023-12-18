@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\BillingService;
 use App\Services\ScheduleService;
+use App\Services\SupportScoreService;
 use App\Services\TwichService;
 use App\Services\UserService;
 use GuzzleHttp\Client;
@@ -29,12 +30,15 @@ class LoginController extends Controller
     private $twichService;
     private $userService;
     private $scheduleService;
+    private $supportScoreService;
 
-    public function __construct(TwichService $twichService, UserService $userService,ScheduleService $scheduleService)
+    public function __construct(TwichService $twichService, UserService $userService,ScheduleService $scheduleService,
+    SupportScoreService $supportScoreService)
     {
         $this->twichService = $twichService;
         $this->userService = $userService;
-        $this->scheduleService = $scheduleService;
+        $this->supportScoreService = $supportScoreService;
+       
     }
 
     public function login()
@@ -54,6 +58,13 @@ class LoginController extends Controller
        
         if ($user_model == false) {
           $user_model = $this->userService->create($user);
+          if(session()->exists('support_to_user')){
+            // dump(session('support_to_user'));
+            $supportScoreArray['user_id'] =  $user_model->id;
+            $supportScoreArray['point'] = 0;
+            $supportScoreArray['user'] = json_decode(session('support_to_user'));
+            $this->supportScoreService->create($supportScoreArray);
+            }
         }
         if (isset($user_model->time_zone) && !empty($user_model->time_zone)) {
             return redirect('summary');
