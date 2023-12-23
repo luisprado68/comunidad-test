@@ -27,6 +27,8 @@ class SummaryController extends Controller
             $user = session('user');
             
             $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
+            
+            
             $currentStreams = $this->scheduleService->getStreamByUser($userModel);
             
             if(count($currentStreams) > 0){

@@ -14,7 +14,7 @@
                                 <div class="col-12 mb-4">
                                     <div class="card bg-success">
                                         <div class="card-body text-start text-center">
-                                            <h3 class="text-light ">Mis próximos streams</h3>
+                                            <h3 class="text-light ">Streams en Directo</h3>
                                         </div>
                                     </div>
                                 </div>

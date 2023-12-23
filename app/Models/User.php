@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'area',
         'phone',
+        'points_support',
         'time_zone',
         'status',
         'hours_buyed',
@@ -72,5 +73,9 @@ class User extends Authenticatable
     public function score()
     {
         return $this->hasOne(Score::class);
+    }
+    public function supportScores()
+    {
+        return $this->hasMany(SupportScore::class);
     }
 }

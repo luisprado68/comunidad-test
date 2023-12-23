@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ScheduleService;
 use App\Services\TwichService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
@@ -51,10 +52,12 @@ class ScoreController extends Controller
 
     public function getPointSupport($user_name){
         $user = $this->userService->getByChannel($user_name);
-        session(['support_to_user' => $user] );
+        // dump(json_encode($user));
+        session(['support_to_user_id' => $user->id] );
         return redirect('/');
         // dump($user);
     }
 
+   
   
 }

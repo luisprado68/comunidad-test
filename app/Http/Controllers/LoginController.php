@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\BillingService;
 use App\Services\ScheduleService;
+use App\Services\ScoreService;
 use App\Services\SupportScoreService;
 use App\Services\TwichService;
 use App\Services\UserService;
@@ -31,14 +32,20 @@ class LoginController extends Controller
     private $userService;
     private $scheduleService;
     private $supportScoreService;
+    private $scoreService;
 
-    public function __construct(TwichService $twichService, UserService $userService,ScheduleService $scheduleService,
-    SupportScoreService $supportScoreService)
-    {
+
+    public function __construct(
+        TwichService $twichService,
+        UserService $userService,
+        ScheduleService $scheduleService,
+        SupportScoreService $supportScoreService,
+        ScoreService $scoreService
+    ) {
         $this->twichService = $twichService;
         $this->userService = $userService;
         $this->supportScoreService = $supportScoreService;
-       
+        $this->scoreService = $scoreService;
     }
 
     public function login()
@@ -49,23 +56,44 @@ class LoginController extends Controller
 
     public function getToken(Request $request)
     {
+        $support_user = [];
+        $supportScoreArray = [];
+        $total = 0;
         $this->twichService->getToken($request);
         $user = $this->twichService->getUser();
         $user_model = $this->userService->userExists($user['display_name'] . '@gmail.com', $user['id']);
         
-        
+
         // dump($user_model);
-       
+
         if ($user_model == false) {
-          $user_model = $this->userService->create($user);
-          if(session()->exists('support_to_user')){
-            // dump(session('support_to_user'));
-            $supportScoreArray['user_id'] =  $user_model->id;
-            $supportScoreArray['point'] = 0;
-            $supportScoreArray['user'] = json_decode(session('support_to_user'));
-            $this->supportScoreService->create($supportScoreArray);
+            $user_model_created = $this->userService->create($user);
+            if (session()->exists('support_to_user_id')) {
+               
+                $support_user['user_id'] = $user_model_created->id;
+                $support_user['channel'] = $user_model_created->channel;
+
+                $supportScoreArray['user_id'] =  session('support_to_user_id');
+                $supportScoreArray['point'] = 0;
+                $supportScoreArray['user'] = json_encode($support_user);
+                $this->supportScoreService->create($supportScoreArray);
+                // Log::debug('crear supportScoreArray');   
+                // Log::debug(json_encode($supportScoreArray));
+                
+                // $total = count($user_model_created->supportScores->where('point',1));
             }
+        }else{
+            if(count($user_model->supportScores)> 0){
+                $total = count($user_model->supportScores->where('point', 1));
+            }
+            
+            if ($total != 0) {
+                $user_model->points_support = $total;
+                $user_model->update();
+            }
+            $this->scoreService->evaluatePoint($user_model);
         }
+       
         if (isset($user_model->time_zone) && !empty($user_model->time_zone)) {
             return redirect('summary');
         } else {
@@ -77,10 +105,7 @@ class LoginController extends Controller
     {
         session()->forget('user');
         session()->forget('user-log');
-        session()->forget('points_day');
-        session()->forget('points_week');
         session()->forget('status');
-        session()->forget('neo_coins');
         return redirect('/');
     }
 
@@ -119,10 +144,12 @@ class LoginController extends Controller
         // $user_response['profile_image_url'] = 'https://static-cdn.jtvnw.net/jtv_user_pictures/6471351b-ea90-4cd2-828b-406a7dea08e1-profile_image-300x300.png';
         // dd($user);
         if ($user_model) {
-            
-            session(['points_day' => $user_model->score->points_day ?? '0']);
-            session(['points_week' => $user_model->score->points_week ?? '0']);
-            session(['neo_coins' => $user_model->score->neo_coins ?? '0']);
+
+            $total = count($user_model->supportScores->where('point', 1));
+            if ($total != 0) {
+                $user_model->points_support = $total;
+                $user_model->update();
+            }
 
             Log::debug('exist-----');
             if (isset($user_model->time_zone) && !empty($user_model->time_zone)) {

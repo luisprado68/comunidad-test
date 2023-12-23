@@ -172,7 +172,7 @@ final class ScheduleService
         }
         
 
-        if($minutes >= 50  || $minutes <= 10 ){
+        if($minutes >= 59  || $minutes <= 10 ){
             $back_minute = 50;
             $minute = 10;
         }

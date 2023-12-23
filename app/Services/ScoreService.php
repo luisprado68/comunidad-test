@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Score;
 use App\Models\User;
 use Broobe\Services\Service;
 use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
+use Carbon\Carbon;
 use Error;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -46,7 +48,7 @@ final class ScoreService
             return null;
         }
     }
-   
+
     public function getByUserId($user_id)
     {
         $this->setModel();
@@ -79,9 +81,9 @@ final class ScoreService
     {
         try {
             $score = new Score();
-          
+
             $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
-            $score->points_day = isset($userArray['points_day']) ? $userArray['points_day'] :null;
+            $score->points_day = isset($userArray['points_day']) ? $userArray['points_day'] : null;
             $score->points_week =  isset($userArray['points_week']) ? $userArray['points_week'] : null;
             $score->neo_coins = isset($userArray['neo_coins']) ? $userArray['neo_coins'] : null;
             $score->points_support = isset($userArray['points_support']) ? $userArray['points_support'] : null;
@@ -118,5 +120,39 @@ final class ScoreService
         }
     }
 
-    
+    public function evaluatePoint($user)
+    {
+
+        $current_time = Carbon::now();
+        $current_time->tz = $user->time_zone;
+        if (strtolower($current_time->format('l')) == 'sunday') {
+            if ($user->score) {
+                if ($user->score->points_week == 60) {
+                    if ($user->range->id <= 4) {
+                        $user->range_id = $user->range_id + 1;
+                        $user->update();
+                    }
+                } elseif ($user->score->points_week == 60 && $user->range_id == 1) {
+
+                    $user->range_id = 2;
+                    $user->update();
+                } elseif ($user->score->points_week >= 45 && $user->score->points_week < 60  && $user->range_id == 2) {
+                    $user->range_id = 2;
+                    $user->update();
+                } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 3) {
+                    $user->range_id = 3;
+                    $user->update();
+                } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 4) {
+                    $user->range_id = 4;
+                    $user->update();
+                } elseif ($user->score->points_week <= 50 || $user->score->points_week < 45) {
+                    $user->range_id = $user->range_id - $user->range_id;
+                    $user->update();
+                } elseif ($user->points_support == 25) {
+                    $user->range_id = 4;
+                    $user->update();
+                }
+            }
+        }
+    }
 }

@@ -59,6 +59,29 @@ final class SupportScoreService
         }
     }
 
+    public function getByUserSupportId($user_id)
+    {
+        $this->setModel();
+        $userSupport = $this->model::whereJsonContains('user->user_id',$user_id)->get();
+        if (count($userSupport) > 0) {
+            return $userSupport;
+        } else {
+            return [];
+        }
+    }
+
+    public function getByUserScore($user_id)
+    {
+        $total = 0;
+        $this->setModel();
+        $userSupport = $this->model::where('user_id',$user_id)->where('point',1)->get();
+        if (count($userSupport) > 0) {
+            $total = count($userSupport);
+            return $total;
+        } else {
+            return $total;
+        }
+    }
 
     public function getUsersModel()
     {
@@ -81,12 +104,14 @@ final class SupportScoreService
         try {
             $score = new SupportScore();
             $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
-            $score->points_day = isset($userArray['point']) ? $userArray['point'] :null;
-            $score->users_data = isset($userArray['user']) ? $userArray['user'] : null;
+            $score->point = isset($userArray['point']) ? $userArray['point'] :null;
+            $score->user = isset($userArray['user']) ? $userArray['user'] : null;
             $score->save();
-
+            Log::debug('SupportScore');
+            Log::debug(json_encode($score));
             return $score;
         } catch (Error $e) {
+            Log::debug(json_encode($e->getMessage()));
             return false;
         }
     }
@@ -101,8 +126,8 @@ final class SupportScoreService
         try {
             $score = SupportScore::find($userArray['id']);
             $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
-            $score->points_day = isset($userArray['point']) ? $userArray['point'] :null;
-            $score->users_data = isset($userArray['user']) ? $userArray['user'] : null;
+            $score->point = isset($userArray['point']) ? $userArray['point'] :null;
+            $score->user = isset($userArray['user']) ? $userArray['user'] : null;
             $score->update();
             return $score->id;
         } catch (Error $e) {

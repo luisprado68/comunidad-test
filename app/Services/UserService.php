@@ -186,7 +186,7 @@ final class UserService
 
             $user->token = session('access_token') ?? '';
             $user->update();
-            return $user->id;
+            return $user;
         } catch (Error $e) {
             return false;
         }

@@ -92,7 +92,9 @@ final class TwichService
                 $res = $client->sendAsync($request)->wait();
                 $result = json_decode($res->getBody(), true);
                 $this->user = $result['data'][0];
-
+                
+                Log::debug('user twich---------');
+                Log::debug(json_encode($this->user));
                 // $img = $this->user['profile_image_url'];
                 session(['user' => $this->user]);
                 return $this->user;
