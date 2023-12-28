@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('scores', function (Blueprint $table) {
       
-            $table->integer('points_support')->nullable();
+            $table->json('streamer_supported')->nullable();
 
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
     {
         Schema::table('scores', function (Blueprint $table) {
 
-            $table->dropColumn('points_support');
+            $table->json('streamer_supported');
             
 
         });

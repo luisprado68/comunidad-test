@@ -39,22 +39,7 @@ class TwichController extends Controller
     {
         Log::debug("*****************getChatters*****************************");
         $data = [];
-        // $user['user_id'] = 625226808;
-        // $user['user_login'] = 'shingineo';
-        // $user['user_name'] = 'shingineo';
-
-        // $user_two['user_id'] = 403034123;
-        // $user_two['user_login'] = 'XFilesDG';
-        // $user_two['user_name'] = 'XFilesDG';
-
-        // $user_three['user_id'] = 779124358;
-        // $user_three['user_login'] = 'lucho952000';
-        // $user_three['user_name'] = 'lucho952000';
-
-        // array_push($data, $user);
-        // array_push($data, $user_two);
-        // array_push($data, $user_three);
-
+       
         $users = [];
         $users['status'] = 'error';
         $users['message'] = 'error';
@@ -85,33 +70,48 @@ class TwichController extends Controller
                                     Log::debug('score count_users---------------------');
                                     Log::debug($score->count_users);
                                     $current = Carbon::now();
+                                    $minute = $current->format('i');
                                     // Log::debug('--------------current---------------------');
                                     // Log::debug($current->format('H'));
                                     $last = new Carbon( $score->updated_at);
                                     // Log::debug('--------------last---------------------');
                                     // Log::debug($last->format('H'));
                                     //$score->count_users == count($users)
-                                    if($current->format('H') != $last->format('H') ){
-                                        if ($score->points_day == 10) {
-                                            $score->points_day = 0;
-                                        } else {
-                                            $score->points_day =  $score->points_day + 1;
+                                    $user_support['id'] = $this->user_model->id;
+                                    $user_support['name'] = $this->user_model->channel;
+                                        //minuto 15 
+                                        if($minute == 10){
+
+                                            $score->users_data = json_encode($users);
+                                            $score->count_users = count($users);
+                                            $score->streamer_supported = json_encode($user_support);
+                                            $score->update();
+                                        }elseif($minute == 50){
+
+                                            if($current->format('H') == $last->format('H') && $current->format('i') != $last->format('i')
+                                            ){
+                                                if ($score->points_day == 10) {
+                                                    $score->points_day = 0;
+                                                } else {
+                                                    $score->points_day =  $score->points_day + 1;
+                                                }
+                                                
+                                                if ($score->points_week == 60) {
+                                                    $score->points_week = 0;
+                                                } else {
+                                                    $score->points_week = $score->points_week + 1;
+                                                }
+                
+                                                $score->neo_coins = $score->neo_coins + 1;
+                                                $score->users_data = json_encode($users);
+                                                $score->count_users = count($users);
+                                                $score->streamer_supported = json_encode($user_support);
+                                                $score->update();
+
+                                            }
                                         }
                                         
-                                        if ($score->points_week == 60) {
-                                            $score->points_week = 0;
-                                        } else {
-                                            $score->points_week = $score->points_week + 1;
-                                        }
-        
-                                        $score->neo_coins = $score->neo_coins + 1;
-                                        $score->users_data = json_encode($users);
-                                        $score->count_users = count($users);
-                                        $score->update();
-                                       
-                                    }
-                                   
-                                    // dump($score);
+                                 
                                 } else {
                                     Log::debug('else---------------------');
                                     Log::debug($user_twich);

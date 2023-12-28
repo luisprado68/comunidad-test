@@ -18,21 +18,32 @@
                                         </div>
 
                                     </div>
+                                    @foreach ($scores as $score)
                                     <div class="card bg-dark text-light mt-2">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div>
+                                                {{-- <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div> --}}
+                                                <div class="text-lg font-bold text-center">{{$score['date']}}</div>
                                             </div>
                                             <div class="col">
-                                                <div class="text-lg font-bold pt-3">LobatoXY</div>
+                                                <div class="text-lg font-bold pt-3">{{$score['channel']}}</div>
                                             </div>
+                                            @if ($score['time'] >= 50 && $score['time'] <= 55)
+                                            <div class="col">
+                                                <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
+                                            </div>
+                                            @else
                                             <div class="col">
                                                 <div class="m-1 bg-danger text-light text-center">Poco tiempo en el stream
                                                 </div>
                                             </div>
+                                            @endif
+                                            
                                         </div>
                                     </div>
-                                    <div class="card bg-dark text-light mt-2">
+                                    @endforeach
+                                    
+                                    {{-- <div class="card bg-dark text-light mt-2">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div>
@@ -44,7 +55,7 @@
                                                 <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="col-6">
                                     <div class="card banner ">

@@ -60,6 +60,16 @@ final class ScoreService
         }
     }
 
+    public function getByUsersId($user_id)
+    {
+        $this->setModel();
+        $user = $this->model::whereJsonContains('streamer_supported->id',$user_id)->get();
+        if ($user) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
 
     public function getUsersModel()
     {
