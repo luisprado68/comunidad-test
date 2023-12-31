@@ -150,7 +150,7 @@ class LoginController extends Controller
                 $user_model->points_support = $total;
                 $user_model->update();
             }
-
+            $this->scoreService->evaluatePoint($user_model);
             Log::debug('exist-----');
             if (isset($user_model->time_zone) && !empty($user_model->time_zone)) {
                 return redirect('summary');

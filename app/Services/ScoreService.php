@@ -132,36 +132,50 @@ final class ScoreService
 
     public function evaluatePoint($user)
     {
-
+        Log::debug('user*********');
+        Log::debug(json_encode($user));
+        Log::debug('score*********');
+        Log::debug(json_encode($user->score));
         $current_time = Carbon::now();
         $current_time->tz = $user->time_zone;
         if (strtolower($current_time->format('l')) == 'sunday') {
             if ($user->score) {
+                $score = $user->score;
+                Log::debug(json_encode($score));
                 if ($user->score->points_week == 60) {
                     if ($user->range->id <= 4) {
                         $user->range_id = $user->range_id + 1;
-                        $user->update();
+                        Log::debug('1*********');
                     }
                 } elseif ($user->score->points_week == 60 && $user->range_id == 1) {
-
+                    Log::debug('2*********');
                     $user->range_id = 2;
-                    $user->update();
+                    
                 } elseif ($user->score->points_week >= 45 && $user->score->points_week < 60  && $user->range_id == 2) {
+                    Log::debug('3*********');
                     $user->range_id = 2;
-                    $user->update();
+                   
                 } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 3) {
                     $user->range_id = 3;
-                    $user->update();
+                   
                 } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 4) {
+                    Log::debug('4*********');
                     $user->range_id = 4;
-                    $user->update();
+                    
                 } elseif ($user->score->points_week <= 50 || $user->score->points_week < 45) {
-                    $user->range_id = $user->range_id - $user->range_id;
-                    $user->update();
+                    Log::debug('5*********');
+                    if($user->range_id > 1 && $user->role->id != 1){
+                        $range_before =  $user->range_id;
+                        $user->range_id = $range_before - 1;
+                    }
+                    
+                    
                 } elseif ($user->points_support == 25) {
+                    Log::debug('6*********');
                     $user->range_id = 4;
-                    $user->update();
+                    
                 }
+                $user->update();
             }
         }
     }
