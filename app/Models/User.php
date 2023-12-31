@@ -78,4 +78,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(SupportScore::class);
     }
+    public function streamSupport()
+    {
+        return $this->hasMany(StreamSupport::class);
+    }
 }

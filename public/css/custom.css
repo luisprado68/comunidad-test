@@ -3,8 +3,9 @@
   width: 100vw;
   height: 100vh;
   background-position: center;
-  background-image: url("../img/fondo_v2.jpg");
- 
+  background-image: url("../img/gabinete.jpg");
+  /* background: rgba(0, 0, 0, 0.137); */
+  /* opacity: 0.6; */
   background-size: cover;
   
 }
@@ -232,3 +233,31 @@ div.avaibleInput{
   color: linen;
   opacity: 1;
 } */
+.profile {
+  width: 50%;
+}
+
+@media (max-width: 450px) {
+  .navbar-nav .dropdown-menu {  
+    width: 100%;
+    position:absolute !important;
+    left: 6%;
+  }
+
+  .profile {
+    width: 100% !important;
+  }
+
+  /* perfil */
+
+ 
+}
+
+@media (max-width: 750px) {
+  .navbar-nav .dropdown-menu {
+    width: 100%;
+    position:absolute !important;
+    left: 6%;
+  }
+ 
+}

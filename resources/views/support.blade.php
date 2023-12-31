@@ -20,7 +20,7 @@
                                 </div>
                                 @if ($show_streams)
                                     @foreach ($streams as $streams)
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="card banner">
                                                 <div class="card-body text-center">
                                                     <h3 class="text-light text-center">{{ $streams['name'] }}</h3>

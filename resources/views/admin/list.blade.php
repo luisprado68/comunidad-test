@@ -48,13 +48,52 @@
                                         <th scope="row">{{ $user->id }}</th>
                                         <td>{{ $user->role->name }}</td>
                                         <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email}}</td>
+                                        <td>{{ $user->email }}</td>
                                         <td>{{ $user->status }}</td>
-                                        <td><button type="submit" class="btn btn-primary"><a class="dropdown-item" href="{{ route('admin-edit',$user['id']) }}">Edit</a></button></td>
+                                        <td><button type="submit" class="btn btn-primary"><a class="dropdown-item"
+                                                    href="{{ route('admin-edit', $user['id']) }}">Edit</a></button>
+
+
+
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                                Eliminar
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-dark" id="exampleModalLabel">
+                                                                Eliminar el usuario
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-dark">
+                                                            Desea eliminar al usuario?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Cerrar</button>
+                                                            <button type="button" class="btn btn-danger"><a
+                                                                    class="dropdown-item"
+                                                                    href="{{ route('admin-delete', $user['id']) }}">Eliminar</a></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
+
+
                     </div>
                 </div>
 

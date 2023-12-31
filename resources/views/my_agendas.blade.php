@@ -59,7 +59,7 @@
                                         <div class="row">
 
                                             @foreach ($week as $key => $days)
-                                                <div class="col-4 my-4">
+                                                <div class="col-lg-4 col-md-4  col-sm-12 my-4">
                                                     <input class="form-control form-control-lg bg-warning text-center"
                                                         type="text" placeholder="{{ trans('user.create.' . $key) }}"
                                                         disabled>

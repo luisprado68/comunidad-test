@@ -22,6 +22,7 @@ class SummaryController extends Controller
 
         $active = false;
         $times = [];
+        $ref = [];
         // dd(session('user'));
         if(session()->exists('user')){
             $user = session('user');
@@ -34,6 +35,10 @@ class SummaryController extends Controller
             if(count($currentStreams) > 0){
                 $times = $this->scheduleService->getTimes($currentStreams,$userModel);
             }
+            foreach ($userModel->supportScores as $key => $supportScore) {
+                $stream = json_decode($supportScore->user);
+                array_push($ref,$stream->channel);
+            }
             
             if($userModel->status){
                
@@ -43,6 +48,6 @@ class SummaryController extends Controller
                 session(['status' => 0]);
             }
         }
-        return view('summary',["user"=>$userModel,'times' => json_encode($times)]);
+        return view('summary',["user"=>$userModel,'times' => json_encode($times),'ref' => $ref]);
     }
 }

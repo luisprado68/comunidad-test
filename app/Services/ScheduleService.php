@@ -170,7 +170,8 @@ final class ScheduleService
         }else{
             $backHour = $hour - 1;
         }
-        
+        //original if($minutes >= 59  || $minutes <= 10 ){
+
 
         if($minutes >= 59  || $minutes <= 10 ){
             $back_minute = 50;
@@ -180,9 +181,12 @@ final class ScheduleService
             $back_minute = 10;
             $minute = 10;
             $hour = $date->format('H');
-            $backHour = $hour;
+            // $backHour = $hour-1;
         } 
-      
+        // dump($back_minute);
+        // dump($minute);
+
+
         $actual = new Carbon($dates.' ' .$backHour.':'.$back_minute.':00');
 
         $actual_next = new Carbon($dates_next.' ' .$hour.':'.$minute.':00');

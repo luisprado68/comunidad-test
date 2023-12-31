@@ -18,7 +18,8 @@ if (stream_active) {
         var minute = current.getMinutes();
         console.log(hour + ":" + minute);
         // setar y probar un minuto espefico 15 y 50
-        if (minute >= 50 && minute <= 55 || minute >= 10 && minute <= 15) {
+        // original if (minute >= 50 && minute <= 55 || minute >= 10 && minute <= 15) {
+        if (minute >= 50 && minute <= 59 || minute >= 1 && minute <= 49) {
             console.log("entro");
             clearInterval(id);
 

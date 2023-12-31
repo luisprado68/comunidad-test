@@ -78,6 +78,20 @@ class AdminController extends Controller
             return redirect('admin');
         }
     }
+
+    public function delete($id)
+    {
+        if (Session::has('user-log')) {
+            $user = $this->userService->getById($id);
+            $user->delete();
+            $users = $this->userService->getUsersModel();
+            // return view('admin.list', ['users' => $users]);
+            return redirect('admin/list');
+        }
+        //  else {
+        //     return redirect('admin');
+        // }
+    }
     public function post(Request $request)
     {
         $user = $request->all();

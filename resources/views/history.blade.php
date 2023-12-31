@@ -11,7 +11,7 @@
                     <div class="card bg-secondary">
                         <div class="card-body ">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="card banner">
                                         <div class="card-body banner">
                                             <h3 class="text-light text-center">Últimos Apoyos</h3>
@@ -19,25 +19,25 @@
 
                                     </div>
                                     @foreach ($scores as $score)
-                                    <div class="card bg-dark text-light mt-2">
+                                    <div class="card bg-dark text-light mt-2 mb-2">
                                         <div class="row">
-                                            <div class="col-12">
-                                                {{-- <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div> --}}
-                                                <div class="text-lg font-bold text-center">{{$score['date']}}</div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="text-lg font-bold pt-3">{{$score['channel']}}</div>
-                                            </div>
-                                            @if ($score['time'] >= 50 && $score['time'] <= 55)
-                                            <div class="col">
-                                                <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
-                                            </div>
-                                            @else
-                                            <div class="col">
-                                                <div class="m-1 bg-danger text-light text-center">Poco tiempo en el stream
+                                                <div class="col-lg-12">
+                                                    {{-- <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div> --}}
+                                                    <div class="text-lg font-bold text-center">{{$score['date']}}</div>
                                                 </div>
-                                            </div>
-                                            @endif
+                                                <div class="col">
+                                                    <div class="text-lg font-bold pt-3">{{$score['channel']}}</div>
+                                                </div>
+                                                @if ($score['time'] >= 50 && $score['time'] <= 55)
+                                                <div class="col">
+                                                    <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
+                                                </div>
+                                                @else
+                                                <div class="col">
+                                                    <div class="m-1 bg-danger text-light text-center">Poco tiempo en el stream
+                                                    </div>
+                                                </div>
+                                                @endif
                                             
                                         </div>
                                     </div>
@@ -57,7 +57,7 @@
                                         </div>
                                     </div> --}}
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="card banner ">
                                         <div class="card-body banner">
                                             <h3 class="text-light text-center">NeoCoins</h3>

@@ -11,28 +11,56 @@
                     <div class="card bg-secondary">
                         <div class="card-body ">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="card banner">
                                         <div class="card-body banner">
                                             <h3 class="text-light text-center">Rango</h3>
                                         </div>
+                                        
+                                    </div>
+                                    <div class="col text-center justify-content-center">
+                                        @if (env('APP_ENV') == 'local')
+                                            @if ($user->range->id == 1 )
+                                                <img src="{{ asset('/img/bronce.svg') }}" alt="tag" class="w-50 m-2">
+                                            @elseif($user->range->id == 2 )
+                                                <img src="{{ asset('/img/plata.svg') }}" alt="tag" class="w-50 m-2">
+                                            @elseif($user->range->id == 3 )
+                                                <img src="{{ asset('/img/oro.svg') }}" alt="tag" class="w-50 m-2">
+                                            @elseif($user->range->id == 4 )
+                                                <img src="{{ asset('/img/platino.svg') }}" alt="tag" class="w-50 m-2">
+                                            @endif
+                                          
+                                        @else
+                                            @if ($user->range->id == 1 )
+                                                <img src="./public/img/bronce.svg" alt="tag" class="w-50 m-2">
+                                            @elseif($user->range->id == 2 )
+                                                <img src="./public/img/plata.svg" alt="tag" class="w-50 m-2">
+                                            @elseif($user->range->id == 3 )
+                                                <img src="./public/img/oro.svg" alt="tag" class="w-50 m-2">
+                                            @elseif($user->range->id == 4 )
+                                                <img src="./public/img/platino.svg" alt="tag" class="w-50 m-2">
+                                            @endif
+                                        @endif
+                                        <h4 class="text-light text-center">{{$user->range->name}}</h4>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="card banner ">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="card banner mb-3">
                                         <div class="card-body banner">
                                             <h3 class="text-light text-center">Referidos</h3>
                                         </div>
                                     </div>
+                                    <div class="col text-center justify-content-center">
+                                        @if (count($ref)> 0)
+                                            @foreach ( $ref as $item)
+                                                <h3 class="text-light text-center mb-1">{{$item}}</h3>
+                                            @endforeach
+                                        @endif
+                                        
+                                       
+                                    </div>
                                 </div>
-                                <div class="col-6 text-center">
-                                    @if (env('APP_ENV') == 'local')
-                                        <img src="{{ asset('/img/rango.jpg') }}" alt="tag" class="w-25 m-5">
-                                    @else
-                                        <img src="./public/img/rango.jpg" alt="tag" class="w-25 m-5">
-                                    @endif
-                                    <p class="text-light">Bronce</p>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

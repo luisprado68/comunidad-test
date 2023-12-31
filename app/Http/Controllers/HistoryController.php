@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StreamSupport;
 use App\Services\ScheduleService;
 use App\Services\ScoreService;
+use App\Services\StreamSupportService;
 use App\Services\TwichService;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -15,36 +17,44 @@ class HistoryController extends Controller
     private $userService;
     private $scheduleService;
     private $scoreService;
-    public function __construct(TwichService $twichService, UserService $userService,ScheduleService $scheduleService,ScoreService $scoreService)
+    private $streamSupportService;
+
+    public function __construct(TwichService $twichService, UserService $userService,
+    ScheduleService $scheduleService,ScoreService $scoreService,StreamSupportService $streamSupportService)
     {
         $this->twichService = $twichService;
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
         $this->scoreService = $scoreService;
+        $this->streamSupportService = $streamSupportService;
     }
     public function index(){
         $times = [];
         $user_array = [];
         $userModel = null;
+        $streamSupports = [];
+
         if(session()->exists('user')){
             $user = session('user');
             
             $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
-            $currentStreams = $this->scheduleService->getStreamByUser($userModel);
+           
+            $streamSupports = $this->streamSupportService->getStreamSupportsByUserId($userModel->id);
             
-            if(count($currentStreams) > 0){
-                $times = $this->scheduleService->getTimes($currentStreams,$userModel);
-            }
-
-            $scores = $this->scoreService->getByUsersId($userModel->id);
-            foreach ($scores as $key => $score) {
+            // dump($streamSupports);
+            
+            foreach ($streamSupports as $key => $score) {
                 $user_found = $this->userService->getById($score->user_id);
+
+                
+                
+                $support = json_decode($score->supported);
                 $updated = new Carbon($score->updated_at);
                 $updated->locale('es');
                 $updated->tz = $user_found->time_zone;
                 
                 // $updated->format('d-m-Y H:i')
-                array_push($user_array,['channel' => $user_found->channel,'time' => $updated->format('i'),
+                array_push($user_array,['channel' => $support->name,'time' => $updated->format('i'),
                 'date' =>  trans('user.create.' .strtolower($updated->format('l'))).' '.$updated->format('d').' '.trans('user.create.' .strtolower($updated->format('F'))).' '.$updated->format('H:i')]);
             }
             // dd($user_array);

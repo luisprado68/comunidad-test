@@ -12,19 +12,20 @@
         @if (env('APP_ENV') == 'local')
             <img src="{{asset('/img/logo_co.png')}}" alt="tag"
         class="logo rounded-circle">
+        
         @else
             <img src="{{'./public/img/logo_co.png'}}" alt="tag"
             class="logo rounded-circle">
         @endif
       
     @endif
-        @if (env('APP_ENV') == 'local')
+        {{-- @if (env('APP_ENV') == 'local')
             <img src="{{asset('/img/banner.png')}}" alt="tag"
             class="banner-fondo mr-4">
         @else
         <img src="{{'./public/img/banner.png'}}" alt="tag"
         class="banner-fondo mr-4">
-        @endif
+        @endif --}}
     
     {{-- @dd(session('user')['profile_image_url']) --}}
     {{-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0"> --}}
@@ -71,7 +72,7 @@
                         @endif
 
                     </a>
-                    <ul class="dropdown-menu m-0" aria-labelledby="navbarDropdownMenuLink">
+                    <ul class="dropdown-menu m-0 overlay" aria-labelledby="navbarDropdownMenuLink">
 
                         @if (session()->has('user'))
                             {{-- <input type="text" class="form-control" aria-label="Default" name="name"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ScheduleService;
 use App\Services\ScoreService;
+use App\Services\StreamSupportService;
 use App\Services\TwichService;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -14,6 +15,8 @@ class TwichController extends Controller
 {
     private $userService;
     private $scheduleService;
+    private $streamSupportService;
+
     private $twichService;
     private $scoreService;
     public $showAgendas = false;
@@ -23,13 +26,17 @@ class TwichController extends Controller
     public $user_model;
     public $agenda;
     public $user;
-    public function __construct(TwichService $twichService, UserService $userService, ScheduleService $scheduleService, ScoreService $scoreService)
+   
+
+    public function __construct(TwichService $twichService, UserService $userService,
+    ScheduleService $scheduleService, ScoreService $scoreService,StreamSupportService $streamSupportService )
     {
 
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
         $this->twichService = $twichService;
         $this->scoreService = $scoreService;
+        $this->streamSupportService = $streamSupportService;
     }
 
 
@@ -43,90 +50,102 @@ class TwichController extends Controller
         $users = [];
         $users['status'] = 'error';
         $users['message'] = 'error';
+        $supportStreams = [];
         if (session()->exists('user')) {
             $this->user = session('user');
             $this->user_model = $this->userService->getByIdandTwichId($this->user['id']);
 
-            $users = $this->twichService->getUserChatters($this->user_model);
-            Log::debug('users controller------------------');
-            Log::debug(json_encode($users));
-          
+            $users = $this->twichService->getUserChatters($this->user_model); 
                 if (count($users) > 0) {
-                    Log::debug('getUserChatters---------------------');
-                    Log::debug($users);
-                    Log::debug('count users---------------------');
-                    Log::debug(count($users));
                     
                     foreach ($users as $key => $item) {
-                        Log::debug('item---------------------');
-                        Log::debug($item);
                             $user_twich  = $this->userService->getByIdandTwichId($item['user_id']);
-                            Log::debug('user_twich---------------------');
-                            Log::debug($user_twich);
-
+                          
                             if(!empty($user_twich) && $user_twich->id != $this->user_model->id){
-                                $score = $user_twich->score;
-                                if (isset($score) && !empty($score)) {
-                                    Log::debug('score count_users---------------------');
-                                    Log::debug($score->count_users);
-                                    $current = Carbon::now();
-                                    $minute = $current->format('i');
-                                    // Log::debug('--------------current---------------------');
-                                    // Log::debug($current->format('H'));
-                                    $last = new Carbon( $score->updated_at);
-                                    // Log::debug('--------------last---------------------');
-                                    // Log::debug($last->format('H'));
-                                    //$score->count_users == count($users)
-                                    $user_support['id'] = $this->user_model->id;
-                                    $user_support['name'] = $this->user_model->channel;
-                                        //minuto 15 
-                                        if($minute == 10){
+                                $current_t = Carbon::now();
+                                $minute_t = $current_t->format('i');
+                                if($minute_t == 10 || $minute_t == 50){
 
-                                            $score->users_data = json_encode($users);
-                                            $score->count_users = count($users);
-                                            $score->streamer_supported = json_encode($user_support);
-                                            $score->update();
-                                        }elseif($minute == 50){
+                                    $supportStreams = $user_twich->streamSupport;
+                                    Log::debug('*********** supportStreams*************');
+                                    Log::debug(json_encode($supportStreams));
+                                    if(count($supportStreams)>0){
+                                        foreach ($supportStreams as $key => $supportStream) {
+                                            // if($supportStream->supported)
+                                            $support_created = json_decode($supportStream->supported);
+                                            Log::debug('*********** support_created*************');
+                                            Log::debug(json_encode($support_created));
+                                            if($support_created->id == $this->user_model->id){
 
-                                            if($current->format('H') == $last->format('H') && $current->format('i') != $last->format('i')
-                                            ){
-                                                if ($score->points_day == 10) {
-                                                    $score->points_day = 0;
-                                                } else {
-                                                    $score->points_day =  $score->points_day + 1;
-                                                }
-                                                
-                                                if ($score->points_week == 60) {
-                                                    $score->points_week = 0;
-                                                } else {
-                                                    $score->points_week = $score->points_week + 1;
-                                                }
-                
-                                                $score->neo_coins = $score->neo_coins + 1;
-                                                $score->users_data = json_encode($users);
-                                                $score->count_users = count($users);
-                                                $score->streamer_supported = json_encode($user_support);
-                                                $score->update();
-
+                                                Log::debug('*********** pasassss*************');
+                                                Log::debug(json_encode($support_created));
+                                                $supportStream->supported = json_encode($support_created);
+                                                $supportStream->update();
                                             }
                                         }
-                                        
-                                 
-                                } else {
-                                    Log::debug('else---------------------');
-                                    Log::debug($user_twich);
-
-                                    $score['user_id'] = $user_twich->id;
-                                    $score['points_day'] = 1;
-                                    $score['points_week'] = 1;
-                                    $score['neo_coins'] = 1;
-                                    $score['users_data'] = json_encode($users);
-                                    $score['count_users'] = count($users);
-                                    
-                                    $created = $this->scoreService->create($score);
-                                    
-                                    // dump($score);
+                                    }
+                                    else{
+                                        $support['id'] = $this->user_model->id;
+                                        $support['name'] = $this->user_model->channel;
+                                        $streamSupport['user_id'] = $user_twich->id;
+                                        $streamSupport['supported'] = json_encode($support);
+                                        $created = $this->streamSupportService->create($streamSupport);
+                                    }
                                 }
+                                
+                                $current = Carbon::now();
+                                $minute = $current->format('i');
+
+                                if($minute == 50){
+                                    $score = $user_twich->score;
+                                        Log::debug('score---------------------');
+                                        Log::debug($score);
+                                    if (isset($score) && !empty($score)) {
+                                    
+                                        $last = new Carbon( $score->updated_at);
+                                        $user_support['id'] = $this->user_model->id;
+                                        $user_support['name'] = $this->user_model->channel;
+                                            //minuto minute == 10
+                                                if($current->format('H') == $last->format('H')
+                                                || $current->format('H') != $last->format('H') 
+                                                ){
+                                                    if ($score->points_day == 10) {
+                                                        $score->points_day = 0;
+                                                    } else {
+                                                        $score->points_day =  $score->points_day + 1;
+                                                    }
+                                                    
+                                                    if ($score->points_week == 60) {
+                                                        $score->points_week = 0;
+                                                    } else {
+                                                        $score->points_week = $score->points_week + 1;
+                                                    }
+                    
+                                                    $score->neo_coins = $score->neo_coins + 1;
+                                                    $score->users_data = json_encode($users);
+                                                    $score->count_users = count($users);
+                                                    $score->streamer_supported = json_encode($user_support);
+                                                    $score->update();
+
+                                                }
+
+                                    } else {
+                                        Log::debug('else---------------------');
+                                        Log::debug($user_twich);
+
+                                        $score['user_id'] = $user_twich->id;
+                                        $score['points_day'] = 1;
+                                        $score['points_week'] = 1;
+                                        $score['neo_coins'] = 1;
+                                        $score['users_data'] = json_encode($users);
+                                        $score['count_users'] = count($users);
+                                        
+                                        $created = $this->scoreService->create($score);
+                                        
+                                        // dump($score);
+                                    }
+                                }
+                                
                             }
                            
                         

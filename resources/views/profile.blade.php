@@ -7,7 +7,7 @@
                 @include('link')
             @else
                 <div class="d-flex justify-content-center">
-                    <div class="card w-50 bg-secondary">
+                    <div class="card  bg-secondary profile">
 
                         <div class="card-body bg-secondary m-0 p-0">
                             <div class="card bg-black ">
