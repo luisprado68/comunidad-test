@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
       
-            $table->integer('points_support')->nullable();
+            $table->boolean('active')->default(false);
+
+            
 
         });
     }
@@ -25,7 +27,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->dropColumn('points_support');
+            $table->dropColumn('active');
             
 
         });

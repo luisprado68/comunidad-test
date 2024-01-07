@@ -154,15 +154,18 @@ final class ScheduleService
 
     public function getCurrentStream($user){
 
+        $currentStreams = [];
         $this->setModel();
         $date = Carbon::now();
         $date_next = Carbon::now();
+        // $date_next->tz = $user->time_zone;
         $dates_next = $date_next->format('Y-m-d');
         // $date->tz = $user->time_zone;
+
         $dates = $date->format('Y-m-d');
         $hour = $date->format('H');
         $minutes = $date->format('i');
-        // dd($hour);
+        
         if($hour == "00"){
             $backHour = 23;
             $date->addDays(-1);
@@ -173,19 +176,20 @@ final class ScheduleService
         //original if($minutes >= 59  || $minutes <= 10 ){
 
 
-        if($minutes >= 59  || $minutes <= 10 ){
-            $back_minute = 50;
-            $minute = 10;
+        if($minutes > 59  || $minutes <= env('WATCH_SUPPORT_MINUTE')){
+            $back_minute = 59;
+            $minute = env('WATCH_SUPPORT_MINUTE');
         }
         else{
-            $back_minute = 10;
-            $minute = 10;
+            $back_minute = 59;
+            $minute = env('WATCH_SUPPORT_MINUTE');
             $hour = $date->format('H');
             // $backHour = $hour-1;
         } 
+    
+        // dump($hour);
         // dump($back_minute);
         // dump($minute);
-
 
         $actual = new Carbon($dates.' ' .$backHour.':'.$back_minute.':00');
 
@@ -199,8 +203,10 @@ final class ScheduleService
 
       
         // dump($end_string);
-
-        $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
+        if($minutes <= env('WATCH_SUPPORT_MINUTE')){
+            $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
+        }
+        
 
         // dump($currentStreams);
         return $currentStreams;

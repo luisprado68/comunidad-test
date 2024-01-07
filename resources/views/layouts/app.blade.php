@@ -29,7 +29,7 @@
 </head>
 
 <body class="fondo_general" style="width: 100%">
-
+    
     @if (session()->has('user'))
         @include('layouts.nav', ['user' => session('user')])
     @else
@@ -48,7 +48,12 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
     <script src="https://kit.fontawesome.com/252b802fc2.js" crossorigin="anonymous"></script>
-    
+    <script>
+        window.INIT_MIN_MINUTE_CHATTER = `{{ env('INIT_MIN_MINUTE_CHATTER') }}`;
+        window.INIT_MAX_MINUTE_CHATTER = `{{ env('INIT_MAX_MINUTE_CHATTER') }}`;
+        window.SECOND_MIN_MINUTE_CHATTER = `{{ env('SECOND_MIN_MINUTE_CHATTER') }}`;
+        window.SECOND_MAX_MINUTE_CHATTER = `{{ env('SECOND_MAX_MINUTE_CHATTER') }}`;
+    </script>
     @if (env('APP_ENV') == 'local')
         
         <script src="{{ asset('/js/mobiscroll.javascript.min.js') }}"></script>

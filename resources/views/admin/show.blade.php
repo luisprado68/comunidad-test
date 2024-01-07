@@ -31,7 +31,7 @@
                 <div class="container mt-5 ">
                     <div class="row">
                       
-                        <form action="{{ route('admin-post') }}" method="POST">
+                        {{-- <form action="{{ route('admin-post') }}" method="POST">
                             @csrf
                             <div class="d-flex justify-content-center">
                                 <div class="card w-50 bg-secondary">
@@ -48,25 +48,9 @@
                                                 <input type="text" class="form-control" aria-label="Default" name="id"
                                                     aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
                                             </div>
-                                            <div class="col-8 mb-3 mt-3">
-                                                <label class="block mb-2 text-sm font-medium text-white" for="channel">Name</label>
-                                                <input type="text" class="form-control" aria-label="Default" name="name"
-                                                    aria-describedby="inputGroup-sizing-default" value="{{ $user->name }}">
-                                            </div>
-                                            <div class="col-8 mb-3 mt-3">
-                                                <label class="block mb-2 text-sm font-medium text-white"
-                                                    for="channel">Email</label>
-                                                <input type="text" class="form-control" aria-label="Default" name="email"
-                                                    aria-describedby="inputGroup-sizing-default" value="{{ $user->email }}">
-                                            </div>
-                                            {{-- @dump($user) --}}
-                                            <div class="col-8 mb-3 mt-3">
-                                                <input class="form-check-input" type="checkbox"  type="checkbox" name="status"  value="1" @if (isset($user)) @if ($user->status==1) checked @endif @endif id="">
-                                                <label class="form-check-label" for="flexCheckChecked">
-                                                    Active
-                                                </label>
-                                            </div>
-                                            
+                                           
+                                          
+                                          
                                             <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
                                                 <button type="submit" class="btn btn-success">Guardar</button>
                                                 <a href="{{ route('admin-list') }}"><button type="button" class="btn btn-danger">Cancel</button></a>
@@ -77,8 +61,29 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </form> --}}
                       
+                      <h4>{{$user->name}}</h4>
+                      <table>
+                        <tr>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miercoles</th>
+                          </tr>
+                      {{-- {{$user->schedules}} --}}
+                      @foreach ( $date_array as $schedule)
+                          
+                          
+                          
+                            <tr>
+                              <td>{{$schedule}}</td>
+                              <td>Maria Anders</td>
+                              <td>Germany</td>
+                            </tr>
+                           
+                         
+                      @endforeach
+                    </table>
                     </div>
                 </div>
 

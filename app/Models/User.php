@@ -22,6 +22,7 @@ class User extends Authenticatable
         'twich_id',
         'channel',
         'status',
+        'active',
         'email',
         'area',
         'phone',
@@ -60,7 +61,7 @@ class User extends Authenticatable
     }
     public function schedules()
     {
-        return $this->belongsTo(Schedule::class);
+        return $this->hasMany(Schedule::class);
     }
     public function range()
     {

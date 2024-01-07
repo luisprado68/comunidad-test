@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('twich_id')->unique();
             $table->string('name')->nullable();
             $table->string('email')->unique();
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(false);
             $table->string('channel')->nullable();
             $table->string('area')->nullable();
             $table->string('phone')->nullable();

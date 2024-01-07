@@ -203,8 +203,9 @@ final class UserService
             $user = User::find($userArray['id']);
             $user->name = $userArray['name'];
             $user->email = $userArray['email'];
-            if(array_key_exists('checkbox',$userArray)){
-                $user->status = intval($userArray['checkbox'][0]);
+            // $user->active = $userArray['active'];
+            if(array_key_exists('status',$userArray)){
+                $user->status = $userArray['status'];
             }else{
                 $user->status = 0;
             }

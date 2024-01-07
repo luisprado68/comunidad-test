@@ -64,8 +64,9 @@ class TwichController extends Controller
                             if(!empty($user_twich) && $user_twich->id != $this->user_model->id){
                                 $current_t = Carbon::now();
                                 $minute_t = $current_t->format('i');
-                                if($minute_t == 10 || $minute_t == 50){
-
+                                if($minute_t >=  env('CHATTERS_MIN_MINUTE') && $minute_t <= env('CHATTERS_MIN_MINUTE_2') ||
+                                 $minute_t >=  env('CHATTERS_MAX_MINUTE') && $minute_t <= env('CHATTERS_MAX_MINUTE_2')){
+                                    Log::debug('*********** PASA EL TIEMPO*************');
                                     $supportStreams = $user_twich->streamSupport;
                                     Log::debug('*********** supportStreams*************');
                                     Log::debug(json_encode($supportStreams));
@@ -96,7 +97,7 @@ class TwichController extends Controller
                                 $current = Carbon::now();
                                 $minute = $current->format('i');
 
-                                if($minute == 50){
+                                if($minute == env('CHATTERS_MAX_MINUTE') || $minute == env('CHATTERS_MAX_MINUTE_2') ){
                                     $score = $user_twich->score;
                                         Log::debug('score---------------------');
                                         Log::debug($score);
