@@ -20,7 +20,7 @@
         <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
 
     @else
-        <link  href="./public/img/logo_co.ico" rel="icon">
+        <link rel="icon" href="./public/img/logo_co.ico" >
         <link rel="stylesheet" href="./public/css/mobiscroll.javascript.min.css">
         <link href="./public/css/custom.css" rel="stylesheet">
         

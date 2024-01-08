@@ -30,60 +30,40 @@
 
                 <div class="container mt-5 ">
                     <div class="row">
-                      
-                        {{-- <form action="{{ route('admin-post') }}" method="POST">
-                            @csrf
-                            <div class="d-flex justify-content-center">
-                                <div class="card w-50 bg-secondary">
+                        <a href="{{ route('admin-list') }}"><button type="button" class="btn btn-dark">Volver</button></a>
+                      <div class="col-lg-12">
+                        <div class="row">
+                            <h4>{{$user->name}}</h4>
+                            <h4 class="text-center">Agenda Semanal</h4>
+                            
+                            @foreach ($date_array as $key => $days)
+                              <div class="col-lg-2 col-md-4  col-sm-12 my-4">
+                                  <input class="form-control form-control-lg bg-warning text-center"
+                                      type="text" placeholder="{{ trans('user.create.' . $key) }}"
+                                      disabled>
+      
+                                  @foreach ($days['times'] as $time)
+                                      <input class="form-control form-control-lg bg-light text-center"
+                                          type="text" placeholder="{{ $time }}" disabled>
+                                  @endforeach
+                                  </div>
+                              @endforeach
+                        </div>
+                        
+                      </div>
+                       <div class="col-lg-12">
+                        <h4 class="text-center">Puntaje</h4>
+                        <h6>Punteje Semanal</h6>
+                        {{$user->score->points_week}}
+                        <h6>Punteje Dia</h6>
+                        {{$user->score->points_day}}
+                        <h6>Neo coins</h6>
+                        {{$user->score->neo_coins}}
+                       </div>
+                       
+                     
 
-                                    <div class="card-body bg-secondary m-0 p-0">
-                                        <div class="card bg-black ">
-                                            <h5 class="card-title mt-2  text-center text-light ">Edit User</h5>
-                                        </div>
-
-                                        <div class="row justify-content-center">
-
-                                            <div class="col-8 mb-3 mt-3">
-                                    
-                                                <input type="text" class="form-control" aria-label="Default" name="id"
-                                                    aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
-                                            </div>
-                                           
-                                          
-                                          
-                                            <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
-                                                <button type="submit" class="btn btn-success">Guardar</button>
-                                                <a href="{{ route('admin-list') }}"><button type="button" class="btn btn-danger">Cancel</button></a>
-                                            </div>
-                                            
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </form> --}}
-                      
-                      <h4>{{$user->name}}</h4>
-                      <table>
-                        <tr>
-                            <th>Lunes</th>
-                            <th>Martes</th>
-                            <th>Miercoles</th>
-                          </tr>
-                      {{-- {{$user->schedules}} --}}
-                      @foreach ( $date_array as $schedule)
-                          
-                          
-                          
-                            <tr>
-                              <td>{{$schedule}}</td>
-                              <td>Maria Anders</td>
-                              <td>Germany</td>
-                            </tr>
-                           
-                         
-                      @endforeach
-                    </table>
+                  
                     </div>
                 </div>
 

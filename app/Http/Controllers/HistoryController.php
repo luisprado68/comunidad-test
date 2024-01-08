@@ -65,8 +65,11 @@ class HistoryController extends Controller
             else{
                 session(['status' => 0]);
             }
-            
+            return view('history',['user' => $userModel,'times' => json_encode($times),'scores' => $user_array]); 
         }
-        return view('history',['user' => $userModel,'times' => json_encode($times),'scores' => $user_array]);
+        else{
+            return redirect('/');
+        }
+        
     }
 }

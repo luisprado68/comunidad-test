@@ -27,6 +27,7 @@ class AdminController extends Controller
     public $complete_url;
     public $test_url;
     public $user;
+    public $user_model;
     private $twichService;
     private $userService;
     private $scheduleService;
@@ -65,10 +66,12 @@ class AdminController extends Controller
     }
     public function list()
     {
+        
         if (Session::has('user-log')) {
+            $this->user_model = session('user-log');
             $users = $this->userService->getUsersModel();
             // dd($users);
-            return view('admin.list', ['users' => $users]);
+            return view('admin.list', ['users' => $users,'user_model' => $this->user_model]);
         } else {
             return redirect('admin');
         }
@@ -195,7 +198,26 @@ class AdminController extends Controller
         return $agenda;
     }
 
-    
+    public function getDateAndTime($days)
+    {
+        $this->user_model = session('user-log');
+        $list_day = [];
+        if (count($days) > 0) {
+            $date = new Carbon($days[0]->start);
+            $list_day['date'] = $date->format('Y-m-d');
+            $list_day['times'] = [];
+            foreach ($days as $key => $value) {
+                // dump($value->start);
+                $day = new Carbon($value->start);
+                $day->tz = $this->user_model->time_zone;
+                array_push($list_day['times'], $day->format('H:i'));
+            }
+            return $list_day;
+        }
+        return $list_day;
+        // dump($list_day);
+
+    }
     public function delete($id)
     {
         if (Session::has('user-log')) {
@@ -212,12 +234,12 @@ class AdminController extends Controller
     public function post(Request $request)
     {
         $user = $request->all();
-       
+        $this->user_model = session('user-log');
         $user = $this->userService->update($user);
 
         $users = $this->userService->getUsersModel();
         // dd($users);
-        return view('admin.list', ['users' => $users]);
+        return view('admin.list', ['users' => $users,'user_model' => $this->user_model]);
     }
     public function logoutAdmin(){
         session()->forget('user-log');

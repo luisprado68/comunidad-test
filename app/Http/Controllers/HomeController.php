@@ -46,10 +46,11 @@ class HomeController extends Controller
             else{
                 session(['status' => 0]);
             }
+
+            
         }
-        // Log::debug("message");
-        // Log::debug(session('test'));
         return view('home',['times' => json_encode($times)]);
+        
     }
 
   

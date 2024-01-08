@@ -23,32 +23,7 @@ class ScoreController extends Controller
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
     }
-    public function index()
-    {
-        $active = false;
-        $times = [];
-        if(session()->exists('user')){
-            $user = session('user');
-            
-            $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
-            $currentStreams = $this->scheduleService->getStreamByUser($userModel);
-            
-            if(count($currentStreams) > 0){
-                $times = $this->scheduleService->getTimes($currentStreams,$userModel);
-            }
-            // @dd($active);
-            if($userModel->status){
-               
-                session(['status' => $userModel->status]);
-            }
-            else{
-                session(['status' => 0]);
-            }
-        }
-        // Log::debug("message");
-        // Log::debug(session('test'));
-        return view('home',['times' => json_encode($times)]);
-    }
+  
 
     public function getPointSupport($user_name){
         $user = $this->userService->getByChannel($user_name);

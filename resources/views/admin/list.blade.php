@@ -46,7 +46,12 @@
                                 @foreach ($users as $user)
                                     <tr>
                                         <th scope="row">{{ $user->id }}</th>
+                                        @if ($user->role_id == 3)
+                                            <td> Admin</td>
+                                        @else
                                         <td>{{ $user->role->name }}</td>
+                                        @endif
+                                        
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>@if ($user->status)
@@ -57,9 +62,14 @@
                                         @endif</td>
                                         <td><button type="submit" class="btn btn-primary"><a class="dropdown-item"
                                                     href="{{ route('admin-edit', $user['id']) }}">Edit</a></button>
-                                        <!-- Button trigger modal -->
-                                        {{-- <button type="submit" class="btn btn-success"><a class="dropdown-item"
-                                            href="{{ route('admin-show', $user['id']) }}">Ver</a></button> --}}
+                                        {{-- @dump($user_model->role_id) --}}
+                                        @if ( $user_model->role_id == 3)
+                                        
+                                    
+                                            <button type="submit" class="btn btn-success"><a class="dropdown-item"
+                                        href="{{ route('admin-show', $user['id']) }}">Ver</a></button>
+                                        @endif
+                                      
                                         
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal">

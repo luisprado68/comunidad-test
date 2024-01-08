@@ -47,7 +47,11 @@ class SummaryController extends Controller
             else{
                 session(['status' => 0]);
             }
+
+            return view('summary',["user"=>$userModel,'times' => json_encode($times),'ref' => $ref]);
+        }else{
+            return redirect('/');
         }
-        return view('summary',["user"=>$userModel,'times' => json_encode($times),'ref' => $ref]);
+        
     }
 }

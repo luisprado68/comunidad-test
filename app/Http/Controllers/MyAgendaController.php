@@ -56,17 +56,21 @@ class MyAgendaController extends Controller
             } else {
                 session(['status' => 0]);
             }
-        }
-        if (!empty($this->user_model)) {
-            $week = $this->getDays();
-
-            if (count($week) > 0) {
-                $this->showAgendas = true;
+            if (!empty($this->user_model)) {
+                $week = $this->getDays();
+    
+                if (count($week) > 0) {
+                    $this->showAgendas = true;
+                }
             }
+    
+    
+            return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week, 'user' => $this->user_model, 'times' => json_encode($times)]);
         }
-
-
-        return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week, 'user' => $this->user_model, 'times' => json_encode($times)]);
+        else{
+            return redirect('/');
+        }
+       
     }
 
     public function getDays()
