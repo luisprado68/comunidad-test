@@ -72,6 +72,7 @@ Route::group(['/'], function () {
     Route::post('login-test-login', [LoginController::class, 'login_post'])->name('login-post');
 
     Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
+    Route::get('admin/schedulers', [AdminController::class, 'schedulers'])->name('admin-schedulers');
     Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
     Route::get('admin/show/{id}', [AdminController::class, 'show'])->name('admin-show');
     Route::get('admin/delete/{id}', [AdminController::class, 'delete'])->name('admin-delete');

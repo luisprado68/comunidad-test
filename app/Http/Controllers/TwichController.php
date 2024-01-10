@@ -123,8 +123,8 @@ class TwichController extends Controller
                                                     }
                     
                                                     $score->neo_coins = $score->neo_coins + 1;
-                                                    $score->users_data = json_encode($users);
-                                                    $score->count_users = count($users);
+                                                    // $score->users_data = json_encode($users);
+                                                    // $score->count_users = count($users);
                                                     $score->streamer_supported = json_encode($user_support);
                                                     $score->update();
 
@@ -138,8 +138,8 @@ class TwichController extends Controller
                                         $score['points_day'] = 1;
                                         $score['points_week'] = 1;
                                         $score['neo_coins'] = 1;
-                                        $score['users_data'] = json_encode($users);
-                                        $score['count_users'] = count($users);
+                                        // $score['users_data'] = json_encode($users);
+                                        // $score['count_users'] = count($users);
                                         
                                         $created = $this->scoreService->create($score);
                                         

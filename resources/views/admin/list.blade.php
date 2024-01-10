@@ -30,12 +30,21 @@
 
                 <div class="container mt-5 ">
                     <div class="row">
+                        @if ( $user_model->role_id == 3)
+                                        <div class="col-2 mb-4">
+                                            <button type="submit" class="btn btn-success"><a class="dropdown-item"
+                                                href="{{ route('admin-schedulers') }}">Ver Agendas</a></button>
+                                        </div>
+                                    
+                                            
+                                        @endif
                         <table class="table table-hover table-dark">
                             <thead>
                                 <tr>
                                     <th scope="col">Id</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Channel</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Active</th>
                                     <th scope="col">Actions</th>
@@ -53,6 +62,7 @@
                                         @endif
                                         
                                         <td>{{ $user->name }}</td>
+                                        <td>{{ $user->channel }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>@if ($user->status)
                                             <i class="bi bi-check-circle  text-success">Activo</i>

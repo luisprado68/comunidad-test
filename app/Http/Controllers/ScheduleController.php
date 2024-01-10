@@ -69,13 +69,13 @@ class ScheduleController extends Controller
                 $current_t->tz= $user_model->time_zone;
                 $day = $current_t->format('l');
                 // dump($day);
-                if ($day == 'Sunday') {
+                // if ($day == 'Sunday') {
                     if (!isset($schedules_by_user)) {
                         $this->schedule_avaible = true;
                     } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
                         $this->schedule_avaible = true;
                     }
-                }
+                // }
                 
             }
             if ($this->schedule_avaible) {

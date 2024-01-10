@@ -30,40 +30,106 @@
 
                 <div class="container mt-5 ">
                     <div class="row">
-                        <a href="{{ route('admin-list') }}"><button type="button" class="btn btn-dark">Volver</button></a>
-                      <div class="col-lg-12">
-                        <div class="row">
-                            <h4>{{$user->name}}</h4>
-                            <h4 class="text-center">Agenda Semanal</h4>
-                            
-                            @foreach ($date_array as $key => $days)
-                              <div class="col-lg-2 col-md-4  col-sm-12 my-4">
-                                  <input class="form-control form-control-lg bg-warning text-center"
-                                      type="text" placeholder="{{ trans('user.create.' . $key) }}"
-                                      disabled>
-      
-                                  @foreach ($days['times'] as $time)
-                                      <input class="form-control form-control-lg bg-light text-center"
-                                          type="text" placeholder="{{ $time }}" disabled>
-                                  @endforeach
-                                  </div>
-                              @endforeach
-                        </div>
-                        
-                      </div>
-                       <div class="col-lg-12">
-                        <h4 class="text-center">Puntaje</h4>
-                        <h6>Punteje Semanal</h6>
-                        {{$user->score->points_week}}
-                        <h6>Punteje Dia</h6>
-                        {{$user->score->points_day}}
-                        <h6>Neo coins</h6>
-                        {{$user->score->neo_coins}}
-                       </div>
-                       
-                     
+                        <a href="{{ route('admin-list') }}"><button type="button"
+                                class="btn btn-dark">Volver</button></a>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <h4>Nombre</h4>
+                                        </div>
+                                        <div class="col-3">
+                                            <h4>Email</h4>
+                                        </div>
+                                        <div class="col-3">
+                                            <h4>Rol</h4>
+                                        </div>
+                                        <div class="col-3">
+                                            <h4>Canal</h4>
+                                        </div>
+                                        <div class="col-3">
+                                            <h5>{{ $user->name }}</h5>
+                                        </div>
+                                        <div class="col-3">
+                                            <h5>{{ $user->email }}</h5>
+                                        </div>
+                                        <div class="col-3">
+                                            <h5>{{ $user->role->name }}</h5>
+                                        </div>
+                                        <div class="col-3">
+                                            <h5>{{ $user->channel }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
 
-                  
+                                <h4 class="text-center">Agenda Semanal</h4>
+
+                                @foreach ($date_array as $key => $days)
+                                    <div class="col-lg-2 col-md-4  col-sm-12 my-4">
+                                        <input class="form-control form-control-lg bg-warning text-center"
+                                            type="text" placeholder="{{ trans('user.create.' . $key) }}" disabled>
+
+                                        @foreach ($days['times'] as $time)
+                                            <input class="form-control form-control-lg bg-light text-center"
+                                                type="text" placeholder="{{ $time }}" disabled>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12">
+                            <h4 class="text-center">Puntaje</h4>
+                            <h6>Punteje Semanal</h6>
+                            @if (isset($user->score->points_week))
+                                {{ $user->score->points_week }}
+                            @else
+                                0
+                            @endif
+
+                            <h6>Punteje Dia</h6>
+                            @if (isset($user->score->points_day))
+                                {{ $user->score->points_day }}
+                            @else
+                                0
+                            @endif
+
+                            <h6>Neo coins</h6>
+
+                            @if (isset($user->score->neo_coins))
+                                {{ $user->score->neo_coins }}
+                            @else
+                                0
+                            @endif
+
+                            <h6>Users Watching
+                                {{ (isset($user->score->count_users) ? '(' . $user->score->count_users . ')' : '0') .
+                                    (isset($date) ? ' Fecha: ' . $date : '') }}
+                            </h6>
+
+                            @if (isset($user->score->users_data))
+                                <h5>
+                                    @foreach (json_decode($user->score->users_data) as $watch_user)
+                                        {{ $watch_user->user_name . ' - ' }}
+                                    @endforeach
+                                </h5>
+
+                            @endif
+                        </div>
+                        <div class="col-lg-12">
+                            <h4 class="text-center">Streamers Apoyados</h4>
+                                @if (count($streamers_supported )> 0)
+                                    @foreach ($streamers_supported as $streamer)
+                                        {{$streamer['name'] . ' - ' . $streamer['time']}}
+                                    @endforeach
+                                @else
+                                    
+                                @endif
+                        </div>
+
+
+
                     </div>
                 </div>
 

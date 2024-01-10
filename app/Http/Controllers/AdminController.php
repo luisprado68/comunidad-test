@@ -42,7 +42,7 @@ class AdminController extends Controller
     public function index()
     {
         Log::debug('index-----');
-        
+
         return view('admin.adminLogin');
     }
     public function login(Request $request)
@@ -53,8 +53,8 @@ class AdminController extends Controller
         $user = $this->twichService->getUser();
         $exist = $this->userService->userLogin($credentials['email'], $credentials['password']);
 
-       
-        if (!empty($exist)){
+
+        if (!empty($exist)) {
             // dd($exist);
             Log::debug('exist-----');
             return redirect('admin/list');
@@ -66,12 +66,35 @@ class AdminController extends Controller
     }
     public function list()
     {
-        
+
         if (Session::has('user-log')) {
             $this->user_model = session('user-log');
             $users = $this->userService->getUsersModel();
             // dd($users);
-            return view('admin.list', ['users' => $users,'user_model' => $this->user_model]);
+            return view('admin.list', ['users' => $users, 'user_model' => $this->user_model]);
+        } else {
+            return redirect('admin');
+        }
+    }
+    public function schedulers()
+    {
+        $week_time_zone = [];
+        if (Session::has('user-log')) {
+            $this->user_model = session('user-log');
+            $users = $this->userService->getUsersModel();
+            $week = $this->scheduleService->getSchedulerWeek($this->user_model);
+
+
+            // foreach ($week as $key => $value) {
+
+            //     $date = new Carbon($value->start);
+            //     $date->tz = $this->user_model->time_zone;
+
+            //     array_push($week_time_zone,['date' => $date->format('d-m-Y H:i:s'),'user' => $value->user->name]);
+
+            // }
+            // dd($week);
+            return view('admin.schedulers', ['users' => $users, 'user_model' => $this->user_model, 'week' => $week]);
         } else {
             return redirect('admin');
         }
@@ -85,21 +108,35 @@ class AdminController extends Controller
             return redirect('admin');
         }
     }
-    public function show($id){
+    public function show($id)
+    {
         $date_array = [];
+        $streamers_supported = [];
+        $test = null;
         if (Session::has('user-log')) {
             $user = $this->userService->getById($id);
 
-            $schedules = $user->schedules;
-            // foreach ($schedules as $key => $value) {
-            //     $actual_before = new Carbon($value->start);
-            //     $actual_before->tz = $user->time_zone;
+            if (isset($user->score)) {
+                $date = new Carbon($user->score->updated_at);
+                $date->tz = $user->time_zone;
+                $test = $date->format('d-m-Y H:i:s');
+            }
 
-            //     $date = ['day' => trans('user.create.' .strtolower($actual_before->format('l'))), 'month' => trans('user.create.' .strtolower($actual_before->format('F'))), 'time' => $actual_before->format('H:i')];
-            //     array_push($date_array,$date);
-            // }
+            if (isset($user->streamSupport)){
+                // dd($user->streamSupport);
+                foreach($user->streamSupport as $streamer){
+                    $supported = json_decode($streamer->supported);
+                    // dd($supported->name);
+                    array_push($streamers_supported,['name' => $supported->name,'time' => $streamer->updated_at]);
+                }
+                                        
+                                  
+            }
+                                    
+                               
+              
             $date_array = $this->getDays($user);
-            return view('admin.show', ['user' => $user,'date_array' => $date_array]);
+            return view('admin.show', ['user' => $user, 'date_array' => $date_array, 'date' => $test,'streamers_supported' => $streamers_supported]);
         } else {
             return redirect('admin');
         }
@@ -127,73 +164,10 @@ class AdminController extends Controller
             $agenda['saturday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayEndByUser($user, Carbon::SATURDAY));
         }
 
-        if (count($agenda) > 0) {
-            //actualiza el puntaje despues de agendar el usaurio
-            // $usersSupports = $this->supportScoreService->getByUserSupportId($user->id);
-            // if(count($usersSupports)> 0){
-            //     foreach ($usersSupports as $key => $usersSupport) {
-            //         if ($usersSupport->point == 0) {
-            //             $usersSupport->point = 1;
-            //             $usersSupport->update();
-            //         }
-            //     }
-            // }
-          
-            // dump($users);
-        }
-
-        // dump($agenda);
 
         $current_time = Carbon::now();
         $current_time->tz = $user->time_zone;
-        foreach ($agenda as $key => $day) {
-            // dump($current_time);
-            // dump($key);
-            // dump(strtolower($current_time->format('l')));
-            //si es domingo mostratmos todos los dias
-            if (strtolower($current_time->format('l')) == 'sunday') {
-            } else {
 
-                if (strtolower($current_time->format('l')) == $key) {
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'tuesday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'wednesday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'thursday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'wednesday' ||
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'thursday' ||
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'wednesday' && $key == 'thursday' ||
-                    strtolower($current_time->format('l')) == 'wednesday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'wednesday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'thursday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'thursday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (strtolower($current_time->format('l')) == 'friday' && $key == 'saturday') {
-                    // unset($agenda[$key]);
-                    break;
-                } else {
-                    unset($agenda[$key]);
-                }
-            }
-        }
         // dump($agenda);
         return $agenda;
     }
@@ -239,9 +213,10 @@ class AdminController extends Controller
 
         $users = $this->userService->getUsersModel();
         // dd($users);
-        return view('admin.list', ['users' => $users,'user_model' => $this->user_model]);
+        return view('admin.list', ['users' => $users, 'user_model' => $this->user_model]);
     }
-    public function logoutAdmin(){
+    public function logoutAdmin()
+    {
         session()->forget('user-log');
         return redirect('/');
     }

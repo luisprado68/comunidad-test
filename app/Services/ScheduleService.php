@@ -71,6 +71,54 @@ final class ScheduleService
             return null;
         }
     }
+    public function getDatesByDay($user,$day){
+        $week = [];
+        $week_time_zone = [];
+        $this->setModel();
+        $en = $this->setSunday();
+        $hour_first = $this->parseHoursToCountry($en->endOfWeek($day),$user->time_zone);
+        
+        $day_start = $en->startOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
+        // dump($day_start);
+        $day_end = $en->endOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
+        // dump($day_end);
+        $week = $this->model::whereBetween('start', [$day_start, $day_end])->orderBy('start')->get();
+        // $week = $this->model::whereBetween('start', [$day_start, $day_end])->get();
+
+        foreach ($week as $key => $day) {
+            $date = new Carbon($day->start);
+                $date->tz = $user->time_zone;
+                
+                array_push($week_time_zone,['date' => $date->format('d-m-Y H:i:s'),'user' => $day->user->channel]);
+        }
+        return $week_time_zone;
+    }
+
+    public function getSchedulerWeek($user)
+    {
+    
+        $allDays = [];
+        $monday = $this->getDatesByDay($user,Carbon::MONDAY);
+        $tuesday = $this->getDatesByDay($user,Carbon::TUESDAY);
+        $wednesday = $this->getDatesByDay($user,Carbon::WEDNESDAY);
+        $thursday = $this->getDatesByDay($user,Carbon::THURSDAY);
+        $friday = $this->getDatesByDay($user,Carbon::FRIDAY);
+        $saturday = $this->getDatesByDay($user,Carbon::SATURDAY);
+        $allDays =[
+            'Lunes' => $monday,
+            'Martes' => $tuesday,
+            'Miercoles' => $wednesday,
+            'Jueves' => $thursday,
+            'Viernes' => $friday,
+            'Sabado' => $saturday,
+        ];
+        // dump($monday);
+        if (count($allDays) > 0) {
+            return $allDays;
+        } else {
+            return null;
+        }
+    }
 
     public function setSunday(){
 
