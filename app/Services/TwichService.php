@@ -77,7 +77,38 @@ final class TwichService
         Log::debug("result-------------------------------------------");
         Log::debug(json_encode($result));
         session(['access_token' => $result['access_token']]);
+        session(['refresh_token' => $result['refresh_token']]);
     }
+
+    public function getRefreshToken(Request $request,$user)
+    {
+        $refresh_token = $user->refresh_token;
+
+        $this->url_test = 'http://localhost';
+        $this->url = 'https://www.comunidadnc.com/login_token';
+        $client = new Client();
+        $headers = [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
+        ];
+        $options = [
+            'form_params' => [
+                'client_id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
+                'client_secret' => 'b6jng7psl6bcqztt3huqlj9uwj6txy',
+                'grant_type' => 'refresh_token',
+                'refresh_token' =>  $refresh_token,
+            ],
+        ];
+        $request = new Psr7Request('POST', 'https://id.twitch.tv/oauth2/token', $headers);
+        $res = $client->sendAsync($request, $options)->wait();
+        $result = json_decode($res->getBody(), true);
+        Log::debug("getRefreshToken result-------------------------------------------");
+        Log::debug(json_encode($result));
+       
+        $user->refresh_token = $result['refresh_token'];
+        $user->update();
+    }
+
     public function getUser()
     {
 

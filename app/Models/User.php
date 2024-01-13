@@ -33,6 +33,7 @@ class User extends Authenticatable
         'img_profile',
         'password',
         'token',
+        'refresh_token',
     ];
 
     /**

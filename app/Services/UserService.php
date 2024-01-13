@@ -89,6 +89,7 @@ final class UserService
         if ($user) {
 
             $user->token = session('access_token') ?? '';
+            $user->refresh_token = session('refresh_token') ?? '';
             $user->update();
             return $user;
         } else {
