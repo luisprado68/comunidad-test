@@ -74,7 +74,8 @@ final class TwichService
         $request = new Psr7Request('POST', 'https://id.twitch.tv/oauth2/token', $headers);
         $res = $client->sendAsync($request, $options)->wait();
         $result = json_decode($res->getBody(), true);
-        // Log::debug("json");
+        Log::debug("result-------------------------------------------");
+        Log::debug(json_encode($result));
         session(['access_token' => $result['access_token']]);
     }
     public function getUser()
