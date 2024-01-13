@@ -54,21 +54,21 @@
         window.SECOND_MIN_MINUTE_CHATTER = `{{ env('SECOND_MIN_MINUTE_CHATTER') }}`;
         window.SECOND_MAX_MINUTE_CHATTER = `{{ env('SECOND_MAX_MINUTE_CHATTER') }}`;
     </script>
-    @if (env('APP_ENV') == 'local')
+    {{-- @if (env('APP_ENV') == 'local') --}}
         
         <script src="{{ asset('/js/mobiscroll.javascript.min.js') }}"></script>
         <script src="{{ asset('/js/custom.js') }}"></script>
         @stack('schedule')
         @stack('chatters')
         @stack('copyText')
-    @else
+    {{-- @else
        
         <script src="./public/js/mobiscroll.javascript.min.js"></script>
         <script src="./public/js/custom.js"></script>
         @stack('schedule')
         @stack('chatters')
         @stack('copyText')
-    @endif
+    @endif --}}
    
 </body>
 

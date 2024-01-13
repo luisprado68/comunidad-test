@@ -19,7 +19,7 @@
                                         
                                     </div>
                                     <div class="col text-center justify-content-center">
-                                        @if (env('APP_ENV') == 'local')
+                                        {{-- @if (env('APP_ENV') == 'local') --}}
                                             @if ($user->range->id == 1 )
                                                 <img src="{{ asset('/img/bronce.svg') }}" alt="tag" class="w-50 m-2">
                                             @elseif($user->range->id == 2 )
@@ -30,7 +30,7 @@
                                                 <img src="{{ asset('/img/platino.svg') }}" alt="tag" class="w-50 m-2">
                                             @endif
                                           
-                                        @else
+                                        {{-- @else
                                             @if ($user->range->id == 1 )
                                                 <img src="./public/img/bronce.svg" alt="tag" class="w-50 m-2">
                                             @elseif($user->range->id == 2 )
@@ -40,7 +40,7 @@
                                             @elseif($user->range->id == 4 )
                                                 <img src="./public/img/platino.svg" alt="tag" class="w-50 m-2">
                                             @endif
-                                        @endif
+                                        @endif --}}
                                         <h4 class="text-light text-center">{{$user->range->name}}</h4>
                                     </div>
                                 </div>
