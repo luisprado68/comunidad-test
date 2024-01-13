@@ -15,8 +15,6 @@ return new class extends Migration
       
             $table->string('refresh_token')->nullable();
 
-            
-
         });
     }
 
@@ -28,8 +26,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
 
             $table->dropColumn('refresh_token');
-            
-
         });
     }
 };
