@@ -14,17 +14,17 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    @if (env('APP_ENV') == 'local')
-        <link rel="icon" href="{{ asset('/img/logo_co.ico') }}">
-        <link href="{{ asset('/css/mobiscroll.javascript.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
+    {{-- @if (env('APP_ENV') == 'local') --}}
+    <link rel="icon" href="{{ asset('/img/logo_co.ico') }}">
+    <link href="{{ asset('/css/mobiscroll.javascript.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
 
-    @else
+    {{-- @else
         <link rel="icon" href="./public/img/logo_co.ico" >
         <link rel="stylesheet" href="./public/css/mobiscroll.javascript.min.css">
         <link href="./public/css/custom.css" rel="stylesheet">
         
-    @endif
+    @endif --}}
 
 </head>
 
