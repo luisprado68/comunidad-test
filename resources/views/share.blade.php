@@ -17,11 +17,11 @@
 </div>
 @push('copyText')
 
-    @if (env('APP_ENV') == 'local')
+    {{-- @if (env('APP_ENV') == 'local') --}}
         <script src="{{ asset('/js/copytext.js') }}"></script>
-    @else
+    {{-- @else
         <script src="./public/js/copytext.js"></script>
-    @endif
+    @endif --}}
 
     
 

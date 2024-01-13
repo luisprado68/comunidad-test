@@ -1,22 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 m-0">
     @if (session()->has('user'))
-        @if (env('APP_ENV') == 'local')
+        {{-- @if (env('APP_ENV') == 'local') --}}
             <img src="{{asset('/img/logo_co.png')}}" alt="tag"
             class="logo rounded-circle">
-        @else
+        {{-- @else
             <img src="{{'./public/img/logo_co.png'}}" alt="tag"
             class="logo rounded-circle">
-        @endif
+        @endif --}}
         
     @else
-        @if (env('APP_ENV') == 'local')
+        {{-- @if (env('APP_ENV') == 'local') --}}
             <img src="{{asset('/img/logo_co.png')}}" alt="tag"
         class="logo rounded-circle">
         
-        @else
+        {{-- @else
             <img src="{{'./public/img/logo_co.png'}}" alt="tag"
             class="logo rounded-circle">
-        @endif
+        @endif --}}
       
     @endif
         {{-- @if (env('APP_ENV') == 'local')
@@ -63,11 +63,11 @@
                             <img src="{{ session('user')['profile_image_url'] }}" alt="tag"
                                 class="profile-img rounded-circle">
                         @else
-                            @if (env('APP_ENV') == 'local')
+                            {{-- @if (env('APP_ENV') == 'local') --}}
                                 <img src="{{ asset('/img/logo.webp') }}" alt="tag" class="profile-img">
-                            @else
+                            {{-- @else
                                 <img src="./public/img/logo.webp" alt="tag" class="profile-img">
-                            @endif
+                            @endif --}}
 
                         @endif
 
