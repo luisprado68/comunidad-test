@@ -185,7 +185,7 @@ final class UserService
                 $user->twich_id = Str::random(9);
             }
             $user->name = isset($userArray['name']) ? $userArray['name'] : $userArray['display_name'];
-            $user->email = $userArray['email'] ?? $userArray['display_name'] . '@gmail.com';
+            $user->email = $userArray['email'] ?? $userArray['email'];
             $user->range_id = 1;
             $user->role_id = 2;
             $user->channel = $userArray['display_name'];
