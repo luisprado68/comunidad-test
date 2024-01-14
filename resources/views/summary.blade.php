@@ -65,8 +65,8 @@
                         </div>
                     </div>
                 </div>
-                <input type="text" class="form-control" aria-label="Default" name="times" id="times"
-                    aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
+                {{-- <input type="text" class="form-control" aria-label="Default" name="times" id="times"
+                    aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none"> --}}
                 @include('share')
             @endif
 
@@ -77,11 +77,11 @@
 @endsection
 @push('chatters')
 
-    @if (env('APP_ENV') == 'local')
+    {{-- @if (env('APP_ENV') == 'local')
         <script src="{{ asset('/js/setTime.js') }}"></script>
     @else
         <script src="./public/js/setTime.js"></script>
-    @endif
+    @endif --}}
 
     
 

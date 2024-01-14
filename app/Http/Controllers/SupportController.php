@@ -61,7 +61,7 @@ class SupportController extends Controller
             $date = $next->format('d-m ');
             $hour = $next->format('H:i');
             // dump($next->format('l'));
-            dump($currentStreams);
+            // dump($currentStreams);
             $date_string = ' '.trans('user.create.'.strtolower($day)).' ' . $date .'a las '. $hour;
             // dump($date_string);
             }

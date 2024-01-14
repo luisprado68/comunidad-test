@@ -25,13 +25,11 @@ class Kernel extends ConsoleKernel
             $this->twichService = new TwichService();
             $this->scheduleService = new ScheduleService();
 
-
-
-
             $now =  Carbon::now();
             $minute = $now->format('i');
             Log::debug('----------------------------------------------minute: ' . $minute);
-            if ($minute >= 1 && $minute <= 10 || $minute >= 50 && $minute <= 59) {
+            if ($minute >= env('CHATTERS_MIN_MINUTE_2') && $minute <= env('CHATTERS_MIN_MINUTE_2') || 
+                $minute >= env('CHATTERS_MAX_MINUTE') && $minute <= env('CHATTERS_MAX_MINUTE_2')) {
                 Log::debug('---------------[START] Synchronize Orders Woo-----------------');
 
 
@@ -47,13 +45,11 @@ class Kernel extends ConsoleKernel
                     }
                 }
 
-                // $this->twichService->getRefreshToken($user);
-
                 Log::debug('---------------[FINISH] END Synchronize Orders Woo------------');
             } else {
                 Log::debug('---------------No esta habilitado------------');
             }
-        })->everyMinute();
+        })->everyTenMinutes();
 
         $schedule->call(function () {
             Log::debug('---------------[START] Update Refresh Tokens --------');
