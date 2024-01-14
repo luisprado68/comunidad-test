@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
             } else {
                 Log::debug('---------------No esta habilitado------------');
             }
-        })->everyMinute();
+        })->everyTenMinutes();
 
         $schedule->call(function () {
             Log::debug('---------------[START] Update Refresh Tokens --------');
