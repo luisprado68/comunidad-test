@@ -236,14 +236,14 @@ final class ScheduleService
         $actual = new Carbon($dates.' ' .$backHour.':'.$back_minute.':00');
         $actual_next = new Carbon($dates_next.' ' .$hour.':'.$minute.':00');
         $start_string = $actual->format('Y-m-d H:i:s');
-        dump($start_string);
+        // dump($start_string);
         $end_string = $actual_next->format('Y-m-d H:i:s');
-        dump($end_string);
+        // dump($end_string);
 
         if($minutes <= env('WATCH_SUPPORT_MINUTE')){
             $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
         }
-        dump($currentStreams);
+        // dump($currentStreams);
         return $currentStreams;
     }
 
@@ -282,9 +282,9 @@ final class ScheduleService
         $actual = new Carbon($dates_before.' ' .$backHour.':'.$back_minute.':00');
         $actual_next = new Carbon($dates_next.' ' .$hour.':'.$minute.':00');
         $start_string = $actual->format('Y-m-d H:i:s');
-        Log::debug('start: ' . $start_string);
+        // Log::debug('start: ' . $start_string);
         $end_string = $actual_next->format('Y-m-d H:i:s');
-        Log::debug('end: ' . $end_string);
+        // Log::debug('end: ' . $end_string);
 
         
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->distinct()->get();
@@ -311,12 +311,12 @@ final class ScheduleService
    
         $start_string = $actual_before->format('Y-m-d H:i:s');
        
-        dump($start_string);
+        // dump($start_string);
       
         $end_string = $actual_next->format('Y-m-d H:i:s');
-        dump($end_string);
+        // dump($end_string);
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','=',$user->id)->distinct()->get();
-        dump($currentStreams);
+        // dump($currentStreams);
         return $currentStreams;
     }
 

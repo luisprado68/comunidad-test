@@ -35,6 +35,16 @@ final class UserService
         $this->model = User::class;
     }
 
+    public function all(){
+        $this->setModel();
+        
+        $users = $this->model::all();
+        if(count($users) > 0){
+            return $users;
+        }else {
+            return null;
+        }
+    }
     public function getById($id)
     {
         $this->setModel();

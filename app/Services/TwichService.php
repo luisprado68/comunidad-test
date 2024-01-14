@@ -55,7 +55,7 @@ final class TwichService
         $this->url_test = 'http://localhost';
         $this->url = 'https://www.comunidadnc.com/login_token';
         $this->client_id = 'vjl5wxupylcsiaq7kp5bjou29solwc';
-        $this->force_verify = 'false';
+        $this->force_verify = 'true';
         $this->complete_url = $this->url_twitch . '?response_type=' . $this->code . '&client_id=' . $this->client_id . '&redirect_uri=' . $this->url . '&scope=channel%3Amanage%3Amoderators+moderator%3Aread%3Achatters+user%3Aread%3Afollows+channel%3Aread%3Apolls+user%3Aread%3Aemail+chat%3Aedit+chat%3Aread&state=c3ab8aa609ea11e793ae92361f002671';
         $this->test_url = $this->url_twitch . '?response_type=' . $this->code_test . '&client_id=' . $this->client_id . '&force_verify=' . $this->force_verify . '&redirect_uri=' . $this->url . '&scope=channel%3Amanage%3Amoderators+moderator%3Aread%3Achatters+user%3Aread%3Afollows+channel%3Aread%3Apolls+user%3Aread%3Aemail+chat%3Aedit+chat%3Aread&state=c3ab8aa609ea11e793ae92361f002671';
         return $this->test_url;
@@ -85,7 +85,7 @@ final class TwichService
         $request = new Psr7Request('POST', 'https://id.twitch.tv/oauth2/token', $headers);
         $res = $client->sendAsync($request, $options)->wait();
         $result = json_decode($res->getBody(), true);
-        Log::debug("result-------------------------------------------");
+        Log::debug("result getToken-------------------------------------------");
         Log::debug(json_encode($result));
         session(['access_token' => $result['access_token']]);
         session(['refresh_token' => $result['refresh_token']]);
@@ -93,6 +93,8 @@ final class TwichService
 
     public function getRefreshToken($user)
     {
+        Log::debug("getRefreshToken user-------------------------------------------");
+        Log::debug(json_encode($user->channel));
 
         if (isset($user->refresh_token)){
             $refresh_token = $user->refresh_token;
