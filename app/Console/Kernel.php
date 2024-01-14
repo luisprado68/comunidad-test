@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(function () {
+            Log::debug('---------------[START]  Chatters ------------');
             $this->twichService = new TwichService();
             $this->scheduleService = new ScheduleService();
 
@@ -30,9 +31,7 @@ class Kernel extends ConsoleKernel
             Log::debug('----------------------------------------------minute: ' . $minute);
             if ($minute >= env('CHATTERS_MIN_MINUTE_2') && $minute <= env('CHATTERS_MIN_MINUTE_2') || 
                 $minute >= env('CHATTERS_MAX_MINUTE') && $minute <= env('CHATTERS_MAX_MINUTE_2')) {
-                Log::debug('---------------[START] Synchronize Orders Woo-----------------');
-
-
+                
                 $currentStreams = $this->scheduleService->getCurrentStreamKernel();
                 Log::debug('**** currentStreams ******** ');
                 Log::debug(json_encode($currentStreams));
@@ -45,7 +44,7 @@ class Kernel extends ConsoleKernel
                     }
                 }
 
-                Log::debug('---------------[FINISH] END Synchronize Orders Woo------------');
+                Log::debug('---------------[FINISH] END Chatters------------');
             } else {
                 Log::debug('---------------No esta habilitado------------');
             }
