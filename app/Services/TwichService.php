@@ -243,6 +243,8 @@ final class TwichService
         $users['message'] = 'error';
         $supportStreams = [];
         $user_streaming = $schedule->user;
+        Log::debug('*********** user_streaming*************');
+            Log::debug(json_encode($user_streaming));
         if ($user_streaming) {
            
             $users_chatters = $this->getUserChatters($user_streaming);
