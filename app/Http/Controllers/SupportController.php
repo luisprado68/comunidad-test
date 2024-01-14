@@ -37,11 +37,12 @@ class SupportController extends Controller
             $this->user = session('user');
             
             $userModel = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
-            $currentStreams = $this->scheduleService->getStreamByUser($userModel);
+            // $currentStreams = $this->scheduleService->getStreamByUser($userModel);
             
-            if(count($currentStreams) > 0){
-                $times = $this->scheduleService->getTimes($currentStreams,$userModel);
-            }
+            // if(count($currentStreams) > 0){
+            //     $times = $this->scheduleService->getTimes($currentStreams,$userModel);
+            //     dump($times);
+            // }
             if($userModel->status){
                
                 session(['status' => $userModel->status]);
@@ -60,7 +61,7 @@ class SupportController extends Controller
             $date = $next->format('d-m ');
             $hour = $next->format('H:i');
             // dump($next->format('l'));
-            // dump($currentStreams);
+            dump($currentStreams);
             $date_string = ' '.trans('user.create.'.strtolower($day)).' ' . $date .'a las '. $hour;
             // dump($date_string);
             }

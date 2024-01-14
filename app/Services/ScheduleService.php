@@ -63,8 +63,9 @@ final class ScheduleService
         $hour_end = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
         $end = $en->endOfWeek(Carbon::SATURDAY)->addHours($hour_end)->format('Y-m-d H:00:00');
         // dump($end);
-        // $week = $this->model::whereBetween('start', [$start, $end])->get();
-        $week = $this->model::all();
+        $week = $this->model::whereBetween('start', [$start, $end])->get();
+        // $week = $this->model::all();
+        // dump($week);
         if (count($week) > 0) {
             return $week;
         } else {
@@ -205,11 +206,10 @@ final class ScheduleService
         $currentStreams = [];
         $this->setModel();
         $date = Carbon::now();
+        
         $date_next = Carbon::now();
-        // $date_next->tz = $user->time_zone;
         $dates_next = $date_next->format('Y-m-d');
-        // $date->tz = $user->time_zone;
-
+        
         $dates = $date->format('Y-m-d');
         $hour = $date->format('H');
         $minutes = $date->format('i');
@@ -221,9 +221,7 @@ final class ScheduleService
         }else{
             $backHour = $hour - 1;
         }
-        //original if($minutes >= 59  || $minutes <= 10 ){
-
-
+       
         if($minutes > 59  || $minutes <= env('WATCH_SUPPORT_MINUTE')){
             $back_minute = 59;
             $minute = env('WATCH_SUPPORT_MINUTE');
@@ -235,27 +233,62 @@ final class ScheduleService
             // $backHour = $hour-1;
         } 
     
-        // dump($hour);
-        // dump($back_minute);
-        // dump($minute);
-
         $actual = new Carbon($dates.' ' .$backHour.':'.$back_minute.':00');
-
         $actual_next = new Carbon($dates_next.' ' .$hour.':'.$minute.':00');
-  
         $start_string = $actual->format('Y-m-d H:i:s');
-      
-        // dump($start_string);
-        
+        dump($start_string);
         $end_string = $actual_next->format('Y-m-d H:i:s');
+        dump($end_string);
 
-      
-        // dump($end_string);
         if($minutes <= env('WATCH_SUPPORT_MINUTE')){
             $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
         }
-        
+        dump($currentStreams);
+        return $currentStreams;
+    }
 
+    public function getCurrentStreamKernel(){
+
+        $currentStreams = [];
+        $this->setModel();
+        $date_before = Carbon::now();
+        $date_next = Carbon::now();
+
+        $dates_next = $date_next->format('Y-m-d');
+        $dates_before = $date_before->format('Y-m-d');
+
+        $hour = $date_before->format('H');
+        $minutes = $date_before->format('i');
+        
+        if($hour == "00"){
+            $backHour = 23;
+            $date_before->addDays(-1);
+            $dates_before = $date_before->format('Y-m-d');
+        }else{
+            $backHour = $hour - 1;
+        }
+       
+        // if($minutes > 59  || $minutes <= env('WATCH_SUPPORT_MINUTE')){
+        //     $back_minute = 59;
+        //     $minute = env('WATCH_SUPPORT_MINUTE');
+        // }
+        // else{
+            $back_minute = 59;
+            $minute = env('WATCH_SUPPORT_MINUTE');
+            $hour = $date_before->format('H');
+            // $backHour = $hour-1;
+        // } 
+    
+        $actual = new Carbon($dates_before.' ' .$backHour.':'.$back_minute.':00');
+        $actual_next = new Carbon($dates_next.' ' .$hour.':'.$minute.':00');
+        $start_string = $actual->format('Y-m-d H:i:s');
+        Log::debug('start: ' . $start_string);
+        $end_string = $actual_next->format('Y-m-d H:i:s');
+        Log::debug('end: ' . $end_string);
+
+        
+        $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->distinct()->get();
+        
         // dump($currentStreams);
         return $currentStreams;
     }
@@ -278,12 +311,12 @@ final class ScheduleService
    
         $start_string = $actual_before->format('Y-m-d H:i:s');
        
-        // dump($start_string);
+        dump($start_string);
       
         $end_string = $actual_next->format('Y-m-d H:i:s');
-        // dump($end_string);
+        dump($end_string);
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','=',$user->id)->distinct()->get();
-        // dump($currentStreams);
+        dump($currentStreams);
         return $currentStreams;
     }
 

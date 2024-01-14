@@ -69,13 +69,22 @@ class ScheduleController extends Controller
                 $current_t->tz= $user_model->time_zone;
                 $day = $current_t->format('l');
                 // dump($day);
-                if ($day == 'Sunday') {
+                if(env('APP_ENV') == 'local'){
                     if (!isset($schedules_by_user)) {
                         $this->schedule_avaible = true;
                     } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
                         $this->schedule_avaible = true;
                     }
+                }else{
+                    if ($day == 'Sunday') {
+                        if (!isset($schedules_by_user)) {
+                            $this->schedule_avaible = true;
+                        } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
+                            $this->schedule_avaible = true;
+                        }
+                    }
                 }
+               
                 
             }
             if ($this->schedule_avaible) {
@@ -182,10 +191,7 @@ class ScheduleController extends Controller
         }
     }
 
-    public function test()
-    {
-        return view('test');
-    }
+   
 
     public function updateScheduler(Request $request)
     {
@@ -311,8 +317,8 @@ class ScheduleController extends Controller
 
     public function parseToCountry($date,$day_param,$time,$time_zone){
 
-        Log::debug('date-------------');
-        Log::debug(json_encode($date));
+        // Log::debug('date-------------');
+        // Log::debug(json_encode($date));
         $hour_diff = $this->scheduleService->parseHoursToCountry($date->endOfWeek($day_param),$time_zone);
         $utc =  new Carbon($date->setDaysFromStartOfWeek($day_param)->format('Y-m-d') . $time);
         $utc->addHours($hour_diff);

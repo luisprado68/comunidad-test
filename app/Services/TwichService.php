@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Broobe\Services\Service;
 use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
+use Carbon\Carbon;
 use DateTimeZone;
 use Error;
 use Illuminate\Support\Collection;
@@ -27,6 +28,10 @@ final class TwichService
     public $complete_url;
     public $test_url;
     public $user;
+
+    private $userService;
+    private $streamSupportService;
+    private $scoreService;
     /**
      * Set model class name.
      *
@@ -36,6 +41,12 @@ final class TwichService
     // {
     //     $this->model = User::class;
     // }
+    public function __construct()
+    {
+        $this->userService = new UserService();
+        $this->streamSupportService = new StreamSupportService();
+        $this->scoreService = new ScoreService();
+    }
     public function login()
     {
         $this->code = Str::random(10);
@@ -80,12 +91,9 @@ final class TwichService
         session(['refresh_token' => $result['refresh_token']]);
     }
 
-    public function getRefreshToken(Request $request,$user)
+    public function getRefreshToken($user)
     {
         $refresh_token = $user->refresh_token;
-
-        $this->url_test = 'http://localhost';
-        $this->url = 'https://www.comunidadnc.com/login_token';
         $client = new Client();
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -104,7 +112,8 @@ final class TwichService
         $result = json_decode($res->getBody(), true);
         Log::debug("getRefreshToken result-------------------------------------------");
         Log::debug(json_encode($result));
-       
+        // session(['access_token' => $result['access_token']]);
+        $user->access_token = $result['access_token'];
         $user->refresh_token = $result['refresh_token'];
         $user->update();
     }
@@ -199,25 +208,20 @@ final class TwichService
         $users = [];
         try {
         // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
-        if (!empty(session('access_token'))) {
+        if ($user->access_token) {
             $client = new Client();
             $headers = [
                 'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
-                'Authorization' => 'Bearer ' . session('access_token'),
+                'Authorization' => 'Bearer ' . $user->access_token,
                 'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
             ];
             $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/chat/chatters?broadcaster_id=' . $user->twich_id . '&moderator_id=' . $user->twich_id, $headers);
             $res = $client->sendAsync($request)->wait();
             $result = json_decode($res->getBody(), true);
             $users = $result['data'];
-            Log::debug('users services------------------');
+            Log::debug('users chatters------------------');
             Log::debug(json_encode($users));
-            // if(empty($users)){
-            //     $users = [];
-            // }
-        
-            // $img = $this->user['profile_image_url'];
-            // session(['video' => $video]);
+            
             return $users;
         }
         return $users;
@@ -227,63 +231,132 @@ final class TwichService
         Log::debug($e->getMessage());
     }
     }
-    // public function all(): Collection
-    // {
-    //     // return $this->model::all();
-    // }
+  
 
+    public function getChattersKernel($schedule)
+    {
+        Log::debug("*****************getChatters*****************************");
+        $data = [];
+       
+        $users = [];
+        $users['status'] = 'error';
+        $users['message'] = 'error';
+        $supportStreams = [];
+        $user_streaming = $schedule->user;
+        if ($user_streaming) {
+           
+            $users_chatters = $this->getUserChatters($user_streaming);
+            Log::debug('*********** users_chatters*************');
+            Log::debug(json_encode($users_chatters));
+                if (count($users_chatters) > 0) {
+                    $users['chaters'] = $users_chatters;
+                    $users['status'] = 'success';
+                    $users['message'] = 'success';
+                    foreach ($users_chatters as $key => $item) {
+                            $user_chat  = $this->userService->getByIdandTwichId($item['user_id']);
+                          
+                            if(!empty($user_chat)){
+                                $current_t = Carbon::now();
+                                $minute_t = $current_t->format('i');
 
-    // public function getById($billingId)
-    // {
-    //     return $this->model::where('id', $billingId)
-    //         ->with('order')
-    //         ->with('items')
-    //         ->get();
-    // }
+                                // if($minute_t >=  env('CHATTERS_MIN_MINUTE') && $minute_t <= env('CHATTERS_MIN_MINUTE_2') ||
+                                //  $minute_t >=  env('CHATTERS_MAX_MINUTE') && $minute_t <= env('CHATTERS_MAX_MINUTE_2')){
+                                    
+                                    $supportStreams = $user_chat->streamSupport;
+                                    Log::debug('*********** supportStreams*************');
+                                    Log::debug(json_encode($supportStreams));
 
-    // public function update($billingArray)
-    // {
-    //     try {
-    //         $billing = $this->model::find($billingArray['id']);
+                                    if(count($supportStreams)>0){
+                                        foreach ($supportStreams as $key => $supportStream) {
+                                            // if($supportStream->supported)
+                                            $support_created = json_decode($supportStream->supported);
+                                            Log::debug('*********** support_created*************');
+                                            Log::debug(json_encode($support_created));
+                                            if($support_created->id == $user_chat->id){
 
-    //         $billing->name = $billingArray['name'];
-    //         $billing->lastname = $billingArray['lastname'];
-    //         $billing->dni = $billingArray['dni'];
-    //         $billing->cuit = $billingArray['cuit'];
-    //         $billing->email = $billingArray['email'];
-    //         $billing->address = $billingArray['address'];
-    //         $billing->address_number = $billingArray['address_number'];
-    //         $billing->phone = $billingArray['phone'];
-    //         $billing->apartment = $billingArray['apartment'];
-    //         $billing->postal_code = $billingArray['postal_code'];
-    //         $billing->province = $billingArray['province'];
-    //         $billing->country = $billingArray['country'];
+                                                Log::debug('*********** pasassss*************');
+                                                Log::debug(json_encode($support_created));
+                                                $supportStream->supported = json_encode($support_created);
+                                                $supportStream->update();
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        $support['id'] = $user_streaming->id;
+                                        $support['name'] = $user_streaming->channel;
+                                        $streamSupport['user_id'] = $user_chat->id;
+                                        $streamSupport['supported'] = json_encode($support);
+                                        $created = $this->streamSupportService->create($streamSupport);
+                                    }
+                                // }
+                                
+                                $current = Carbon::now();
+                                $minute = $current->format('i');
 
-    //         $billing->number = $billingArray['number'];
-    //         $billing->payment_method = $billingArray['payment_method'];
-    //         $billing->payment_method_key = $billingArray['payment_method_key'];
-    //         $billing->type = $billingArray['type'];
-    //         $billing->status = $billingArray['status'];
-    //         //$billing->link = $billingArray['link'];
-    //         $billing->update();
+                                // if($minute == env('CHATTERS_MAX_MINUTE') || $minute == env('CHATTERS_MAX_MINUTE_2') ){
+                                    $score = $user_chat->score;
+                                        Log::debug('score---------------------');
+                                        Log::debug($score);
+                                    if (isset($score) && !empty($score)) {
+                                    
+                                        $last = new Carbon( $score->updated_at);
+                                        $user_support['id'] = $user_chat->id;
+                                        $user_support['name'] = $user_chat->channel;
+                                            //minuto minute == 10
+                                                if($current->format('H') == $last->format('H')
+                                                || $current->format('H') != $last->format('H') 
+                                                ){
+                                                    if ($score->points_day == 10) {
+                                                        $score->points_day = 0;
+                                                    } else {
+                                                        $score->points_day =  $score->points_day + 1;
+                                                    }
+                                                    
+                                                    if ($score->points_week == 60) {
+                                                        $score->points_week = 0;
+                                                    } else {
+                                                        $score->points_week = $score->points_week + 1;
+                                                    }
+                    
+                                                    $score->neo_coins = $score->neo_coins + 1;
+                                                    $score->streamer_supported = json_encode($user_support);
+                                                    $score->update();
 
-    //         return true;
-    //     }catch (Error $e){
-    //         Log::debug('Billing update error : '.$e->getMessage() );
-    //         return false;
+                                                }
 
-    //     }
-    // }
+                                    } else {
+                                        Log::debug('else---------------------');
+                                        Log::debug($user_chat);
 
-
-
-
-
-    // public function addDaytoDate($date)
-    // {
-    //     $newDate = new DateTime($date);
-    //     $newDate->add(new DateInterval('P1D'));
-    //     return $newDate->format('Y-m-d');
-    // }
-
+                                        $score['user_id'] = $user_chat->id;
+                                        $score['points_day'] = 1;
+                                        $score['points_week'] = 1;
+                                        $score['neo_coins'] = 1;
+                                        $user_support['id'] = $user_chat->id;
+                                        $user_support['name'] = $user_chat->channel;
+                                        $score['streamer_supported'] = json_encode($user_support);
+                                        // $score['count_users'] = count($users);
+                                        
+                                        $created = $this->scoreService->create($score);
+                                        
+                                        // dump($score);
+                                    }
+                                // }
+                                
+                            }
+                           
+                        
+                    }
+    
+                    Log::debug("users*****************************");
+                    Log::debug(json_encode($users));
+                    $users['status'] = 'ok';
+                  
+                    return $users;
+                }
+            
+            
+        }
+        return $users;
+    }
 }
