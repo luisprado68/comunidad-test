@@ -208,11 +208,11 @@ final class TwichService
         $users = [];
         try {
         // https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/642cc3d8aefda37f1b85_shingineo_42081665833_1701532096//thumb/thumb0-440x248.jpg
-        if ($user->access_token) {
+        if ($user->token) {
             $client = new Client();
             $headers = [
                 'Client-Id' => 'vjl5wxupylcsiaq7kp5bjou29solwc',
-                'Authorization' => 'Bearer ' . $user->access_token,
+                'Authorization' => 'Bearer ' . $user->token,
                 'Cookie' => 'twitch.lohp.countryCode=AR; unique_id=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O; unique_id_durable=0JaqWdYXGWGHNufLw7yDUgf6IYGyiI9O',
             ];
             $request = new Psr7Request('GET', 'https://api.twitch.tv/helix/chat/chatters?broadcaster_id=' . $user->twich_id . '&moderator_id=' . $user->twich_id, $headers);
@@ -256,8 +256,12 @@ final class TwichService
                     $users['message'] = 'success';
                     foreach ($users_chatters as $key => $item) {
                             $user_chat  = $this->userService->getByIdandTwichId($item['user_id']);
-                          
-                            if(!empty($user_chat)){
+                            
+                            if(!empty($user_chat) && $user_chat->id != $user_streaming->id ){
+
+                                Log::debug('*********** user_chat*************');
+                                Log::debug(json_encode($user_chat));
+
                                 $current_t = Carbon::now();
                                 $minute_t = $current_t->format('i');
 
@@ -272,9 +276,9 @@ final class TwichService
                                         foreach ($supportStreams as $key => $supportStream) {
                                             // if($supportStream->supported)
                                             $support_created = json_decode($supportStream->supported);
-                                            Log::debug('*********** support_created*************');
+                                            Log::debug('*********** support_exist*************');
                                             Log::debug(json_encode($support_created));
-                                            if($support_created->id == $user_chat->id){
+                                            if($support_created->id == $user_streaming->id){
 
                                                 Log::debug('*********** pasassss*************');
                                                 Log::debug(json_encode($support_created));
@@ -295,15 +299,15 @@ final class TwichService
                                 $current = Carbon::now();
                                 $minute = $current->format('i');
 
-                                // if($minute == env('CHATTERS_MAX_MINUTE') || $minute == env('CHATTERS_MAX_MINUTE_2') ){
+                                if($minute >= 50 || $minute <= 59 ){
                                     $score = $user_chat->score;
                                         Log::debug('score---------------------');
                                         Log::debug($score);
                                     if (isset($score) && !empty($score)) {
                                     
                                         $last = new Carbon( $score->updated_at);
-                                        $user_support['id'] = $user_chat->id;
-                                        $user_support['name'] = $user_chat->channel;
+                                        $user_support['id'] = $user_streaming->id;
+                                        $user_support['name'] = $user_streaming->channel;
                                             //minuto minute == 10
                                                 if($current->format('H') == $last->format('H')
                                                 || $current->format('H') != $last->format('H') 
@@ -334,8 +338,8 @@ final class TwichService
                                         $score['points_day'] = 1;
                                         $score['points_week'] = 1;
                                         $score['neo_coins'] = 1;
-                                        $user_support['id'] = $user_chat->id;
-                                        $user_support['name'] = $user_chat->channel;
+                                        $user_support['id'] = $user_streaming->id;
+                                        $user_support['name'] = $user_streaming->channel;
                                         $score['streamer_supported'] = json_encode($user_support);
                                         // $score['count_users'] = count($users);
                                         
@@ -343,7 +347,7 @@ final class TwichService
                                         
                                         // dump($score);
                                     }
-                                // }
+                                 }
                                 
                             }
                            
