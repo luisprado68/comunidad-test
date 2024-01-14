@@ -51,6 +51,8 @@ class LoginController extends Controller
     public function login()
     {
         $urlToken = $this->twichService->login();
+        Log::debug('**************** urlToken ***********************');
+        Log::debug(json_encode($urlToken));
         return redirect($urlToken);
     }
 
