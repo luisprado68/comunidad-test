@@ -297,6 +297,7 @@ final class TwichService
                                 }
                             }
                         } else {
+                            Log::debug('*********** crea supportStreams*************');
                             $support['id'] = $user_streaming->id;
                             $support['name'] = $user_streaming->channel;
                             $streamSupport['user_id'] = $user_chat->id;
@@ -340,18 +341,19 @@ final class TwichService
                                 }
                             } else {
                                 Log::debug('else---------------------');
-                                Log::debug($user_chat);
-
-                                $score['user_id'] = $user_chat->id;
-                                $score['points_day'] = 1;
-                                $score['points_week'] = 1;
-                                $score['neo_coins'] = 1;
+                               
+                                $score_new = [];
+                                $score_new['user_id'] = $user_chat->id;
+                                $score_new['points_day'] = 1;
+                                $score_new['points_week'] = 1;
+                                $score_new['neo_coins'] = 1;
                                 $user_support['id'] = $user_streaming->id;
                                 $user_support['name'] = $user_streaming->channel;
-                                $score['streamer_supported'] = json_encode($user_support);
+                                $score_new['streamer_supported'] = json_encode($user_support);
                                 // $score['count_users'] = count($users);
 
-                                $created = $this->scoreService->create($score);
+                                $created = $this->scoreService->create($score_new);
+                                Log::debug($created);
 
                                 // dump($score);
                             }
