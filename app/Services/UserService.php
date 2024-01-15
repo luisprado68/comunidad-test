@@ -89,8 +89,8 @@ final class UserService
         $this->setModel();
         if (isset($twich_id)) {
             $user = $this->model
-                ::where('email', $email)
-                ->where('twich_id', $twich_id)
+                // ::where('email', $email)
+                ::where('twich_id', $twich_id)
                 ->first();
         } else {
             $user = $this->model::where('email', $email)->first();
