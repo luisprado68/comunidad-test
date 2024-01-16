@@ -126,6 +126,8 @@ class LoginController extends Controller
 
 
         $user_model = $this->userService->userLogin($credentials['email'], $credentials['password']);
+        Log::debug('login admin------------');
+        Log::debug(json_encode($user_model));
         session(['access_token' => $user_model->token]);
 
         $user_twich = $this->twichService->getUser();

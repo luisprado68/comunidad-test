@@ -30,25 +30,52 @@
 
                 <div class="container mt-5 ">
                     <div class="row">
-                        <a href="{{ route('admin-list') }}"><button type="button" class="btn btn-dark">Volver</button></a>
-                     
-                        
-                        @foreach ($week as $key => $days)
-                           
-                        <div class="col-lg-4 mb-4 bg-dark">
-                            <h4 class="text-light bg-warning">{{$key}}</h4>
-                       
-                            @foreach ($days as $day )
-                            <div class="col-lg-12 text-light">
-                                <h5>{{$day['date'] . ' -- ' . $day['user']}}</h5>
-                            </div>
-                            @endforeach
-                          {{-- @dump($day) --}}
-                        </div>
-                        @endforeach
-                     
+                        <h4 class="text-center">Agenda Semanal</h4>
+                        <a href="{{ route('admin-list') }}"><button type="button"
+                                class="btn btn-dark">Volver</button></a>
 
-                  
+                        <div class="col-lg-12">
+                            @foreach ($week as $key => $days)
+                                <div class="col-lg-4 mb-4 bg-dark">
+                                    <h4 class="text-light bg-warning">{{ $key }}</h4>
+
+                                    @foreach ($days as $day)
+                                        <div class="col-lg-12 text-light">
+                                            <h5>{{ $day['date'] . ' -- ' . $day['user'] }}</h5>
+                                        </div>
+                                    @endforeach
+                                    {{-- @dump($day) --}}
+                                </div>
+                            @endforeach
+                        </div>
+
+
+                        <div class="col-lg-12">
+                            <h4 class="text-center">Puntaje</h4>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <h5>Usuario</h5>
+                                </div>
+                                <div class="col-lg-8">
+                                    <h5>Streamers APoyados</h5>
+                                </div>
+                                @if (count($all) > 0)
+                                @foreach ($all as $user)
+                                <div class="col-lg-4 bg-secondary text-light"> {{ $user['name'] }}</div>
+                
+                                <div class="col-lg-6 bg-secondary">
+                                    <div class="row">
+                                    @foreach ($user['supported'] as $supported)
+                                        <div class="col">{{ $supported }}</div>
+                                    @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                                @endif
+                                
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

@@ -296,6 +296,7 @@ final class TwichService
                                     $supportStream->supported = json_encode($support_created);
                                     $supportStream->update();
                                 }else{
+                                    Log::debug('*********** crea supportStreams*************');
                                     $support_new['id'] = $user_streaming->id;
                                     $support_new['name'] = $user_streaming->channel;
                                     $streamSupport_new['user_id'] = $user_chat->id;
@@ -347,7 +348,7 @@ final class TwichService
                                     $score->update();
                                 }
                             } else {
-                                Log::debug('else---------------------');
+                                Log::debug('new score---------------------');
                                
                                 $score_new = [];
                                 $score_new['user_id'] = $user_chat->id;

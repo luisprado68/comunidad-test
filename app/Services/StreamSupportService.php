@@ -38,6 +38,17 @@ final class StreamSupportService
         $this->model = StreamSupport::class;
     }
 
+    public function getSupportsStreams()
+    {
+        $this->setModel();
+        $supportStreams = $this->model::select('user_id')->groupBy('user_id')->get();
+        if (count($supportStreams)) {
+            return $supportStreams;
+        } else {
+            return null;
+        }
+    }
+
     public function getById($id)
     {
         $this->setModel();

@@ -37,6 +37,8 @@ final class SupportScoreService
         $this->model = SupportScore::class;
     }
 
+   
+
     public function getById($id)
     {
         $this->setModel();

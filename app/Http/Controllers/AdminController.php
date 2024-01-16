@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\BillingService;
 use App\Services\ScheduleService;
+use App\Services\StreamSupportService;
+use App\Services\SupportScoreService;
 use App\Services\TwichService;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -31,12 +33,15 @@ class AdminController extends Controller
     private $twichService;
     private $userService;
     private $scheduleService;
+    private $streamSupportService;
 
-    public function __construct(TwichService $twichService, UserService $userService, ScheduleService $scheduleService,)
+    public function __construct(TwichService $twichService, UserService $userService, ScheduleService $scheduleService,
+    StreamSupportService $streamSupportService)
     {
         $this->twichService = $twichService;
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
+        $this->streamSupportService = $streamSupportService;
     }
 
     public function index()
@@ -79,12 +84,28 @@ class AdminController extends Controller
     public function schedulers()
     {
         $week_time_zone = [];
+        $new_streams = [];
+        $users = [];
+        $all = [];
         if (Session::has('user-log')) {
             $this->user_model = session('user-log');
             $users = $this->userService->getUsersModel();
             $week = $this->scheduleService->getSchedulerWeek($this->user_model);
 
+            $supports_ids = $this->streamSupportService->getSupportsStreams();
+            dump($supports_ids);
+            foreach ($supports_ids as $key => $support) {
 
+                $supports = $this->streamSupportService->getStreamSupportsByUserId($support->user_id);
+                $user['name'] =  $support->user->channel;
+                foreach ($supports as $key => $support_found) {
+                    $sup = json_decode($support_found->supported);
+                    array_push($new_streams,$sup->name);
+                }
+                $user['supported'] = $new_streams;
+                array_push($all,$user);
+            }
+            dump($all);
             // foreach ($week as $key => $value) {
 
             //     $date = new Carbon($value->start);
@@ -94,7 +115,7 @@ class AdminController extends Controller
 
             // }
             // dd($week);
-            return view('admin.schedulers', ['users' => $users, 'user_model' => $this->user_model, 'week' => $week]);
+            return view('admin.schedulers', ['users' => $users, 'user_model' => $this->user_model, 'week' => $week,'all' => $all]);
         } else {
             return redirect('admin');
         }
