@@ -250,6 +250,7 @@ final class TwichService
         $users['status'] = 'error';
         $users['message'] = 'error';
         $supportStreams = [];
+       
         $user_streaming = $schedule->user;
         Log::debug('*********** user_streaming*************');
         Log::debug(json_encode($user_streaming));
@@ -273,38 +274,27 @@ final class TwichService
                         Log::debug('*********** user_chat*************');
                         Log::debug(json_encode($user_chat));
 
-                        $current_t = Carbon::now();
-                        $minute_t = $current_t->format('i');
-
-                        // if($minute_t >=  env('CHATTERS_MIN_MINUTE') && $minute_t <= env('CHATTERS_MIN_MINUTE_2') ||
-                        //  $minute_t >=  env('CHATTERS_MAX_MINUTE') && $minute_t <= env('CHATTERS_MAX_MINUTE_2')){
-
+                    
                         $supportStreams = $user_chat->streamSupport;
                         Log::debug('*********** supportStreams*************');
                         Log::debug(json_encode($supportStreams));
-
+                        $exist_supported = false;
                         if (count($supportStreams) > 0) {
                             foreach ($supportStreams as $key => $supportStream) {
-                                // if($supportStream->supported)
+                                
                                 $support_created = json_decode($supportStream->supported);
                                 Log::debug('*********** support_exist*************');
                                 Log::debug(json_encode($support_created));
                                 if ($support_created->id == $user_streaming->id) {
-
+                                    $exist_supported = true;
                                     Log::debug('*********** pasassss*************');
                                     Log::debug(json_encode($support_created));
                                     $supportStream->supported = json_encode($support_created);
                                     $supportStream->update();
-                                }else{
-                                    Log::debug('*********** crea supportStreams*************');
-                                    $support_new['id'] = $user_streaming->id;
-                                    $support_new['name'] = $user_streaming->channel;
-                                    $streamSupport_new['user_id'] = $user_chat->id;
-                                    $streamSupport_new['supported'] = json_encode($support_new);
-                                    $created = $this->streamSupportService->create($streamSupport_new);
-                                }
+                                }               
                             }
-                        } else {
+                        } 
+                        if($exist_supported == false || count($supportStreams) == 0){
                             Log::debug('*********** crea supportStreams*************');
                             $support['id'] = $user_streaming->id;
                             $support['name'] = $user_streaming->channel;
@@ -312,7 +302,7 @@ final class TwichService
                             $streamSupport['supported'] = json_encode($support);
                             $created = $this->streamSupportService->create($streamSupport);
                         }
-                        // }
+                    
 
                         $current = Carbon::now();
                         $minute = $current->format('i');
