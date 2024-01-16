@@ -15,6 +15,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use PhpParser\Node\Stmt\Else_;
 
 final class TwichService
 {
@@ -294,6 +295,12 @@ final class TwichService
                                     Log::debug(json_encode($support_created));
                                     $supportStream->supported = json_encode($support_created);
                                     $supportStream->update();
+                                }else{
+                                    $support_new['id'] = $user_streaming->id;
+                                    $support_new['name'] = $user_streaming->channel;
+                                    $streamSupport_new['user_id'] = $user_chat->id;
+                                    $streamSupport_new['supported'] = json_encode($support_new);
+                                    $created = $this->streamSupportService->create($streamSupport_new);
                                 }
                             }
                         } else {

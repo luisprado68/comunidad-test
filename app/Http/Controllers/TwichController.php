@@ -66,7 +66,7 @@ class TwichController extends Controller
                                 $minute_t = $current_t->format('i');
                                 if($minute_t >=  env('CHATTERS_MIN_MINUTE') && $minute_t <= env('CHATTERS_MIN_MINUTE_2') ||
                                  $minute_t >=  env('CHATTERS_MAX_MINUTE') && $minute_t <= env('CHATTERS_MAX_MINUTE_2')){
-                                    Log::debug('*********** PASA EL TIEMPO*************');
+                                   
                                     $supportStreams = $user_twich->streamSupport;
                                     Log::debug('*********** supportStreams*************');
                                     Log::debug(json_encode($supportStreams));
