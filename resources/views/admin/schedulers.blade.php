@@ -35,7 +35,8 @@
                                 class="btn btn-dark">Volver</button></a>
 
                         <div class="col-lg-12">
-                            @foreach ($week as $key => $days)
+                            <div class="row">
+                                @foreach ($week as $key => $days)
                                 <div class="col-lg-4 mb-4 bg-dark">
                                     <h4 class="text-light bg-warning">{{ $key }}</h4>
 
@@ -47,6 +48,8 @@
                                     {{-- @dump($day) --}}
                                 </div>
                             @endforeach
+                            </div>
+                            
                         </div>
 
 
@@ -61,16 +64,16 @@
                                 </div>
                                 @if (count($all) > 0)
                                 @foreach ($all as $user)
-                                <div class="col-lg-4 bg-secondary text-light"> {{ $user['name'] }}</div>
-                
-                                <div class="col-lg-6 bg-secondary">
-                                    <div class="row">
-                                    @foreach ($user['supported'] as $supported)
-                                        <div class="col">{{ $supported }}</div>
-                                    @endforeach
+                                    <div class="col-lg-4 bg-secondary text-light"> {{ $user['name'] }}</div>
+                    
+                                    <div class="col-lg-6 bg-secondary">
+                                        <div class="row">
+                                        @foreach ($user['supported'] as $supported)
+                                            <div class="col">{{ $supported }}</div>
+                                        @endforeach
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
                                 @endif
                                 
                             </div>
