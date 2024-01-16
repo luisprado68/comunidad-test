@@ -64,6 +64,7 @@ final class StreamSupportService
     {
         $this->setModel();
         $user = $this->model::where('user_id', $id)->get();
+        // $user = $this->model::select('user_id','supported')->where('user_id', $id)->groupBy('supported')->get();
         if ($user) {
             return $user;
         } else {

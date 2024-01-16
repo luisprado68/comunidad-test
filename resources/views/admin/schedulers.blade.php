@@ -69,7 +69,7 @@
                                     <div class="col-lg-6 bg-secondary">
                                         <div class="row">
                                         @foreach ($user['supported'] as $supported)
-                                            <div class="col">{{ $supported }}</div>
+                                            <div class="col">{{ $supported->name }}</div>
                                         @endforeach
                                         </div>
                                     </div>

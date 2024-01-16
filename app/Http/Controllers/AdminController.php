@@ -11,6 +11,7 @@ use App\Services\UserService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
@@ -93,19 +94,31 @@ class AdminController extends Controller
             $week = $this->scheduleService->getSchedulerWeek($this->user_model);
 
             $supports_ids = $this->streamSupportService->getSupportsStreams();
-            dump($supports_ids);
+            // dump($supports_ids);
             foreach ($supports_ids as $key => $support) {
 
                 $supports = $this->streamSupportService->getStreamSupportsByUserId($support->user_id);
+                // $test = $support->unique('supported');
+                // dump($supports);
                 $user['name'] =  $support->user->channel;
+                $collection = new Collection();
                 foreach ($supports as $key => $support_found) {
+
                     $sup = json_decode($support_found->supported);
-                    array_push($new_streams,$sup->name);
+
+                    $collection->push((object)['id' => $sup->id,
+                                                'name'=> $sup->name]);
+
+                   
+                    // array_push($new_streams,$sup->name);
                 }
+                $unique = $collection->unique('id');
+                $new_streams = $unique->toArray();
+                // dump($new_streams);
                 $user['supported'] = $new_streams;
                 array_push($all,$user);
             }
-            dump($all);
+            // dump($all);
             // foreach ($week as $key => $value) {
 
             //     $date = new Carbon($value->start);
