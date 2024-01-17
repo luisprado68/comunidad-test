@@ -17,8 +17,7 @@ return new class extends Migration
             $table->integer('points_day')->nullable();
             $table->integer('points_week')->nullable();
             $table->integer('neo_coins')->nullable();
-            $table->json('users_data')->nullable();
-            $table->integer('count_users')->nullable();
+            $table->json('streamer_supported')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
