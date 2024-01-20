@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\BillingService;
+use App\Services\RangeService;
+use App\Services\RoleService;
 use App\Services\ScheduleService;
 use App\Services\StreamSupportService;
 use App\Services\SupportScoreService;
@@ -35,14 +37,16 @@ class AdminController extends Controller
     private $userService;
     private $scheduleService;
     private $streamSupportService;
+    private $rangeService;
 
     public function __construct(TwichService $twichService, UserService $userService, ScheduleService $scheduleService,
-    StreamSupportService $streamSupportService)
+    StreamSupportService $streamSupportService,RangeService $rangeService)
     {
         $this->twichService = $twichService;
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
         $this->streamSupportService = $streamSupportService;
+        $this->rangeService = $rangeService;
     }
 
     public function index()
@@ -136,8 +140,9 @@ class AdminController extends Controller
     public function edit($id)
     {
         if (Session::has('user-log')) {
+            $ranges = $this->rangeService->all();
             $user = $this->userService->getById($id);
-            return view('admin.edit', ['user' => $user]);
+            return view('admin.edit', ['user' => $user,'ranges' => $ranges]);
         } else {
             return redirect('admin');
         }
@@ -242,7 +247,13 @@ class AdminController extends Controller
     public function post(Request $request)
     {
         $user = $request->all();
+        Log::debug('user---------------' . json_encode($user));
         $this->user_model = session('user-log');
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'range' => 'required'
+        ]);
         $user = $this->userService->update($user);
 
         $users = $this->userService->getUsersModel();

@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Models\Range;
+use App\Models\Role;
 use App\Models\User;
 use Broobe\Services\Service;
 use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
@@ -13,7 +15,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-final class UserService
+final class RangeService
 {
     public $model;
     public $code_test;
@@ -32,15 +34,15 @@ final class UserService
      */
     protected function setModel(): void
     {
-        $this->model = User::class;
+        $this->model = Range::class;
     }
 
     public function all(){
         $this->setModel();
         
-        $users = $this->model::all();
-        if(count($users) > 0){
-            return $users;
+        $roles = $this->model::all();
+        if(count($roles) > 0){
+            return $roles;
         }else {
             return null;
         }
@@ -214,7 +216,6 @@ final class UserService
             $user = User::find($userArray['id']);
             $user->name = $userArray['name'];
             $user->email = $userArray['email'];
-            $user->range_id = intval($userArray['range']);
             // $user->active = $userArray['active'];
             if(array_key_exists('status',$userArray)){
                 $user->status = $userArray['status'];

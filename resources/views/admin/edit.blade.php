@@ -49,24 +49,33 @@
                                                     aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
                                             </div>
                                             <div class="col-8 mb-3 mt-3">
-                                                <label class="block mb-2 text-sm font-medium text-white" for="channel">Name</label>
+                                                <label class="block mb-2 text-sm font-medium text-white" for="name">Name</label>
                                                 <input type="text" class="form-control" aria-label="Default" name="name"
                                                     aria-describedby="inputGroup-sizing-default" value="{{ $user->name }}">
                                             </div>
                                             <div class="col-8 mb-3 mt-3">
                                                 <label class="block mb-2 text-sm font-medium text-white"
-                                                    for="channel">Email</label>
+                                                    for="email">Email</label>
                                                 <input type="text" class="form-control" aria-label="Default" name="email"
                                                     aria-describedby="inputGroup-sizing-default" value="{{ $user->email }}">
                                             </div>
-                                            {{-- @dump($user) --}}
+                                            <div class="col-8 mb-3 mt-3">
+                                                <label class="block mb-2 text-sm font-medium text-white"
+                                                for="range">Rango</label>
+                                                <select class="form-select form-select mb-3" aria-label=".form-select example" name="range" id="range">
+                                                    {{-- <option value="{{''}} selected>Seleccione una opción</option> --}}
+                                                    @foreach ($ranges as $range)
+                                                    <option value="{{ $range->id }}" {{ ( $range->id == $user->range_id) ? 'selected' : '' }}> {{ $range->name }} </option>
+                                                    @endforeach
+                                                  </select>
+                                            </div>
                                             <div class="col-8 mb-3 mt-3">
                                                 <input class="form-check-input" type="checkbox"  type="checkbox" name="status"  value="1" @if (isset($user)) @if ($user->status==1) checked @endif @endif id="">
                                                 <label class="form-check-label" for="flexCheckChecked">
                                                     Active
                                                 </label>
                                             </div>
-                                            
+                                           
                                             <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
                                                 <button type="submit" class="btn btn-success">Guardar</button>
                                                 <a href="{{ route('admin-list') }}"><button type="button" class="btn btn-danger">Cancel</button></a>

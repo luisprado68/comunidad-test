@@ -42,11 +42,12 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Id</th>
-                                    <th scope="col">Role</th>
+                                    <th scope="col">Rol</th>
+                                    <th scope="col">Rango</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Channel</th>
+                                    <th scope="col">Canal</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Active</th>
+                                    <th scope="col">Activo</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -60,7 +61,7 @@
                                         @else
                                         <td>{{ $user->role->name }}</td>
                                         @endif
-                                        
+                                        <td>{{ $user->range->name }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->channel }}</td>
                                         <td>{{ $user->email }}</td>
