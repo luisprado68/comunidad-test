@@ -155,7 +155,7 @@ class ScheduleController extends Controller
                 // dump($this->days_with_time);
                 $schedules = $this->scheduleService->getScheduleorThisWeek($user_model);
                 $new_schedules = [];
-                // dump($schedules);
+                dump($schedules);
 
                 if (isset($schedules)) {
                     // Log::debug('schedules' . json_encode($schedules));
