@@ -191,7 +191,7 @@ class ScheduleController extends Controller
                     $day_int = 0;
                     switch ($day) {
                         case 'Sunday':
-                            $day_int = 0;
+                            // $day_int = 0;
                             break;
                         case 'Monday':
                             $day_int = 0;
@@ -216,10 +216,11 @@ class ScheduleController extends Controller
                     //saca los dias inclusive el actual para agendar los bronces
                     $i = 0;
                     foreach ($this->days_with_time as $key => $value) {
-                        $this->days_with_time[$key]['status'] = false;
+                        
                         if ($day_int == $i) {
                             break;
                         }
+                        $this->days_with_time[$key]['status'] = false;
                         $i++;
                     }
                 }
