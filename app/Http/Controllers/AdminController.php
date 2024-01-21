@@ -39,9 +39,13 @@ class AdminController extends Controller
     private $streamSupportService;
     private $rangeService;
 
-    public function __construct(TwichService $twichService, UserService $userService, ScheduleService $scheduleService,
-    StreamSupportService $streamSupportService,RangeService $rangeService)
-    {
+    public function __construct(
+        TwichService $twichService,
+        UserService $userService,
+        ScheduleService $scheduleService,
+        StreamSupportService $streamSupportService,
+        RangeService $rangeService
+    ) {
         $this->twichService = $twichService;
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
@@ -100,28 +104,29 @@ class AdminController extends Controller
             $supports_ids = $this->streamSupportService->getSupportsStreams();
             // dump($supports_ids);
             foreach ($supports_ids as $key => $support) {
-
-                $supports = $this->streamSupportService->getStreamSupportsByUserId($support->user_id);
                 // $test = $support->unique('supported');
                 // dd($support);
                 $user_obteined = $this->userService->getById($support->user_id);
-                $user['name'] =  $user_obteined->channel;
-                $collection = new Collection();
-                foreach ($supports as $key => $support_found) {
+                if (isset($user_obteined)) {
+                    $supports = $this->streamSupportService->getStreamSupportsByUserId($user_obteined->id);
+                    $user['name'] =  $user_obteined->channel;
+                    $collection = new Collection();
+                    foreach ($supports as $key => $support_found) {
 
-                    $sup = json_decode($support_found->supported);
+                        $sup = json_decode($support_found->supported);
 
-                    $collection->push((object)['id' => $sup->id,
-                                                'name'=> $sup->name]);
-
-                   
-                    // array_push($new_streams,$sup->name);
+                        $collection->push((object)[
+                            'id' => $sup->id,
+                            'name' => $sup->name
+                        ]);
+                        // array_push($new_streams,$sup->name);
+                    }
+                    $unique = $collection->unique('id');
+                    $new_streams = $unique->toArray();
+                    // dump($new_streams);
+                    $user['supported'] = $new_streams;
+                    array_push($all, $user);
                 }
-                $unique = $collection->unique('id');
-                $new_streams = $unique->toArray();
-                // dump($new_streams);
-                $user['supported'] = $new_streams;
-                array_push($all,$user);
             }
             // dump($all);
             // foreach ($week as $key => $value) {
@@ -133,7 +138,7 @@ class AdminController extends Controller
 
             // }
             // dd($week);
-            return view('admin.schedulers', ['users' => $users, 'user_model' => $this->user_model, 'week' => $week,'all' => $all]);
+            return view('admin.schedulers', ['users' => $users, 'user_model' => $this->user_model, 'week' => $week, 'all' => $all]);
         } else {
             return redirect('admin');
         }
@@ -143,7 +148,7 @@ class AdminController extends Controller
         if (Session::has('user-log')) {
             $ranges = $this->rangeService->all();
             $user = $this->userService->getById($id);
-            return view('admin.edit', ['user' => $user,'ranges' => $ranges]);
+            return view('admin.edit', ['user' => $user, 'ranges' => $ranges]);
         } else {
             return redirect('admin');
         }
@@ -162,21 +167,19 @@ class AdminController extends Controller
                 $test = $date->format('d-m-Y H:i:s');
             }
 
-            if (isset($user->streamSupport)){
+            if (isset($user->streamSupport)) {
                 // dd($user->streamSupport);
-                foreach($user->streamSupport as $streamer){
+                foreach ($user->streamSupport as $streamer) {
                     $supported = json_decode($streamer->supported);
                     // dd($supported->name);
-                    array_push($streamers_supported,['name' => $supported->name,'time' => $streamer->updated_at]);
+                    array_push($streamers_supported, ['name' => $supported->name, 'time' => $streamer->updated_at]);
                 }
-                                        
-                                  
             }
-                                    
-                               
-              
+
+
+
             $date_array = $this->getDays($user);
-            return view('admin.show', ['user' => $user, 'date_array' => $date_array, 'date' => $test,'streamers_supported' => $streamers_supported]);
+            return view('admin.show', ['user' => $user, 'date_array' => $date_array, 'date' => $test, 'streamers_supported' => $streamers_supported]);
         } else {
             return redirect('admin');
         }

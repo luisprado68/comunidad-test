@@ -41,7 +41,11 @@ final class StreamSupportService
     public function getSupportsStreams()
     {
         $this->setModel();
-        $supportStreams = $this->model::select('user_id')->groupBy('user_id')->get();
+        $supportStreams = $this->model::select('user_id')->groupBy('user_id')
+        ->join('users', 'stream_support.user_id', '=', 'users.id')
+        ->where('users.deleted',false)
+        ->get();
+        
         if (count($supportStreams)) {
             return $supportStreams;
         } else {
