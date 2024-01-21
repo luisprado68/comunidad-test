@@ -212,6 +212,7 @@ class ScheduleController extends Controller
                             $day_int = 5;
                             break;
                     }
+                    dump($day_int);
                     //saca los dias inclusive el actual para agendar los bronces
                     $i = 0;
                     foreach ($this->days_with_time as $key => $value) {
