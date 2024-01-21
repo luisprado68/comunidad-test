@@ -59,10 +59,10 @@ final class ScheduleService
         $en = $this->setSunday();
         $hour_first = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
         $start = $en->startOfWeek(Carbon::MONDAY)->addHours($hour_first)->format('Y-m-d H:00:00');
-        dump($start);
+        // dump($start);
         $hour_end = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
         $end = $en->endOfWeek(Carbon::SATURDAY)->addHours($hour_end)->format('Y-m-d H:00:00');
-        dump($end);
+        // dump($end);
         $week = $this->model::whereBetween('start', [$start, $end])->get();
         // $week = $this->model::all();
         // dump($week);
