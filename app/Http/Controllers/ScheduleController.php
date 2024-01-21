@@ -74,7 +74,7 @@ class ScheduleController extends Controller
                                 $hour >= 16 && $user_model->range_id == 2 ||
                                 $hour >= 15 && $user_model->range_id == 3
                             ) {
-                                dump('paasaa');
+                                // dump('paasaa');
                                 if (!isset($schedules_by_user)) {
                                     $this->schedule_avaible = true;
                                 } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
