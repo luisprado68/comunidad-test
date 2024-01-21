@@ -56,7 +56,7 @@ class ScheduleController extends Controller
       
             if (!empty($user_model)) {
                 $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
-                //    dump($schedules_by_user);
+                dump($schedules_by_user);
                 $current_t = Carbon::now();
                 $current_t->tz = $user_model->time_zone;
                 $day = $current_t->format('l');
@@ -78,10 +78,13 @@ class ScheduleController extends Controller
                                 if (!isset($schedules_by_user)) {
                                     $this->schedule_avaible = true;
                                 } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
+                                    dump($schedules_by_user);
+                                    dump($user_model->range->hours_for_week);
                                     $this->schedule_avaible = true;
                                 }
                             }
                         } else {
+                            dump('eslseeee');
                             if (!isset($schedules_by_user)) {
                                 $this->schedule_avaible = true;
                             } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
