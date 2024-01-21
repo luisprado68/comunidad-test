@@ -72,7 +72,8 @@ class ScheduleController extends Controller
                             if (
                                 $hour >= 14 && $user_model->range_id == 4 ||
                                 $hour >= 16 && $user_model->range_id == 2 ||
-                                $hour >= 15 && $user_model->range_id == 3
+                                $hour >= 15 && $user_model->range_id == 3 ||
+                                $hour >= 17 && $user_model->range_id == 1
                             ) {
                                 // dump('paasaa');
                                 if (!isset($schedules_by_user)) {
