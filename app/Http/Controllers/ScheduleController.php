@@ -56,7 +56,7 @@ class ScheduleController extends Controller
       
             if (!empty($user_model)) {
                 $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
-                dump($schedules_by_user);
+                // dump($schedules_by_user);
                 $current_t = Carbon::now();
                 $current_t->tz = $user_model->time_zone;
                 $day = $current_t->format('l');
@@ -74,17 +74,17 @@ class ScheduleController extends Controller
                                 $hour >= 16 && $user_model->range_id == 2 ||
                                 $hour >= 15 && $user_model->range_id == 3
                             ) {
-                                dump('paasaa');
+                                // dump('paasaa');
                                 if (!isset($schedules_by_user)) {
                                     $this->schedule_avaible = true;
                                 } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
-                                    dump($schedules_by_user);
-                                    dump($user_model->range->hours_for_week);
+                                    // dump($schedules_by_user);
+                                    // dump($user_model->range->hours_for_week);
                                     $this->schedule_avaible = true;
                                 }
                             }
                         } else {
-                            dump('eslseeee');
+                            // dump('eslseeee');
                             if (!isset($schedules_by_user)) {
                                 $this->schedule_avaible = true;
                             } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
@@ -94,7 +94,7 @@ class ScheduleController extends Controller
                     }
                 
             }
-            dump($this->schedule_avaible);
+            // dump($this->schedule_avaible);
             if ($this->schedule_avaible) {
 
                 $this->times = [
@@ -155,7 +155,7 @@ class ScheduleController extends Controller
                 // dump($this->days_with_time);
                 $schedules = $this->scheduleService->getScheduleorThisWeek($user_model);
                 $new_schedules = [];
-                dump($schedules);
+                // dump($schedules);
 
                 if (isset($schedules)) {
                     // Log::debug('schedules' . json_encode($schedules));
@@ -187,7 +187,7 @@ class ScheduleController extends Controller
                         "sabado",
 
                     ];
-                    dump($day);
+                    // dump($day);
                     $day_int = 0;
                     switch ($day) {
                         case 'Sunday':
@@ -212,7 +212,7 @@ class ScheduleController extends Controller
                             $day_int = 5;
                             break;
                     }
-                    dump($day_int);
+                    // dump($day_int);
                     //saca los dias inclusive el actual para agendar los bronces
                     $i = 0;
                     foreach ($this->days_with_time as $key => $value) {
