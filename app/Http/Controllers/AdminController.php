@@ -235,7 +235,9 @@ class AdminController extends Controller
     {
         if (Session::has('user-log')) {
             $user = $this->userService->getById($id);
-            $user->delete();
+            // Log::debug(json_encode($user));
+            $user->deleted = true;
+            $user->update();
             $users = $this->userService->getUsersModel();
             // return view('admin.list', ['users' => $users]);
             return redirect('admin/list');

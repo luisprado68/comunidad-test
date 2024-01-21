@@ -31,6 +31,7 @@ class User extends Authenticatable
         'status',
         'hours_buyed',
         'img_profile',
+        'deleted',
         'password',
         'token',
         'refresh_token',

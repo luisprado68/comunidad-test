@@ -163,7 +163,7 @@ final class UserService
     {
         $this->setModel();
 
-        $users = $this->model::all();
+        $users = $this->model::where('deleted',false)->get();
 
         if (count($users) > 0) {
             return $users;
@@ -171,6 +171,7 @@ final class UserService
             return false;
         }
     }
+    
     /**
      * @param $userArray
      * @return false|mixed
