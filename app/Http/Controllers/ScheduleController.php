@@ -53,10 +53,7 @@ class ScheduleController extends Controller
             } else {
                 session(['status' => 0]);
             }
-            // $user_model = $this->userService->getByIdandTwichId($this->user['id']);
-
-
-
+      
             if (!empty($user_model)) {
                 $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
                 //    dump($schedules_by_user);
@@ -64,26 +61,20 @@ class ScheduleController extends Controller
                 $current_t->tz = $user_model->time_zone;
                 $day = $current_t->format('l');
 
-                if (env('APP_ENV') == 'locals') {
-                    if (!isset($schedules_by_user)) {
-                        $this->schedule_avaible = true;
-                    } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
-                        $this->schedule_avaible = true;
-                    }
-                } else {
-
                     if ($day == 'Sunday' || $user_model->range_id == 1 ||  $user_model->role_id != 2) {
 
-                        
-                        if ($day == 'Sunday') {
 
-                            $hour = $current_t->format('H');
+                        if ($day == 'Sunday') {
+                           
+                            $hour = intval($current_t->format('H'));
                             ////validar los horarios segun rango
+                            
                             if (
                                 $hour >= 14 && $user_model->range_id == 4 ||
                                 $hour >= 16 && $user_model->range_id == 2 ||
                                 $hour >= 15 && $user_model->range_id == 3
                             ) {
+                                dump('paasaa');
                                 if (!isset($schedules_by_user)) {
                                     $this->schedule_avaible = true;
                                 } elseif ($user_model->range->hours_for_week > count($schedules_by_user)) {
@@ -98,8 +89,9 @@ class ScheduleController extends Controller
                             }
                         }
                     }
-                }
+                
             }
+            dump($this->schedule_avaible);
             if ($this->schedule_avaible) {
 
                 $this->times = [
@@ -192,7 +184,7 @@ class ScheduleController extends Controller
                         "sabado",
 
                     ];
-
+                    dump($day);
                     $day_int = 0;
                     switch ($day) {
                         case 'Sunday':
@@ -213,8 +205,7 @@ class ScheduleController extends Controller
                         case 'Friday':
                             $day_int = 4;
                             break;
-
-                        default:
+                        case 'Saturday':
                             $day_int = 5;
                             break;
                     }
