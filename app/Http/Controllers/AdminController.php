@@ -103,8 +103,9 @@ class AdminController extends Controller
 
                 $supports = $this->streamSupportService->getStreamSupportsByUserId($support->user_id);
                 // $test = $support->unique('supported');
-                // dump($supports);
-                $user['name'] =  $support->user->channel;
+                // dd($support);
+                $user_obteined = $this->userService->getById($support->user_id);
+                $user['name'] =  $user_obteined->channel;
                 $collection = new Collection();
                 foreach ($supports as $key => $support_found) {
 
