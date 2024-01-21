@@ -191,7 +191,7 @@ class ScheduleController extends Controller
                     $day_int = 0;
                     switch ($day) {
                         case 'Sunday':
-                            $day_int = 6;
+                            $day_int = 0;
                             break;
                         case 'Monday':
                             $day_int = 0;
