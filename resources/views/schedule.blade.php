@@ -20,16 +20,16 @@
                                     <div class="card bg-dark text-light mt-2">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="text-lg font-bold mx-2">Platino: 14:00</div>
+                                                <div class="text-lg font-bold mx-2">{{'Platino: '.$platino . ':00'}}</div>
                                             </div>
                                             <div class="col-12">
-                                                <div class="text-lg font-bold text-left mx-2">Oro: 15:00</div>
+                                                <div class="text-lg font-bold mx-2">{{'Oro: '.$oro . ':00'}}</div>
                                             </div>
                                             <div class="col-12">
-                                                <div class="text-lg font-bold mx-2">Plata: 16:00</div>
+                                                <div class="text-lg font-bold mx-2">{{'Plata: '.$plata . ':00'}}</div>
                                             </div>
                                             <div class="col-12">
-                                                <div class="text-lg font-bold mx-2">Bronce: 17:00</div>
+                                                <div class="text-lg font-bold mx-2">{{'Bronce: '.$bronce . ':00'}}</div>
                                             </div>
 
                                         </div>

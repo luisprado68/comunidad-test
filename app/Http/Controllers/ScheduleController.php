@@ -33,6 +33,15 @@ class ScheduleController extends Controller
     public $saturday = [];
     public $active = false;
     public $data;
+    public $bronce_time = 20;
+    public $plata_time = 19;
+    public $oro_time = 18;
+    public $platino_time = 17;
+    public $bronce;
+    public $plata;
+    public $oro;
+    public $platino;
+
 
     public function __construct(UserService $userService, ScheduleService $scheduleService)
     {
@@ -42,11 +51,15 @@ class ScheduleController extends Controller
     }
     public function index()
     {
+        
         $times = [];
         if (session()->exists('user')) {
             $this->user = session('user');
             $user_model = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
-
+            $this->bronce = $this->getTimeSchedule($user_model,$this->bronce_time);
+            $this->plata = $this->getTimeSchedule($user_model,$this->plata_time);
+            $this->oro = $this->getTimeSchedule($user_model,$this->oro_time);
+            $this->platino = $this->getTimeSchedule($user_model,$this->platino_time);
             if ($user_model->status) {
 
                 session(['status' => $user_model->status]);
@@ -58,7 +71,7 @@ class ScheduleController extends Controller
                 $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
                 // dump($schedules_by_user);
                 $current_t = Carbon::now();
-                $current_t->tz = $user_model->time_zone;
+                // $current_t->tz = $user_model->time_zone;
                 $day = $current_t->format('l');
 
                     if ($day == 'Sunday' || $user_model->range_id == 1 ||  $user_model->role_id != 2) {
@@ -70,10 +83,10 @@ class ScheduleController extends Controller
                             ////validar los horarios segun rango
                             
                             if (
-                                $hour >= 14 && $user_model->range_id == 4 ||
-                                $hour >= 16 && $user_model->range_id == 2 ||
-                                $hour >= 15 && $user_model->range_id == 3 ||
-                                $hour >= 17 && $user_model->range_id == 1
+                                $hour >= $this->bronce_time && $user_model->range_id == 4 ||
+                                $hour >= $this->plata_time && $user_model->range_id == 3 ||
+                                $hour >= $this->oro_time && $user_model->range_id == 2 ||
+                                $hour >= $this->platino_time && $user_model->range_id == 1
                             ) {
                                 // dump('paasaa');
                                 if (!isset($schedules_by_user)) {
@@ -228,7 +241,7 @@ class ScheduleController extends Controller
             }
             return view('schedule', [
                 'times' => $this->times, 'days' => $this->days, 'days_with_time' => $this->days_with_time, 'schedule_avaible' => $this->schedule_avaible, 'day_status' => $this->day_status, "user" => $user_model, 'times' => json_encode($times)
-            ]);
+            ,'bronce'=> $this->bronce,'plata'=> $this->plata,'oro'=> $this->oro,'platino'=> $this->platino]);
         } else {
             return redirect('/');
         }
@@ -236,6 +249,16 @@ class ScheduleController extends Controller
 
 
 
+    public function getTimeSchedule($user,$time){
+        
+            $new = Carbon::now();
+            $new->hour($time);
+            $new->tz = $user->time_zone;
+
+            $exe = $new->hour;
+            // dump($exe);
+            return $exe;
+    }
     public function updateScheduler(Request $request)
     {
         Log::debug("updateScheduler");
