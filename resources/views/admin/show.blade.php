@@ -36,29 +36,38 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="row">
-                                        <div class="col-3">
-                                            <h4>Nombre</h4>
+                                        <div class="col-2">
+                                            <h5>Nombre</h5>
                                         </div>
-                                        <div class="col-3">
-                                            <h4>Email</h4>
+                                        <div class="col-2">
+                                            <h5>Email</h5>
                                         </div>
-                                        <div class="col-3">
-                                            <h4>Rol</h4>
+                                        <div class="col-2">
+                                            <h5>Rol</h5>
                                         </div>
-                                        <div class="col-3">
-                                            <h4>Canal</h4>
+                                        <div class="col-2">
+                                            <h5>Canal</h5>
                                         </div>
-                                        <div class="col-3">
-                                            <h5>{{ $user->name }}</h5>
+                                        <div class="col-2">
+                                            <h5>Zona horaria</h5>
                                         </div>
-                                        <div class="col-3">
-                                            <h5>{{ $user->email }}</h5>
+                                        <div class="col-2">
+                                           
                                         </div>
-                                        <div class="col-3">
-                                            <h5>{{ $user->role->name }}</h5>
+                                        <div class="col-2">
+                                            <h6>{{ $user->name }}</h6>
                                         </div>
-                                        <div class="col-3">
-                                            <h5>{{ $user->channel }}</h5>
+                                        <div class="col-2">
+                                            <h6>{{ $user->email }}</h6>
+                                        </div>
+                                        <div class="col-2">
+                                            <h6>{{ $user->role->name }}</h6>
+                                        </div>
+                                        <div class="col-2">
+                                            <h6>{{ $user->channel }}</h6>
+                                        </div>
+                                        <div class="col-2">
+                                            <h6>{{ $user->time_zone }}</h6>
                                         </div>
                                     </div>
                                 </div>

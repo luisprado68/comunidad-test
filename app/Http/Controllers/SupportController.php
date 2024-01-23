@@ -71,8 +71,6 @@ class SupportController extends Controller
                 
                 foreach ($currentStreams as $key => $currentStream) {
 
-                    
-
                     $stream = $this->twichService->getStream($currentStream->user);
                     // $userTwich = $this->twichService->getUser($currentStream->user);
                     if(isset($stream) && !empty($stream)){

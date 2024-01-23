@@ -350,12 +350,11 @@ final class ScheduleService
         // $start = $actual->addMinutes(-10);
         // dump('start');
         $start_string = $actual->format('Y-m-d H:i:s');
-        //  dump('start_string');
-        // dump($start_string);
+        dump($start_string);
         // $end = $actual->addMinutes(20);
         $end_string = $actual_next->format('Y-m-d H:i:s');
-        // dump('end');
-        // dump($end_string);
+      
+        dump($end_string);
         // dump($user);
         // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->first();
