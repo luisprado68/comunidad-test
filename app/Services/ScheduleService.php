@@ -336,27 +336,20 @@ final class ScheduleService
         $this->setModel();
         $date = Carbon::now();
         $date->addHour(1);
-        // $date->tz = $user->time_zone;
+       
         $dates = $date->format('Y-m-d');
         $hour = $date->format('H');
         $hour_next =$hour + 1;
-        // $test = new Carbon($dates .$hour);
-        // dump($dates);
-        // dump($hour);
+       
         $actual = new Carbon($dates.' ' .$hour.':00:00');
         $actual_next = new Carbon($dates.' ' .$hour_next.':00:00');
-        // dump('actual');
-        // dump($actual);
-        // $start = $actual->addMinutes(-10);
-        // dump('start');
+      
         $start_string = $actual->format('Y-m-d H:i:s');
-        dump($start_string);
-        // $end = $actual->addMinutes(20);
+        // dump($start_string);
+     
         $end_string = $actual_next->format('Y-m-d H:i:s');
       
-        dump($end_string);
-        // dump($user);
-        // $schedule = $this->model::whereBetween('start',[$start, $end])->where('user_id','!=',$user->id)->get();
+        // dump($end_string);
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->first();
 
         //  dump($currentStreams);
