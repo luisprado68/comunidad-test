@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
             $now =  Carbon::now();
             $minute = $now->format('i');
             Log::debug('----------------------------------------------minute: ' . $minute);
-            if ($minute >= env('CHATTERS_MIN_MINUTE_2') && $minute <= env('CHATTERS_MIN_MINUTE_2') || 
+            if ($minute >= env('CHATTERS_MIN_MINUTE') && $minute <= env('CHATTERS_MIN_MINUTE_2') || 
                 $minute >= env('CHATTERS_MAX_MINUTE') && $minute <= env('CHATTERS_MAX_MINUTE_2')) {
                 
                 $currentStreams = $this->scheduleService->getCurrentStreamKernel();
