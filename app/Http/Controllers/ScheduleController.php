@@ -80,6 +80,7 @@ class ScheduleController extends Controller
                         if ($day == 'Sunday') {
                            
                             $hour = intval($current_t->format('H'));
+                            dump($hour);
                             ////validar los horarios segun rango
                             
                             if (
