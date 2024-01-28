@@ -84,10 +84,10 @@ class ScheduleController extends Controller
                             ////validar los horarios segun rango
                             
                             if (
-                                $hour >= $this->bronce_time && $user_model->range_id == 4 ||
-                                $hour >= $this->plata_time && $user_model->range_id == 3 ||
-                                $hour >= $this->oro_time && $user_model->range_id == 2 ||
-                                $hour >= $this->platino_time && $user_model->range_id == 1
+                                $hour >= $this->bronce_time && $user_model->range_id == 1 ||
+                                $hour >= $this->plata_time && $user_model->range_id == 2 ||
+                                $hour >= $this->oro_time && $user_model->range_id == 3 ||
+                                $hour >= $this->platino_time && $user_model->range_id == 4
                             ) {
                                 // dump('paasaa');
                                 if (!isset($schedules_by_user)) {
