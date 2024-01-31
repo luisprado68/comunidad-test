@@ -33,6 +33,6 @@ class ScoreController extends Controller
         // dump($user);
     }
 
-   
+    
   
 }

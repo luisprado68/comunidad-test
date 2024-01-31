@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Services\ScheduleService;
+use App\Services\ScoreService;
 use App\Services\TwichService;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
     private $twichService;
     private $scheduleService;
     private $userService;
+    private $scoreService;
     /**
      * Define the application's command schedule.
      */
@@ -54,11 +56,20 @@ class Kernel extends ConsoleKernel
             Log::debug('---------------[START] Update Refresh Tokens --------');
             $this->userService = new UserService();
             $this->twichService = new TwichService();
+            $this->scoreService = new ScoreService();
             $allUsers = $this->userService->all();
-          
-            foreach ($allUsers as $key => $user) {
-                $this->twichService->getRefreshToken($user);
+            $now =  Carbon::now();
+            $day = $now->format('l');
+            if($day == 'Sunday'){
+                foreach ($allUsers as $key => $user) {
+                    $this->twichService->getRefreshToken($user);
+                    $user_array['user_id'] = $user->id;
+                    $user_array['points_day'] = 0;
+                    $user_array['points_week'] = 0;
+                    $this->scoreService->update($user_array);
+                }
             }
+            
             Log::debug('---------------[FINISH] END Update Refresh Tokens---------------');
         })->hourly();
     }

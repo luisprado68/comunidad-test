@@ -115,8 +115,7 @@ final class ScoreService
     {
         // dd($userArray['checkbox']);
         try {
-            $score = Score::find($userArray['id']);
-            $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
+            $score = Score::where('user_id',$userArray['user_id']);
             $score->points_day = isset($userArray['points_day']) ? $userArray['points_day'] : null;
             $score->points_week = isset($userArray['points_week']) ? $userArray['points_week'] : null;
             $score->neo_coins = isset($userArray['neo_coins']) ? $userArray['neo_coins'] : null;
