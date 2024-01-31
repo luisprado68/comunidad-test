@@ -241,7 +241,7 @@ final class ScheduleService
         // dump($end_string);
 
         if($minutes <= env('WATCH_SUPPORT_MINUTE')){
-            $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
+            $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->take(2)->get();
         }
         // dump($currentStreams);
         return $currentStreams;
