@@ -30,10 +30,11 @@ class Kernel extends ConsoleKernel
 
             $now =  Carbon::now();
             $minute = $now->format('i');
-            Log::debug('----------------------------------------------minute: ' . $minute);
+           
             if ($minute >= env('CHATTERS_MIN_MINUTE') && $minute <= env('CHATTERS_MIN_MINUTE_2') || 
                 $minute >= env('CHATTERS_MAX_MINUTE') && $minute <= env('CHATTERS_MAX_MINUTE_2')) {
-                
+
+                Log::debug('---------------------minute: ' . $minute);
                 $currentStreams = $this->scheduleService->getCurrentStreamKernel();
                 Log::debug('**** currentStreams ******** ');
                 Log::debug(json_encode($currentStreams));
@@ -41,8 +42,7 @@ class Kernel extends ConsoleKernel
                     foreach ($currentStreams as $key => $schedule_streaming) {
 
                         $chatters_schedule =  $this->twichService->getChattersKernel($schedule_streaming);
-                        //    Log::debug('**** chatters_schedule ******** ');
-                        //    Log::debug(json_encode($chatters_schedule));
+                       
                     }
                 }
 
@@ -50,7 +50,7 @@ class Kernel extends ConsoleKernel
             } else {
                 Log::debug('---------------No esta habilitado------------');
             }
-        })->everyTenMinutes();
+        })->everyFiveMinutes();
 
         $schedule->call(function () {
             Log::debug('---------------[START] Update Refresh Tokens --------');
@@ -64,7 +64,7 @@ class Kernel extends ConsoleKernel
             $hour = $now->format('H');
            
             
-            if($day == 'Thursday' && $hour == "00"){
+            if($day == 'Sunday' && $hour == "00"){
                 Log::debug('---------------[Start] Start Reset Points---------------');
                 Log::debug('hour' . json_encode($hour));
                 Log::debug('day' . json_encode($day));
@@ -79,7 +79,7 @@ class Kernel extends ConsoleKernel
                 Log::debug('---------------[Start] Start Reset Points---------------');
             }
             Log::debug('---------------[FINISH] END Update Refresh Tokens---------------');
-        })->everyMinute();
+        })->hourly();
     }
 
     /**
