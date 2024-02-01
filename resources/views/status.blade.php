@@ -44,14 +44,14 @@
                         <div class="input-group-prepend bg-dark">
                             <span class="input-group-text bg-primary text-light" id="basic-addon1">NeoCoins</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="{{$user->score->neo_coins ?? 0  . '/500'}}" aria-label="0"
+                        <input type="text" class="form-control" placeholder="{{isset($user->score->neo_coins) ? $user->score->neo_coins . '/500':'0/500'}}" aria-label="0"
                             aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend bg-dark">
                             <span class="input-group-text bg-primary text-light" id="basic-addon1" style="font-size: 1rem;">Referidos</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="{{$user->points_support ?? 0}}" aria-label="Username"
+                        <input type="text" class="form-control" placeholder="{{isset($user->points_support) ? $user->points_support . '/25':'0/25'}}" aria-label="Username"
                             aria-describedby="basic-addon1">
                     </div>
                 </div>
