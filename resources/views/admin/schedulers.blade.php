@@ -31,8 +31,11 @@
                 <div class="container mt-5 ">
                     <div class="row">
                         <h4 class="text-center">Agenda Semanal</h4>
-                        <a href="{{ route('admin-list') }}"><button type="button"
+                        <div class="mb-4">
+                            <a href="{{ route('admin-list') }}"><button type="button"
                                 class="btn btn-dark">Volver</button></a>
+                        </div>
+                    
 
                         <div class="col-lg-12">
                             <div class="row">
@@ -62,18 +65,21 @@
                                 <div class="col-lg-8">
                                     <h5>Streamers APoyados</h5>
                                 </div>
+                                
                                 @if (count($all) > 0)
-                                @foreach ($all as $user)
-                                    <div class="col-lg-4 bg-secondary text-light"> {{ $user['name'] }}</div>
-                    
-                                    <div class="col-lg-6 bg-secondary">
-                                        <div class="row">
-                                        @foreach ($user['supported'] as $supported)
-                                            <div class="col">{{ $supported->name }}</div>
-                                        @endforeach
+                                    @foreach ($all as $user)
+                                        <div class="col-lg-4 bg-secondary text-light"> {{ $user['name'] }}</div>
+                        
+                                        <div class="col-lg-6 bg-secondary">
+                                            <div class="row">
+                                            @foreach ($user['supported'] as $supported)
+                                                <div class="col">{{ $supported->name }}</div>
+                                            @endforeach
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                    @else
+                                    {{-- <h5>Usuario</h5> --}}
                                 @endif
                                 
                             </div>

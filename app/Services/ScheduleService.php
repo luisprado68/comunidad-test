@@ -381,23 +381,27 @@ final class ScheduleService
         // dump($date);
         $this->setModel();
         $dates = null;
+        
+        if(isset($user->time_zone) && $user->time_zone != '' ){
+            $en = $this->setSunday();
+            $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
+            if($date != 1){
+                $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
+                $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
+            }
+            else{
+                $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
+                $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
+            }
+            $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->orderBy('start', 'ASC')->get();
+        }
        
-        $en = $this->setSunday();
-        $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
-        if($date != 1){
-            $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
-            $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
-        }
-        else{
-            $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
-            $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
-        }
         // dump('start');
         // dump($start);
         //dump('end');
         //  dump($end);
   
-        $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->orderBy('start', 'ASC')->get();
+        
         // dump('hours');
         //  dump($dates);
         return $dates;
@@ -405,7 +409,9 @@ final class ScheduleService
     }
     public function getSchedulerDayEndByUser($user,$date)
     {
-        $en = $this->setSunday();
+        $dates = [];
+        if(isset($user->time_zone) && $user->time_zone != ''){
+            $en = $this->setSunday();
         $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
         // dump('day--------------------------------');
         // dump($date);
@@ -425,6 +431,8 @@ final class ScheduleService
         // dump($hours);
         // dump('hours--------------');
         // dump($hours);
+        }
+        
         return $dates;
 
     }

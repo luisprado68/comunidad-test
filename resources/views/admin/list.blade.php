@@ -30,7 +30,7 @@
 
                 <div class="container mt-5 ">
                     <div class="row">
-                        @if ( $user_model->role_id == 3)
+                        @if ( $user_model->role_id == 3 || $user_model->role_id == 1)
                                         <div class="col-2 mb-4">
                                             <button type="submit" class="btn btn-success"><a class="dropdown-item"
                                                 href="{{ route('admin-schedulers') }}">Ver Agendas</a></button>
@@ -74,7 +74,7 @@
                                         <td><button type="submit" class="btn btn-primary"><a class="dropdown-item"
                                                     href="{{ route('admin-edit', $user['id']) }}">Edit</a></button>
                                         {{-- @dump($user_model->role_id) --}}
-                                        @if ( $user_model->role_id == 3)
+                                        @if ( $user_model->role_id == 3 || $user_model->role_id == 1 )
                                         
                                     
                                             <button type="submit" class="btn btn-success"><a class="dropdown-item"

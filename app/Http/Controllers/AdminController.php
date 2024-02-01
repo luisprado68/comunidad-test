@@ -102,32 +102,35 @@ class AdminController extends Controller
             $week = $this->scheduleService->getSchedulerWeek($this->user_model);
 
             $supports_ids = $this->streamSupportService->getSupportsStreams();
-            // dump($supports_ids);
-            foreach ($supports_ids as $key => $support) {
-                // $test = $support->unique('supported');
-                // dd($support);
-                $user_obteined = $this->userService->getById($support->user_id);
-                if (isset($user_obteined)) {
-                    $supports = $this->streamSupportService->getStreamSupportsByUserId($user_obteined->id);
-                    $user['name'] =  $user_obteined->channel;
-                    $collection = new Collection();
-                    foreach ($supports as $key => $support_found) {
-
-                        $sup = json_decode($support_found->supported);
-
-                        $collection->push((object)[
-                            'id' => $sup->id,
-                            'name' => $sup->name
-                        ]);
-                        // array_push($new_streams,$sup->name);
+            if(isset($supports_ids)){
+                foreach ($supports_ids as $key => $support) {
+                    // $test = $support->unique('supported');
+                    // dd($support);
+                    $user_obteined = $this->userService->getById($support->user_id);
+                    if (isset($user_obteined)) {
+                        $supports = $this->streamSupportService->getStreamSupportsByUserId($user_obteined->id);
+                        $user['name'] =  $user_obteined->channel;
+                        $collection = new Collection();
+                        foreach ($supports as $key => $support_found) {
+    
+                            $sup = json_decode($support_found->supported);
+    
+                            $collection->push((object)[
+                                'id' => $sup->id,
+                                'name' => $sup->name
+                            ]);
+                            // array_push($new_streams,$sup->name);
+                        }
+                        $unique = $collection->unique('id');
+                        $new_streams = $unique->toArray();
+                        // dump($new_streams);
+                        $user['supported'] = $new_streams;
+                        array_push($all, $user);
                     }
-                    $unique = $collection->unique('id');
-                    $new_streams = $unique->toArray();
-                    // dump($new_streams);
-                    $user['supported'] = $new_streams;
-                    array_push($all, $user);
                 }
             }
+            // dump($supports_ids);
+            // dump('ssss');
             // dump($all);
             // foreach ($week as $key => $value) {
 
@@ -208,8 +211,8 @@ class AdminController extends Controller
         }
 
 
-        $current_time = Carbon::now();
-        $current_time->tz = $user->time_zone;
+        // $current_time = Carbon::now();
+        // $current_time->tz = $user->time_zone;
 
         // dump($agenda);
         return $agenda;
@@ -219,18 +222,21 @@ class AdminController extends Controller
     {
         $this->user_model = session('user-log');
         $list_day = [];
-        if (count($days) > 0) {
-            $date = new Carbon($days[0]->start);
-            $list_day['date'] = $date->format('Y-m-d');
-            $list_day['times'] = [];
-            foreach ($days as $key => $value) {
-                // dump($value->start);
-                $day = new Carbon($value->start);
-                $day->tz = $this->user_model->time_zone;
-                array_push($list_day['times'], $day->format('H:i'));
+        if(isset($days)){
+            if (count($days) > 0) {
+                $date = new Carbon($days[0]->start);
+                $list_day['date'] = $date->format('Y-m-d');
+                $list_day['times'] = [];
+                foreach ($days as $key => $value) {
+                    // dump($value->start);
+                    $day = new Carbon($value->start);
+                    $day->tz = $this->user_model->time_zone;
+                    array_push($list_day['times'], $day->format('H:i'));
+                }
+                // return $list_day;
             }
-            return $list_day;
         }
+        
         return $list_day;
         // dump($list_day);
 

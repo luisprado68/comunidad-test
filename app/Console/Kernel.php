@@ -59,19 +59,27 @@ class Kernel extends ConsoleKernel
             $this->scoreService = new ScoreService();
             $allUsers = $this->userService->all();
             $now =  Carbon::now();
+         
             $day = $now->format('l');
-            if($day == 'Sunday'){
+            $hour = $now->format('H');
+           
+            
+            if($day == 'Thursday' && $hour == "00"){
+                Log::debug('---------------[Start] Start Reset Points---------------');
+                Log::debug('hour' . json_encode($hour));
+                Log::debug('day' . json_encode($day));
                 foreach ($allUsers as $key => $user) {
-                    $this->twichService->getRefreshToken($user);
+                    // $this->twichService->getRefreshToken($user);
                     $user_array['user_id'] = $user->id;
                     $user_array['points_day'] = 0;
                     $user_array['points_week'] = 0;
-                    $this->scoreService->update($user_array);
+                    $result = $this->scoreService->update($user_array);
+                    Log::debug('result:  ---' . json_encode($result));
                 }
+                Log::debug('---------------[Start] Start Reset Points---------------');
             }
-            
             Log::debug('---------------[FINISH] END Update Refresh Tokens---------------');
-        })->hourly();
+        })->everyMinute();
     }
 
     /**
