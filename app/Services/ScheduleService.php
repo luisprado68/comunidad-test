@@ -334,21 +334,19 @@ final class ScheduleService
     public function getNextStream($user){
 
         $this->setModel();
-        $date = Carbon::now();
-        $date->addHour(1);
+        $actual = Carbon::now();
+        // $actual->addHour(1);
        
-        $dates = $date->format('Y-m-d');
-        $hour = $date->format('H');
-        $hour_next =$hour + 1;
+        $dates = $actual->format('Y-m-d');
+        $hour_actual = $actual->format('H');
+        $hour_next =$hour_actual + 1;
        
-        $actual = new Carbon($dates.' ' .$hour.':00:00');
+        $actual = new Carbon($dates.' ' .$hour_actual.':59:00');
         $actual_next = new Carbon($dates.' ' .$hour_next.':00:00');
       
         $start_string = $actual->format('Y-m-d H:i:s');
         // dump($start_string);
-     
         $end_string = $actual_next->format('Y-m-d H:i:s');
-      
         // dump($end_string);
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->first();
 

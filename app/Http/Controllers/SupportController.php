@@ -37,12 +37,7 @@ class SupportController extends Controller
             $this->user = session('user');
             
             $userModel = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
-            // $currentStreams = $this->scheduleService->getStreamByUser($userModel);
-            
-            // if(count($currentStreams) > 0){
-            //     $times = $this->scheduleService->getTimes($currentStreams,$userModel);
-            //     dump($times);
-            // }
+        
             if($userModel->status){
                
                 session(['status' => $userModel->status]);
@@ -54,6 +49,7 @@ class SupportController extends Controller
             // dump($user_model);
             $currentStreams = $this->scheduleService->getCurrentStream($user_model);
             $nextHour = $this->scheduleService->getNextStream($user_model);
+            // dump($nextHour);
             if(!empty($nextHour) && isset($nextHour)){
                 $next =  new Carbon($nextHour->start);
                 $next->tz= $user_model->time_zone;
