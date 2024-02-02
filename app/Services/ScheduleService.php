@@ -51,12 +51,24 @@ final class ScheduleService
         }
     }
 
-    public function getByUserId($id)
+    public function getByUserId($user_id)
+    {
+        $this->setModel();
+        $schedulers = $this->model::where('user_id', $user_id)->get();
+        if (count($schedulers) > 0) {
+            return $schedulers;
+        } else {
+            return null;
+        }
+    }
+
+    public function delete($id)
     {
         $this->setModel();
         $schedule = $this->model::where('id', $id)->first();
-        if ($schedule) {
-            return $schedule;
+        if (isset($schedule)) {
+            $schedule->delete();
+            return true;
         } else {
             return null;
         }

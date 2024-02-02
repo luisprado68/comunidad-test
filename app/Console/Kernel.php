@@ -77,6 +77,18 @@ class Kernel extends ConsoleKernel
                     $user_array['points_week'] = 0;
                     $result = $this->scoreService->update($user_array);
 
+                    $schedulers_by_user = $this->schedulerService->getByUserId($user_array);
+
+                    if(count($schedulers_by_user) > 0){
+                        foreach ($schedulers_by_user as $key => $scheduler_by_user) {
+                            $date = new Carbon($scheduler_by_user->start);
+                            $day = $date->format('l');
+                            if($day != 'Sunday'){
+                                $this->schedulerService->delete($scheduler_by_user->id);
+                            }
+                        }
+                    }
+
 
                     Log::debug('result:  ---' . json_encode($result));
                 }
