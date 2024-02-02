@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
     private $scheduleService;
     private $userService;
     private $scoreService;
+    private $schedulerService;
     /**
      * Define the application's command schedule.
      */
@@ -57,6 +58,7 @@ class Kernel extends ConsoleKernel
             $this->userService = new UserService();
             $this->twichService = new TwichService();
             $this->scoreService = new ScoreService();
+            $this->schedulerService = new ScheduleService();
             $allUsers = $this->userService->all();
             $now =  Carbon::now();
          
@@ -74,6 +76,8 @@ class Kernel extends ConsoleKernel
                     $user_array['points_day'] = 0;
                     $user_array['points_week'] = 0;
                     $result = $this->scoreService->update($user_array);
+
+
                     Log::debug('result:  ---' . json_encode($result));
                 }
                 Log::debug('---------------[Start] Start Reset Points---------------');

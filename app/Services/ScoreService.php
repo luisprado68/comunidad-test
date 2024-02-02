@@ -96,9 +96,7 @@ final class ScoreService
             $score->points_day = isset($userArray['points_day']) ? $userArray['points_day'] : null;
             $score->points_week =  isset($userArray['points_week']) ? $userArray['points_week'] : null;
             $score->neo_coins = isset($userArray['neo_coins']) ? $userArray['neo_coins'] : null;
-            // $score->points_support = isset($userArray['points_support']) ? $userArray['points_support'] : null;
-            $score->users_data = isset($userArray['users_data']) ? $userArray['users_data'] : null;
-            $score->count_users = isset($userArray['count_users']) ? $userArray['count_users'] : null;
+            $score->streamer_supported = isset($userArray['streamer_supported']) ? $userArray['streamer_supported'] : null;
             $score->save();
 
             return $score;
@@ -122,8 +120,6 @@ final class ScoreService
                 $score->points_week = isset($userArray['points_week']) ? $userArray['points_week'] : null;
                 $score->neo_coins = isset($userArray['neo_coins']) ? $userArray['neo_coins'] : null;
                 // $score->points_support = isset($userArray['points_support']) ? $userArray['points_support'] : null;
-                $score->users_data = isset($userArray['users_data']) ? $userArray['users_data'] : null;
-                $score->count_users = isset($userArray['count_users']) ? $userArray['count_users'] : null;
                 $score->update();
                 return $score->id;
             }else{

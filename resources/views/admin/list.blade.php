@@ -14,6 +14,8 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!-- Option 1: Include in HTML -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     @if (env('APP_ENV') == 'local')
         <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
     @else
@@ -38,7 +40,7 @@
                                     
                                             
                                         @endif
-                        <table class="table table-hover table-dark">
+                        <table class="table table-responsive table-hover table-dark">
                             <thead>
                                 <tr>
                                     <th scope="col">Id</th>
@@ -47,6 +49,7 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Canal</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Telefono</th>
                                     <th scope="col">Activo</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -59,32 +62,32 @@
                                         @if ($user->role_id == 3)
                                             <td> Admin</td>
                                         @else
-                                        <td>{{ $user->role->name }}</td>
+                                        <td class="fuente_tabla">{{ $user->role->name }}</td>
                                         @endif
-                                        <td>{{ $user->range->name }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->channel }}</td>
-                                        <td>{{ $user->email }}</td>
+                                        <td class="fuente_tabla">{{ $user->range->name }}</td>
+                                        <td class="fuente_tabla">{{ $user->name }}</td>
+                                        <td class="fuente_tabla">{{ $user->channel }}</td>
+                                        <td class="fuente_tabla">{{ $user->email }}</td>
+                                        <td class="fuente_tabla">{{ $user->phone }}</td>
                                         <td>@if ($user->status)
-                                            <i class="bi bi-check-circle  text-success">Activo</i>
+                                            <i class="bi bi-check-circle-fill  text-success"></i>
                                             @else
-                                            <i class="bi bi-check-circle  text-danger">No activo</i>
-                                            
+                                            <i class="bi bi-x-circle-fill text-danger"></i>
                                         @endif</td>
                                         <td><button type="submit" class="btn btn-primary"><a class="dropdown-item"
-                                                    href="{{ route('admin-edit', $user['id']) }}">Edit</a></button>
+                                                    href="{{ route('admin-edit', $user['id']) }}"><i class="bi bi-pencil-square"></i></a></button>
                                         {{-- @dump($user_model->role_id) --}}
                                         @if ( $user_model->role_id == 3 || $user_model->role_id == 1 )
                                         
                                     
                                             <button type="submit" class="btn btn-success"><a class="dropdown-item"
-                                        href="{{ route('admin-show', $user['id']) }}">Ver</a></button>
+                                        href="{{ route('admin-show', $user['id']) }}"><i class="bi bi-eye-fill"></i></a></button>
                                         @endif
                                       
                                         
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal">
-                                            Eliminar
+                                            <i class="bi bi-trash-fill"></i>
                                         </button>
 
                                         <!-- Modal -->

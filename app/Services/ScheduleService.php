@@ -51,6 +51,17 @@ final class ScheduleService
         }
     }
 
+    public function getByUserId($id)
+    {
+        $this->setModel();
+        $schedule = $this->model::where('id', $id)->first();
+        if ($schedule) {
+            return $schedule;
+        } else {
+            return null;
+        }
+    }
+
     public function getScheduleorThisWeek($user)
     {
         //para testeAR*****
