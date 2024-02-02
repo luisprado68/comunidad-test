@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
             if ($minute >= env('CHATTERS_MIN_MINUTE') && $minute <= env('CHATTERS_MIN_MINUTE_2') || 
                 $minute >= env('CHATTERS_MAX_MINUTE') && $minute <= env('CHATTERS_MAX_MINUTE_2')) {
 
-                Log::debug('---------------------minute: ' . $minute);
+                Log::debug('-------------------------------------------------minute: ' . $minute);
                 $currentStreams = $this->scheduleService->getCurrentStreamKernel();
                 Log::debug('**** currentStreams ******** ');
                 Log::debug(json_encode($currentStreams));
