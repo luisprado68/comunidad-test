@@ -61,6 +61,29 @@ final class ScheduleService
             return null;
         }
     }
+    public function validateNewScheduleByUser($date){
+        $this->setModel();
+       
+        $en = $this->setSunday();
+        $start_date = new Carbon($date);
+        $test = $start_date->addHours(-1);
+
+        $start_string = $start_date->format('Y-m-d H:59:00');
+        
+        $end_date = new Carbon($date);
+        
+        $end_string = $end_date->format('Y-m-d H:01:00');
+        // Log::debug('start_string------------' . json_encode($start_string));
+        // Log::debug('end_string------------' . json_encode($end_string));
+        $day = $this->model::whereBetween('start', [$start_string, $end_string])->get();
+       
+        Log::debug('day------------' . json_encode($day));
+        if (isset($day)) {
+            return $day;
+        } else {
+            return null;
+        }
+    }
 
     public function delete($id)
     {

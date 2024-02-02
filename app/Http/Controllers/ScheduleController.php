@@ -262,7 +262,8 @@ class ScheduleController extends Controller
     }
     public function updateScheduler(Request $request)
     {
-        Log::debug("updateScheduler");
+        $hourDuplicated = false;
+        
         $this->user = session('user');
 
         // if(env('APP_ENV') == 'local'){
@@ -284,14 +285,14 @@ class ScheduleController extends Controller
         $this->data = $request->all();
         $this->data['status'] = 'ok';
 
-        Log::debug("DAYS");
-        Log::debug(json_encode($this->data));
+        // Log::debug("DAYS");
+        // Log::debug(json_encode($this->data));
 
 
         foreach ($this->data['days'] as $key => $value) {
 
-            Log::debug('value ' . json_encode(($value)));
-            Log::debug('cantidad de horarios: ' . json_encode(count(($value['horarios']))));
+            // Log::debug('value ' . json_encode(($value)));
+            // Log::debug('cantidad de horarios: ' . json_encode(count(($value['horarios']))));
 
             if ($value['day'] == "1") {
 
@@ -351,9 +352,9 @@ class ScheduleController extends Controller
         } elseif ($this->data['status'] == 'ok') {
 
             $date  = $this->scheduleService->setSunday();
-            // $date = CarbonImmutable::now()->locale('en_US');
+            
             foreach ($this->data['days'] as $key => $value) {
-                Log::debug(json_encode($value['day']));
+               
                 if (count(($value['horarios'])) > 0) {
                     foreach ($value['horarios'] as $key => $time) {
 
@@ -369,14 +370,30 @@ class ScheduleController extends Controller
                     }
                 }
             }
-            Log::debug('scheduleNew------------------');
-            Log::debug(json_encode($scheduleNew));
-            $ids = $this->scheduleService->bulkCreate($scheduleNew);
-            Log::debug('ids');
-            Log::debug(json_encode($ids));
+           
+            //validar que no hay otro usuario ya agendado al mismo tiempo
+            foreach ($scheduleNew as $key => $schedule_user) {
+                // Log::debug('schedule_user:-----' . json_encode($schedule_user));
+
+               $dates_other_users =  $this->scheduleService->validateNewScheduleByUser($schedule_user['start']);
+               if(count($dates_other_users) == 2){
+                    $hourDuplicated = true;
+                    $date_time_zone = new Carbon($schedule_user['start']);
+                    $date_time_zone->tz = $user_model->time_zone;
+                    $this->data['status'] = 'error';
+                    $this->data['message'] = 'Otro streamer ya agendo esta fecha: ' .$date_time_zone->format('Y-m-d H:00:00'); ;
+                    break;
+               }
+            }
+            if($hourDuplicated == false){
+                $ids = $this->scheduleService->bulkCreate($scheduleNew);
+                // Log::debug('ids');
+                // Log::debug(json_encode($ids));
+            }
+            
         }
-        Log::debug('data');
-        Log::debug(json_encode($this->data));
+        // Log::debug('data');
+        // Log::debug(json_encode($this->data));
         return $this->data;
     }
 
