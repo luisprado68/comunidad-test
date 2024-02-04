@@ -187,6 +187,10 @@ class AdminController extends Controller
             return redirect('admin');
         }
     }
+
+    public function editScheduler(){
+
+    }
     public function getDays($user)
     {
 
@@ -270,7 +274,8 @@ class AdminController extends Controller
 
         $users = $this->userService->getUsersModel();
         // dd($users);
-        return view('admin.list', ['users' => $users, 'user_model' => $this->user_model]);
+        // return view('admin.list', ['users' => $users, 'user_model' => $this->user_model]);
+        return redirect('admin/list');
     }
     public function logoutAdmin()
     {
