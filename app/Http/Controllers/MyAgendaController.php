@@ -80,7 +80,7 @@ class MyAgendaController extends Controller
                 
                 $time = new Carbon($value->start);
                 $time->tz = $this->user_model->time_zone;
-                array_push($time_by_day,$time->format('H:m'));
+                array_push($time_by_day,$time->format('H:00'));
             }
             $day_name = strtolower($date->format('l'));
             $list_day[$day_name]['date'] = $scheduler->day;
