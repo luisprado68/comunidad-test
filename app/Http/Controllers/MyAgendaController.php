@@ -56,9 +56,12 @@ class MyAgendaController extends Controller
            
             
             $schedulers = $this->scheduleService->getByUserIdDay($this->user_model->id);
-            if(count($schedulers) > 0){
-                $week = $this->getFormatDays($schedulers);
+            if(isset($schedulers)){
+                if(count($schedulers) > 0){
+                    $week = $this->getFormatDays($schedulers);
+                }
             }
+           
             
             return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week, 'user' => $this->user_model]);
         }
@@ -80,10 +83,11 @@ class MyAgendaController extends Controller
                 
                 $time = new Carbon($value->start);
                 $time->tz = $this->user_model->time_zone;
+                // dump($this->user_model->time_zone);
                 array_push($time_by_day,$time->format('H:00'));
             }
-            $day_name = strtolower($date->format('l'));
-            $list_day[$day_name]['date'] = $scheduler->day;
+            $day_name = strtolower($time->format('l'));
+            $list_day[$day_name]['date'] = $time->format('d-m-Y');
             $list_day[$day_name]['times'] = $time_by_day;
             $time_by_day = [];
             

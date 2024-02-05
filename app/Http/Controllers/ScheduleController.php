@@ -285,8 +285,8 @@ class ScheduleController extends Controller
         $this->data = $request->all();
         $this->data['status'] = 'ok';
 
-        // Log::debug("DAYS");
-        // Log::debug(json_encode($this->data));
+        Log::debug("DAYS");
+        Log::debug(json_encode($this->data));
 
 
         foreach ($this->data['days'] as $key => $value) {
@@ -362,6 +362,7 @@ class ScheduleController extends Controller
                         //$monday->tz = 'America/Argentina/Buenos_Aires';
                         // $start =  new Carbon($date->setDaysFromStartOfWeek($value['day'])->format('Y-m-d') . $time);
                         $new_start = $this->parseToCountry($date, $value['day'], $time, $user_model->time_zone);
+                        Log::debug('new_start:---------------' . json_encode($new_start));
                         $scheduleNewItem['start'] = $new_start;
 
 
@@ -400,9 +401,9 @@ class ScheduleController extends Controller
     public function parseToCountry($date, $day_param, $time, $time_zone)
     {
         $hour_diff = $this->scheduleService->parseHoursToCountry($date->endOfWeek($day_param), $time_zone);
-        $utc =  new Carbon($date->setDaysFromStartOfWeek($day_param)->format('Y-m-d') . $time);
+        //validar
+        $utc =  new Carbon($date->format('Y-m-d') . $time);
         $utc->addHours($hour_diff);
-
         return $utc;
     }
 }
