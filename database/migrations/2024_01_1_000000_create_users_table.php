@@ -16,9 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('role_id')->index()->nullable();
             $table->unsignedBigInteger('country_id')->index()->nullable();
             $table->unsignedBigInteger('range_id')->index()->nullable();
-            $table->string('twich_id')->unique();
-            $table->string('name')->nullable();
+            $table->string('twich_id')->unique()->nullable();
+            $table->string('name');
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->boolean('status')->default(false);
             $table->string('channel')->nullable();
             $table->string('area')->nullable();
@@ -26,10 +27,11 @@ return new class extends Migration
             $table->string('time_zone')->nullable();
             $table->integer('hours_buyed')->nullable();
             $table->string('img_profile')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            
+            $table->foreignId('current_team_id')->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
+
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('range_id')->references('id')->on('ranges')->onDelete('cascade');

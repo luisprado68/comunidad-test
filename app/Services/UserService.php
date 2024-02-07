@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 final class UserService
@@ -129,13 +130,14 @@ final class UserService
 
     public function userLogin($email, $password)
     {
+     Log::debug('kkkkkkkkkk');
      
         $this->setModel();
         if (isset($email) && isset($password)) {
            
             $user = $this->model
                 ::where('email', $email)
-                ->where('channel',$password)
+                ->where('password',Hash::make($password))
                 ->first();
                 session(['user-log' => $user]);
                 return  $user;

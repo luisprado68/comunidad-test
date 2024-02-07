@@ -39,6 +39,8 @@ class HomeController extends Controller
                 $times = $this->scheduleService->getTimes($currentStreams,$userModel);
             }
             // @dd($active);
+            Log::debug('model------------------------');
+            Log::debug(json_encode($userModel));
             if($userModel->status){
                
                 session(['status' => $userModel->status]);

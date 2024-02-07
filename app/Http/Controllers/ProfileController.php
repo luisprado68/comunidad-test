@@ -78,13 +78,15 @@ class ProfileController extends Controller
         $update_user = $request->all();
 
         // dd($this->update_user);
-        if($update_user['area'] == '+54'){
-            $limit = '|digits_between:1,10';
-        }elseif($update_user['area'] == '+51'){
-            $limit = '|digits_between:1,9';
+        Log::debug('area: ---' . json_encode($update_user['area'] ));
+        if($update_user['area'] == '54'){
+            $limit = 'digits_between:1,10';
+            Log::debug('limit: ---' . json_encode($limit ));
+        }elseif($update_user['area'] == '51'){
+            $limit = 'digits_between:1,9';
         }
-        elseif($update_user['area'] == '+57'){
-            $limit = '|digits_between:1,10';
+        elseif($update_user['area'] == '57'){
+            $limit = 'digits_between:1,10';
         }
      
         $validated = $request->validate([
@@ -92,7 +94,7 @@ class ProfileController extends Controller
             'channel' => 'required',
             'country' => 'required',
             'area' => 'required',
-            'phone' => 'required|numeric'.$limit,
+            'phone' => 'required|numeric|'.$limit,
             'timezone' => 'required',
         ]);
 
