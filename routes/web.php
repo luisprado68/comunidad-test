@@ -64,16 +64,14 @@ Route::group(['/'], function () {
     Route::get('login_test', [LoginController::class, 'login_test'])->name('login-test');
     Route::post('login-test-login', [LoginController::class, 'login_post'])->name('login-post');
 
-    // Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
-    // Route::get('admin/schedulers', [AdminController::class, 'schedulers'])->name('admin-schedulers');
-    // Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
-    // Route::get('admin/show/{id}', [AdminController::class, 'show'])->name('admin-show');
-    // Route::get('admin/delete/{id}', [AdminController::class, 'delete'])->name('admin-delete');
-    // Route::post('admin/post', [AdminController::class, 'post'])->name('admin-post');
-    // Route::get('admin/logout', [AdminController::class, 'logoutAdmin'])->name('logout-admin');
-
-    // Route::get('referrer/{user_name}', [ScoreController::class, 'getPointSupport'])->name('referrer');
-
+    Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
+    Route::get('admin/schedulers', [AdminController::class, 'schedulers'])->name('admin-schedulers');
+    Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
+    Route::get('admin/show/{id}', [AdminController::class, 'show'])->name('admin-show');
+    Route::get('admin/show/{id}/edit', [AdminController::class, 'editScheduler'])->name('admin-show-scheduler');
+    Route::get('admin/delete/{id}', [AdminController::class, 'delete'])->name('admin-delete');
+    Route::post('admin/post', [AdminController::class, 'post'])->name('admin-post');
+    Route::get('admin/logout', [AdminController::class, 'logoutAdmin'])->name('logout-admin');
 
 
 });

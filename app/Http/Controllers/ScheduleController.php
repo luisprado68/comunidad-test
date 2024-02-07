@@ -41,6 +41,7 @@ class ScheduleController extends Controller
     public $plata;
     public $oro;
     public $platino;
+    public $active_time_zone = false;
 
 
     public function __construct(UserService $userService, ScheduleService $scheduleService)
@@ -51,42 +52,50 @@ class ScheduleController extends Controller
     }
     public function index()
     {
-        
+
         $times = [];
         if (session()->exists('user')) {
             $this->user = session('user');
             $user_model = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
-            $this->bronce = $this->getTimeSchedule($user_model,$this->bronce_time);
-            $this->plata = $this->getTimeSchedule($user_model,$this->plata_time);
-            $this->oro = $this->getTimeSchedule($user_model,$this->oro_time);
-            $this->platino = $this->getTimeSchedule($user_model,$this->platino_time);
+
+
+
             if ($user_model->status) {
 
                 session(['status' => $user_model->status]);
             } else {
                 session(['status' => 0]);
             }
-      
+            $this->bronce = $this->getTimeSchedule($user_model, $this->bronce_time);
+            $this->plata = $this->getTimeSchedule($user_model, $this->plata_time);
+            $this->oro = $this->getTimeSchedule($user_model, $this->oro_time);
+            $this->platino = $this->getTimeSchedule($user_model, $this->platino_time);
+
             if (!empty($user_model)) {
-                $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
-                // dump($schedules_by_user);
-                $current_t = Carbon::now();
-                // $current_t->tz = $user_model->time_zone;
-                $day = $current_t->format('l');
+
+
+                if (isset($user_model->time_zone)) {
+                    $this->active_time_zone = true;
+                    $schedules_by_user = $this->scheduleService->getScheduleorThisWeekByUser($user_model);
+                    // dump($schedules_by_user);
+                    $current_t = Carbon::now();
+                    // $current_t->tz = $user_model->time_zone;
+                    $day = $current_t->format('l');
 
                     if ($day == 'Sunday' || $user_model->range_id == 1 ||  $user_model->role_id != 2) {
 
 
                         if ($day == 'Sunday') {
-                           
+
                             $hour = intval($current_t->format('H'));
+                            // dump($hour);
                             ////validar los horarios segun rango
-                            
+
                             if (
-                                $hour >= $this->bronce_time && $user_model->range_id == 4 ||
-                                $hour >= $this->plata_time && $user_model->range_id == 3 ||
-                                $hour >= $this->oro_time && $user_model->range_id == 2 ||
-                                $hour >= $this->platino_time && $user_model->range_id == 1
+                                $hour >= $this->bronce_time && $user_model->range_id == 1 ||
+                                $hour >= $this->plata_time && $user_model->range_id == 2 ||
+                                $hour >= $this->oro_time && $user_model->range_id == 3 ||
+                                $hour >= $this->platino_time && $user_model->range_id == 4
                             ) {
                                 // dump('paasaa');
                                 if (!isset($schedules_by_user)) {
@@ -106,10 +115,10 @@ class ScheduleController extends Controller
                             }
                         }
                     }
-                
+                }
             }
             // dump($this->schedule_avaible);
-            if ($this->schedule_avaible) {
+            if ($this->schedule_avaible && $this->active_time_zone) {
 
                 $this->times = [
                     0 => ['hour' => '00:00', 'duplicated' => false, 'disabled' => false],
@@ -230,7 +239,7 @@ class ScheduleController extends Controller
                     //saca los dias inclusive el actual para agendar los bronces
                     $i = 0;
                     foreach ($this->days_with_time as $key => $value) {
-                        
+
                         if ($day_int == $i) {
                             break;
                         }
@@ -240,8 +249,11 @@ class ScheduleController extends Controller
                 }
             }
             return view('schedule', [
-                'times' => $this->times, 'days' => $this->days, 'days_with_time' => $this->days_with_time, 'schedule_avaible' => $this->schedule_avaible, 'day_status' => $this->day_status, "user" => $user_model, 'times' => json_encode($times)
-            ,'bronce'=> $this->bronce,'plata'=> $this->plata,'oro'=> $this->oro,'platino'=> $this->platino]);
+                'times' => $this->times, 'days' => $this->days, 'days_with_time' => $this->days_with_time, 
+                'schedule_avaible' => $this->schedule_avaible, 'day_status' => $this->day_status, 
+                "user" => $user_model, 'times' => json_encode($times), 'bronce' => $this->bronce, 
+                'plata' => $this->plata, 'oro' => $this->oro, 'platino' => $this->platino,'active_time_zone' => $this->active_time_zone
+            ]);
         } else {
             return redirect('/');
         }
@@ -249,19 +261,21 @@ class ScheduleController extends Controller
 
 
 
-    public function getTimeSchedule($user,$time){
-        
-            $new = Carbon::now();
-            $new->hour($time);
-            $new->tz = $user->time_zone;
+    public function getTimeSchedule($user, $time)
+    {
 
-            $exe = $new->hour;
-            // dump($exe);
-            return $exe;
+        $new = Carbon::now();
+        $new->hour($time);
+        $new->tz = $user->time_zone;
+
+        $exe = $new->hour;
+        // dump($exe);
+        return $exe;
     }
     public function updateScheduler(Request $request)
     {
-        Log::debug("updateScheduler");
+        $hourDuplicated = false;
+
         $this->user = session('user');
 
         // if(env('APP_ENV') == 'local'){
@@ -289,8 +303,8 @@ class ScheduleController extends Controller
 
         foreach ($this->data['days'] as $key => $value) {
 
-            Log::debug('value ' . json_encode(($value)));
-            Log::debug('cantidad de horarios: ' . json_encode(count(($value['horarios']))));
+            // Log::debug('value ' . json_encode(($value)));
+            // Log::debug('cantidad de horarios: ' . json_encode(count(($value['horarios']))));
 
             if ($value['day'] == "1") {
 
@@ -350,9 +364,9 @@ class ScheduleController extends Controller
         } elseif ($this->data['status'] == 'ok') {
 
             $date  = $this->scheduleService->setSunday();
-            // $date = CarbonImmutable::now()->locale('en_US');
+
             foreach ($this->data['days'] as $key => $value) {
-                Log::debug(json_encode($value['day']));
+
                 if (count(($value['horarios'])) > 0) {
                     foreach ($value['horarios'] as $key => $time) {
 
@@ -360,6 +374,7 @@ class ScheduleController extends Controller
                         //$monday->tz = 'America/Argentina/Buenos_Aires';
                         // $start =  new Carbon($date->setDaysFromStartOfWeek($value['day'])->format('Y-m-d') . $time);
                         $new_start = $this->parseToCountry($date, $value['day'], $time, $user_model->time_zone);
+                        Log::debug('new_start:---------------' . json_encode($new_start));
                         $scheduleNewItem['start'] = $new_start;
 
 
@@ -368,23 +383,38 @@ class ScheduleController extends Controller
                     }
                 }
             }
-            Log::debug('scheduleNew------------------');
-            Log::debug(json_encode($scheduleNew));
-            $ids = $this->scheduleService->bulkCreate($scheduleNew);
-            Log::debug('ids');
-            Log::debug(json_encode($ids));
+
+            //validar que no hay otro usuario ya agendado al mismo tiempo
+            foreach ($scheduleNew as $key => $schedule_user) {
+                // Log::debug('schedule_user:-----' . json_encode($schedule_user));
+
+                $dates_other_users =  $this->scheduleService->validateNewScheduleByUser($schedule_user['start']);
+                if (count($dates_other_users) == 2) {
+                    $hourDuplicated = true;
+                    $date_time_zone = new Carbon($schedule_user['start']);
+                    $date_time_zone->tz = $user_model->time_zone;
+                    $this->data['status'] = 'error';
+                    $this->data['message'] = 'Otro streamer ya agendo esta fecha: ' . $date_time_zone->format('Y-m-d H:00:00');;
+                    break;
+                }
+            }
+            if ($hourDuplicated == false) {
+                $ids = $this->scheduleService->bulkCreate($scheduleNew);
+                // Log::debug('ids');
+                // Log::debug(json_encode($ids));
+            }
         }
-        Log::debug('data');
-        Log::debug(json_encode($this->data));
+        // Log::debug('data');
+        // Log::debug(json_encode($this->data));
         return $this->data;
     }
 
     public function parseToCountry($date, $day_param, $time, $time_zone)
     {
         $hour_diff = $this->scheduleService->parseHoursToCountry($date->endOfWeek($day_param), $time_zone);
-        $utc =  new Carbon($date->setDaysFromStartOfWeek($day_param)->format('Y-m-d') . $time);
+        //validar
+        $utc =  new Carbon($date->format('Y-m-d') . $time);
         $utc->addHours($hour_diff);
-
         return $utc;
     }
 }

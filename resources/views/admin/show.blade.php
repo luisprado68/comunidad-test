@@ -127,13 +127,15 @@
                             @endif
                         </div>
                         <div class="col-lg-12">
+                            @if($user->role_id == 3)
                             <h4 class="text-center">Streamers Apoyados</h4>
                                 @if (count($streamers_supported )> 0)
                                     @foreach ($streamers_supported as $streamer)
                                         {{$streamer['name'] . ' - ' . $streamer['time']}}
                                     @endforeach
                                 @else
-                                    
+                                <h5 class="text-center">--</h5>
+                                @endif
                                 @endif
                         </div>
 

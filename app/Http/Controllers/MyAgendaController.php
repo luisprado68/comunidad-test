@@ -38,34 +38,32 @@ class MyAgendaController extends Controller
     public function index()
     {
         $active = false;
-        $times = [];
+        $week = [];
         // if (env('APP_ENV') == 'local') {
         //     $this->user_model = $this->userService->getById(env('USER_TEST'));
         // }
         if (session()->exists('user')) {
             $this->user = session('user');
             $this->user_model = $this->userService->userExistsActive($this->user['display_name'] . '@gmail.com', $this->user['id']);
-            $currentStreams = $this->scheduleService->getStreamByUser($this->user_model);
-
-            if (count($currentStreams) > 0) {
-                $times = $this->scheduleService->getTimes($currentStreams, $this->user_model);
-            }
+          
             if ($this->user_model->status) {
 
                 session(['status' => $this->user_model->status]);
             } else {
                 session(['status' => 0]);
             }
-            if (!empty($this->user_model)) {
-                $week = $this->getDays();
-    
-                if (count($week) > 0) {
-                    $this->showAgendas = true;
+          
+           
+            
+            $schedulers = $this->scheduleService->getByUserIdDay($this->user_model->id);
+            if(isset($schedulers)){
+                if(count($schedulers) > 0){
+                    $week = $this->getFormatDays($schedulers);
                 }
             }
-    
-    
-            return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week, 'user' => $this->user_model, 'times' => json_encode($times)]);
+           
+            
+            return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week, 'user' => $this->user_model]);
         }
         else{
             return redirect('/');
@@ -73,115 +71,28 @@ class MyAgendaController extends Controller
        
     }
 
-    public function getDays()
-    {
-        $agenda = [];
-        if (count($this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::MONDAY))) > 0) {
-            $agenda['monday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::MONDAY));
-        }
-        if (count($this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::TUESDAY))) > 0) {
-            $agenda['tuesday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::TUESDAY));
-        }
-        if (count($this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::WEDNESDAY))) > 0) {
-            $agenda['wednesday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::WEDNESDAY));
-        }
-        if (count($this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::THURSDAY))) > 0) {
-            $agenda['thursday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayByUser($this->user_model, Carbon::THURSDAY));
-        }
-        if (count($this->getDateAndTime($this->scheduleService->getSchedulerDayEndByUser($this->user_model, Carbon::FRIDAY))) > 0) {
-            $agenda['friday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayEndByUser($this->user_model, Carbon::FRIDAY));
-        }
-        if (count($this->getDateAndTime($this->scheduleService->getSchedulerDayEndByUser($this->user_model, Carbon::SATURDAY))) > 0) {
-            $agenda['saturday'] = $this->getDateAndTime($this->scheduleService->getSchedulerDayEndByUser($this->user_model, Carbon::SATURDAY));
-        }
-
-        if (count($agenda) > 0) {
-            //actualiza el puntaje despues de agendar el usaurio
-            $usersSupports = $this->supportScoreService->getByUserSupportId($this->user_model->id);
-            if(count($usersSupports)> 0){
-                foreach ($usersSupports as $key => $usersSupport) {
-                    if ($usersSupport->point == 0) {
-                        $usersSupport->point = 1;
-                        $usersSupport->update();
-                    }
-                }
+  
+    public function getFormatDays($schedulers){
+        $time_by_day = [];
+        foreach ($schedulers as $key => $scheduler) {
+               
+            $date = new Carbon($scheduler->day);
+           
+            $dates =$this->scheduleService->getByUserIdAndDate($this->user_model,$scheduler->day);
+            foreach ($dates as $key => $value) {
+                
+                $time = new Carbon($value->start);
+                $time->tz = $this->user_model->time_zone;
+                // dump($this->user_model->time_zone);
+                array_push($time_by_day,$time->format('H:00'));
             }
-          
-            // dump($users);
+            $day_name = strtolower($time->format('l'));
+            $list_day[$day_name]['date'] = $time->format('d-m-Y');
+            $list_day[$day_name]['times'] = $time_by_day;
+            $time_by_day = [];
+            
         }
-
-        // dump($agenda);
-
-        $current_time = Carbon::now();
-        $current_time->tz = $this->user_model->time_zone;
-        foreach ($agenda as $key => $day) {
-            // dump($current_time);
-            // dump($key);
-            // dump(strtolower($current_time->format('l')));
-            //si es domingo mostratmos todos los dias
-            if (strtolower($current_time->format('l')) == 'sunday') {
-            } else {
-
-                if (strtolower($current_time->format('l')) == $key) {
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'tuesday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'wednesday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'thursday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'monday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'wednesday' ||
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'thursday' ||
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'tuesday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'wednesday' && $key == 'thursday' ||
-                    strtolower($current_time->format('l')) == 'wednesday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'wednesday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (
-                    strtolower($current_time->format('l')) == 'thursday' && $key == 'friday' ||
-                    strtolower($current_time->format('l')) == 'thursday' && $key == 'saturday'
-                ) {
-                    // unset($agenda[$key]);
-                    break;
-                } elseif (strtolower($current_time->format('l')) == 'friday' && $key == 'saturday') {
-                    // unset($agenda[$key]);
-                    break;
-                } else {
-                    unset($agenda[$key]);
-                }
-            }
-        }
-        // dump($agenda);
-        return $agenda;
-    }
-    public function getDateAndTime($days)
-    {
-        $list_day = [];
-        if (count($days) > 0) {
-            $date = new Carbon($days[0]->start);
-            $list_day['date'] = $date->format('Y-m-d');
-            $list_day['times'] = [];
-            foreach ($days as $key => $value) {
-                // dump($value->start);
-                $day = new Carbon($value->start);
-                $day->tz = $this->user_model->time_zone;
-                array_push($list_day['times'], $day->format('H:i'));
-            }
-            return $list_day;
-        }
+        
         return $list_day;
-        // dump($list_day);
-
     }
 }

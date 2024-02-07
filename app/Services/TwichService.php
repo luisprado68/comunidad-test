@@ -313,14 +313,11 @@ final class TwichService
                             Log::debug($score);
                             if (isset($score) && !empty($score)) {
 
-                                $last = new Carbon($score->updated_at);
+                                // $last = new Carbon($score->updated_at);
                                 $user_support['id'] = $user_streaming->id;
                                 $user_support['name'] = $user_streaming->channel;
                                 //minuto minute == 10
-                                if (
-                                    $current->format('H') == $last->format('H')
-                                    || $current->format('H') != $last->format('H')
-                                ) {
+                              
                                     if ($score->points_day == 10) {
                                         $score->points_day = 0;
                                     } else {
@@ -336,7 +333,7 @@ final class TwichService
                                     $score->neo_coins = $score->neo_coins + 1;
                                     $score->streamer_supported = json_encode($user_support);
                                     $score->update();
-                                }
+                                
                             } else {
                                 Log::debug('new score---------------------');
                                

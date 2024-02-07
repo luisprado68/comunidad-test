@@ -39,6 +39,11 @@
                                         <div class="card bg-dark text-light mt-2">
                                             <div class="row">
                                                 <div class="col-12">
+                                                    @if (!$active_time_zone)
+                                                    <div class="text-lg font-bold text-left mt-2 mb-2 mx-2 text-danger">
+                                                       Debes actualizar tu perfil y agregar tu zona horaria</div>
+                                                </div>  
+                                                    @endif
                                                     <div class="text-lg font-bold text-left mt-2 mb-2 mx-2">No están
                                                         habilitadas las reservas</div>
                                                 </div>

@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 final class ScheduleService
@@ -51,6 +52,81 @@ final class ScheduleService
         }
     }
 
+    public function getByUserId($user_id)
+    {
+        $this->setModel();
+        $schedulers = $this->model::where('user_id', $user_id)->orderBy('start','asc')->get();
+        if (count($schedulers) > 0) {
+            return $schedulers;
+        } else {
+            return null;
+        }
+    }
+
+    public function getByUserIdDay($user_id)
+    {
+        $this->setModel();
+        $schedulers = $this->model::select(DB::raw('DATE(start) as day'), DB::raw('COUNT(*) as count'))
+        ->groupBy('day')
+        ->where('user_id', $user_id)->orderBy('day','asc')
+        ->get();
+        if (count($schedulers) > 0) {
+            return $schedulers;
+        } else {
+            return null;
+        }
+    }
+    public function getByUserIdAndDate($user,$date){
+        $this->setModel();
+        
+        $schedulers = $this->model::
+        whereDate('start',$date)
+        ->where('user_id', $user->id)->orderBy('start','asc')
+        ->get();
+        if (count($schedulers) > 0) {
+            return $schedulers;
+        } else {
+            return null;
+        }
+    }
+
+
+    public function validateNewScheduleByUser($date){
+        $this->setModel();
+       
+        $en = $this->setSunday();
+        $start_date = new Carbon($date);
+        $test = $start_date->addHours(-1);
+
+        $start_string = $start_date->format('Y-m-d H:59:00');
+        
+        $end_date = new Carbon($date);
+        
+        $end_string = $end_date->format('Y-m-d H:01:00');
+        // Log::debug('start_string------------' . json_encode($start_string));
+        // Log::debug('end_string------------' . json_encode($end_string));
+        $day = $this->model::whereBetween('start', [$start_string, $end_string])->get();
+       
+        Log::debug('day------------' . json_encode($day));
+        if (isset($day)) {
+            return $day;
+        } else {
+            return null;
+        }
+    }
+
+    public function delete($id)
+    {
+        $this->setModel();
+        $schedule = $this->model::where('id', $id)->first();
+        if (isset($schedule)) {
+            $schedule->delete();
+            return true;
+        } else {
+            return null;
+        }
+    }
+
     public function getScheduleorThisWeek($user)
     {
         //para testeAR*****
@@ -75,14 +151,34 @@ final class ScheduleService
     public function getDatesByDay($user,$day){
         $week = [];
         $week_time_zone = [];
+        // dump('day');
+        // dump($day);
         $this->setModel();
         $en = $this->setSunday();
+        // dump('en');
+        // dump($en);
         $hour_first = $this->parseHoursToCountry($en->endOfWeek($day),$user->time_zone);
+       
+        if($day == 6){
+            $day_start = $en->startOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
+            // dump('start----');
+            // dump($day_start);
+            $day_end = $en->endOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
+            // dump('end----');
+            // dump($day_end);
+        }else{
+            $day_start = $en->startOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
+            // dump('start----');
+            // dump($day_start);
+            $day_end = $en->endOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
+            // dump('end----');
+            // dump($day_end);
+        }
         
-        $day_start = $en->startOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
-        // dump($day_start);
-        $day_end = $en->endOfWeek($day)->addHours($hour_first)->format('Y-m-d H:00:00');
-        // dump($day_end);
+       
+        
+       
+        
         $week = $this->model::whereBetween('start', [$day_start, $day_end])->orderBy('start')->get();
         // $week = $this->model::whereBetween('start', [$day_start, $day_end])->get();
 
@@ -100,11 +196,14 @@ final class ScheduleService
     
         $allDays = [];
         $monday = $this->getDatesByDay($user,Carbon::MONDAY);
+        // dump($monday);
         $tuesday = $this->getDatesByDay($user,Carbon::TUESDAY);
         $wednesday = $this->getDatesByDay($user,Carbon::WEDNESDAY);
         $thursday = $this->getDatesByDay($user,Carbon::THURSDAY);
         $friday = $this->getDatesByDay($user,Carbon::FRIDAY);
+        // dump('saturday');
         $saturday = $this->getDatesByDay($user,Carbon::SATURDAY);
+        // dump($saturday);
         $allDays =[
             'Lunes' => $monday,
             'Martes' => $tuesday,
@@ -241,7 +340,7 @@ final class ScheduleService
         // dump($end_string);
 
         if($minutes <= env('WATCH_SUPPORT_MINUTE')){
-            $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->get();
+            $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->take(2)->get();
         }
         // dump($currentStreams);
         return $currentStreams;
@@ -334,21 +433,19 @@ final class ScheduleService
     public function getNextStream($user){
 
         $this->setModel();
-        $date = Carbon::now();
-        $date->addHour(1);
+        $actual = Carbon::now();
+        // $actual->addHour(1);
        
-        $dates = $date->format('Y-m-d');
-        $hour = $date->format('H');
-        $hour_next =$hour + 1;
+        $dates = $actual->format('Y-m-d');
+        $hour_actual = $actual->format('H');
+        $hour_next =$hour_actual + 1;
        
-        $actual = new Carbon($dates.' ' .$hour.':00:00');
+        $actual = new Carbon($dates.' ' .$hour_actual.':59:00');
         $actual_next = new Carbon($dates.' ' .$hour_next.':00:00');
       
         $start_string = $actual->format('Y-m-d H:i:s');
         // dump($start_string);
-     
         $end_string = $actual_next->format('Y-m-d H:i:s');
-      
         // dump($end_string);
         $currentStreams = $this->model::whereBetween('start',[$start_string, $end_string])->where('user_id','!=',$user->id)->distinct()->first();
 
@@ -381,23 +478,27 @@ final class ScheduleService
         // dump($date);
         $this->setModel();
         $dates = null;
+        
+        if(isset($user->time_zone) && $user->time_zone != '' ){
+            $en = $this->setSunday();
+            $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
+            if($date != 1){
+                $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
+                $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
+            }
+            else{
+                $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
+                $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
+            }
+            $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->orderBy('start', 'ASC')->get();
+        }
        
-        $en = $this->setSunday();
-        $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
-        if($date != 1){
-            $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
-            $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
-        }
-        else{
-            $start = $en->startOfWeek($date)->addHours($hour_diff)->format('Y-m-d H:00:00');
-            $end = $en->startOfWeek($date)->addHour(23 + $hour_diff)->format('Y-m-d H:00:00');
-        }
         // dump('start');
         // dump($start);
         //dump('end');
         //  dump($end);
   
-        $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->orderBy('start', 'ASC')->get();
+        
         // dump('hours');
         //  dump($dates);
         return $dates;
@@ -405,10 +506,15 @@ final class ScheduleService
     }
     public function getSchedulerDayEndByUser($user,$date)
     {
-        $en = $this->setSunday();
+        $dates = [];
+        if(isset($user->time_zone) && $user->time_zone != ''){
+            $en = $this->setSunday();
+            // dump($en);
+        //  dump('endOfWeek--------------------------------');
+        // dump($en->endOfWeek($date));
         $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
         // dump('day--------------------------------');
-        // dump($date);
+        // dump($hour_diff);
         $this->setModel();
         $dates = null;
         
@@ -425,6 +531,9 @@ final class ScheduleService
         // dump($hours);
         // dump('hours--------------');
         // dump($hours);
+        }
+        
+        
         return $dates;
 
     }
