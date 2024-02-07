@@ -28,7 +28,7 @@
     <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
 </head>
 
-<body class="font-sans antialiased">
+<body class="fondo_general" style="width: 100%">
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-menu')
 
