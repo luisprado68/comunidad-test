@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 
 @section('content')
     <div class="container">
         <div class="row">
 
-            <div class="col-md-12 pt-1 w-100">
+            <div class="pt-1 col-md-12 w-100">
                 @if (session()->has('user') && session('status') == 0)
                     @include('link')
                 @else
@@ -13,7 +13,7 @@
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-12 text-light">
-                                    <h4 class="text-light text-center">Agradecemos tu apoyo</h4>
+                                    <h4 class="text-center text-light">Agradecemos tu apoyo</h4>
                                     <p>Nuestra comunidad fue creada sin intención de lucro alguno. Nuestro principal
                                         objetivo es ayudar a los streamers a ser parte de una comunidad que los ayuda a
                                         alcanzar sus metas y conocer nuevos streamers con los que puedan formar lazos,

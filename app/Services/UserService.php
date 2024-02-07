@@ -136,11 +136,15 @@ final class UserService
         if (isset($email) && isset($password)) {
            
             $user = $this->model
-                ::where('email', $email)
-                ->where('password',Hash::make($password))
-                ->first();
+            ::where('email', $email)
+            ->first();
+
+            if (Hash::check($password, $user->password)) {
                 session(['user-log' => $user]);
+                Log::debug('user---');
+                Log::debug(json_encode($user));
                 return  $user;
+            }
         } else {
             return false;
         }

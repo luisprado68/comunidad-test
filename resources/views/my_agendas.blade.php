@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <div class="container">
@@ -7,7 +7,7 @@
                 @include('link')
             @else
                 @include('status', ['user' => $user])
-                <div class="col-md-12 pt-1 w-100">
+                <div class="pt-1 col-md-12 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">
                             <div class="row">
@@ -47,25 +47,25 @@
                         <div class="card-body ">
                             <div class="row">
 
-                                <div class=" col-12 py-2">
+                                <div class="py-2  col-12">
                                     <div class="card banner">
                                         <div class="card-body text-start">
-                                            <h3 class="text-light text-center">Mi Agenda Semanal</h3>
+                                            <h3 class="text-center text-light">Mi Agenda Semanal</h3>
                                         </div>
                                     </div>
                                 </div>
                                 @if (count($week) > 0)
-                                    <div class="card bg-dark text-light mt-2">
+                                    <div class="mt-2 card bg-dark text-light">
                                         <div class="row">
 
                                             @foreach ($week as $key => $days)
-                                                <div class="col-lg-4 col-md-4  col-sm-12 my-4">
-                                                    <input class="form-control form-control-lg bg-warning text-center"
+                                                <div class="my-4 col-lg-4 col-md-4 col-sm-12">
+                                                    <input class="text-center form-control form-control-lg bg-warning"
                                                         type="text" placeholder="{{ trans('user.create.' . $key) }}"
                                                         disabled>
 
                                                     @foreach ($days['times'] as $time)
-                                                        <input class="form-control form-control-lg bg-light text-center"
+                                                        <input class="text-center form-control form-control-lg bg-light"
                                                             type="text" placeholder="{{ $time }}" disabled>
                                                     @endforeach
 

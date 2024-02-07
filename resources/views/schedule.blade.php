@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <div class="container ">
@@ -7,44 +7,44 @@
                 @include('link')
             @else
                 @include('status', ['user' => $user])
-                <div class="col-md-12 pt-1 w-100">
+                <div class="pt-1 col-md-12 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col">
                                     <div class="card banner">
                                         <div class="card-body banner">
-                                            <h3 class="text-light text-center">Habilitación de Agendas</h3>
+                                            <h3 class="text-center text-light">Habilitación de Agendas</h3>
                                         </div>
                                     </div>
-                                    <div class="card bg-dark text-light mt-2">
+                                    <div class="mt-2 card bg-dark text-light">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="text-lg font-bold mx-2">{{'Platino: '.$platino . ':00'}}</div>
+                                                <div class="mx-2 text-lg font-bold">{{'Platino: '.$platino . ':00'}}</div>
                                             </div>
                                             <div class="col-12">
-                                                <div class="text-lg font-bold mx-2">{{'Oro: '.$oro . ':00'}}</div>
+                                                <div class="mx-2 text-lg font-bold">{{'Oro: '.$oro . ':00'}}</div>
                                             </div>
                                             <div class="col-12">
-                                                <div class="text-lg font-bold mx-2">{{'Plata: '.$plata . ':00'}}</div>
+                                                <div class="mx-2 text-lg font-bold">{{'Plata: '.$plata . ':00'}}</div>
                                             </div>
                                             <div class="col-12">
-                                                <div class="text-lg font-bold mx-2">{{'Bronce: '.$bronce . ':00'}}</div>
+                                                <div class="mx-2 text-lg font-bold">{{'Bronce: '.$bronce . ':00'}}</div>
                                             </div>
 
                                         </div>
                                     </div>
 
                                     @if (!$schedule_avaible)
-                                        <div class="card bg-dark text-light mt-2">
+                                        <div class="mt-2 card bg-dark text-light">
                                             <div class="row">
                                                 <div class="col-12">
                                                     @if (!$active_time_zone)
-                                                    <div class="text-lg font-bold text-left mt-2 mb-2 mx-2 text-danger">
+                                                    <div class="mx-2 mt-2 mb-2 text-lg font-bold text-left text-danger">
                                                        Debes actualizar tu perfil y agregar tu zona horaria</div>
                                                 </div>  
                                                     @endif
-                                                    <div class="text-lg font-bold text-left mt-2 mb-2 mx-2">No están
+                                                    <div class="mx-2 mt-2 mb-2 text-lg font-bold text-left">No están
                                                         habilitadas las reservas</div>
                                                 </div>
 
@@ -52,20 +52,20 @@
                                             </div>
                                         </div>
                                     @else
-                                        <div class=" col-12 py-2">
+                                        <div class="py-2  col-12">
                                             <div class="card-body banner">
-                                                <h3 class="text-light text-center">Seleccione Día y Hora</h3>
+                                                <h3 class="text-center text-light">Seleccione Día y Hora</h3>
                                             </div>
                                         </div>
-                                        <div class="card bg-dark text-light mt-2">
+                                        <div class="mt-2 card bg-dark text-light">
                                             <div class="row">
 
                                                 {{-- @dump($days_with_time) --}}
                                                 @foreach ($days_with_time as $key_day => $day_with_time)
                                                     @if ($day_with_time['status'])
-                                                        <div class="col-lg-4 col-md-4 col-sm-4  px-4 my-3">
+                                                        <div class="px-4 my-3 col-lg-4 col-md-4 col-sm-4">
                                                             <input
-                                                                class="form-control form-control-lg bg-warning text-center"
+                                                                class="text-center form-control form-control-lg bg-warning"
                                                                 type="text" placeholder="{{ $key_day }}" disabled>
                                                             <div class="col">
                                                                 <div mbsc-page class="demo-multiple-select">
@@ -102,7 +102,7 @@
                                                         </div>
                                                     @endif
                                                 @endforeach
-                                                <div class="col-12 mx-3 py-4">
+                                                <div class="py-4 mx-3 col-12">
                                                     <button class="btn btn-primary" type="submit"
                                                         onclick="btnClick()">Guardar Cambios</button>
                                                 </div>

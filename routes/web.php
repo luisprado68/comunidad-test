@@ -43,13 +43,13 @@ Route::group(['/'], function () {
     Route::get('summary', [SummaryController::class, 'index'])->name('summary');
     Route::get('/', [HomeController::class, 'index'])->name('home');
     //Route::get('/', [HomeController::class, 'index'])->name('home');
-    // Route::get('support', [SupportController::class, 'index'])->name('support');
-    // Route::get('my_agendas', [MyAgendaController::class, 'index'])->name('my_agendas');
+    Route::get('support', [SupportController::class, 'index'])->name('support');
+    Route::get('my_agendas', [MyAgendaController::class, 'index'])->name('my_agendas');
     // Route::get('profile', [ProfileController::class, 'index'])->name('profile');
     // Route::post('profile/edit', [ProfileController::class, 'editUser'])->name('edit-user');
-    // Route::get('history', [HistoryController::class, 'index'])->name('history');
-    // Route::get('donations', [DonationController::class, 'index'])->name('donation');
-    // Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::get('history', [HistoryController::class, 'index'])->name('history');
+    Route::get('donations', [DonationController::class, 'index'])->name('donation');
+    Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
     // Route::post('schedule/update', [ScheduleController::class, 'updateScheduler'])->name('schedule-update');
     // Route::get('test', [ScheduleController::class, 'test'])->name('test');
     Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
@@ -73,6 +73,7 @@ Route::group(['/'], function () {
     Route::post('admin/post', [AdminController::class, 'post'])->name('admin-post');
     Route::get('admin/logout', [AdminController::class, 'logoutAdmin'])->name('logout-admin');
 
+    Route::get('referrer/{user_name}', [ScoreController::class, 'getPointSupport'])->name('referrer');
 
 });
 

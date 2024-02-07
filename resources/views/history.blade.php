@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <div class="container">
@@ -7,34 +7,34 @@
                 @include('link')
             @else
                 @include('status', ['user' => $user])
-                <div class="col-md-12 pt-1 w-100">
+                <div class="pt-1 col-md-12 w-100">
                     <div class="card bg-secondary">
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="card banner">
                                         <div class="card-body banner">
-                                            <h3 class="text-light text-center">Últimos Apoyos</h3>
+                                            <h3 class="text-center text-light">Últimos Apoyos</h3>
                                         </div>
 
                                     </div>
                                     @foreach ($scores as $score)
-                                    <div class="card bg-dark text-light mt-2 mb-2">
+                                    <div class="mt-2 mb-2 card bg-dark text-light">
                                         <div class="row">
                                                 <div class="col-lg-12">
                                                     {{-- <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div> --}}
                                                     <div class="text-lg font-bold text-center">{{$score['date']}}</div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="text-lg font-bold pt-3">{{$score['channel']}}</div>
+                                                    <div class="pt-3 text-lg font-bold">{{$score['channel']}}</div>
                                                 </div>
                                                 @if ($score['time'] >= 50 && $score['time'] <= 55)
                                                 <div class="col">
-                                                    <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
+                                                    <div class="m-1 text-center bg-success text-light">Apoyo Completo</div>
                                                 </div>
                                                 @else
                                                 <div class="col">
-                                                    <div class="m-1 bg-danger text-light text-center">Poco tiempo en el stream
+                                                    <div class="m-1 text-center bg-danger text-light">Poco tiempo en el stream
                                                     </div>
                                                 </div>
                                                 @endif
@@ -43,16 +43,16 @@
                                     </div>
                                     @endforeach
                                     
-                                    {{-- <div class="card bg-dark text-light mt-2">
+                                    {{-- <div class="mt-2 card bg-dark text-light">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div>
                                             </div>
                                             <div class="col">
-                                                <div class="text-lg font-bold pt-3">LobatoXY</div>
+                                                <div class="pt-3 text-lg font-bold">LobatoXY</div>
                                             </div>
                                             <div class="col">
-                                                <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
+                                                <div class="m-1 text-center bg-success text-light">Apoyo Completo</div>
                                             </div>
                                         </div>
                                     </div> --}}
@@ -60,15 +60,15 @@
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <div class="card banner ">
                                         <div class="card-body banner">
-                                            <h3 class="text-light text-center">NeoCoins</h3>
+                                            <h3 class="text-center text-light">NeoCoins</h3>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4 text-center">
+                                <div class="text-center col-4">
                                     {{-- @if (env('APP_ENV') == 'local')
-                                    <img src="{{ asset('/img/rango.jpg') }}" alt="tag" class="w-25 m-5">
+                                    <img src="{{ asset('/img/rango.jpg') }}" alt="tag" class="m-5 w-25">
                                 @else
-                                    <img src="./public/img/rango.jpg" alt="tag" class="w-25 m-5">
+                                    <img src="./public/img/rango.jpg" alt="tag" class="m-5 w-25">
                                 @endif --}}
 
                                 </div>

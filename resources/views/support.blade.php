@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <div class="container">
@@ -7,13 +7,13 @@
                 @include('link')
             @else
                 @include('status', ['user' => $user])
-                <div class="col-md-12 pt-1 w-100">
-                    <div class="card bg-secondary mb-4">
+                <div class="pt-1 col-md-12 w-100">
+                    <div class="mb-4 card bg-secondary">
                         <div class="card-body ">
                             <div class="row">
-                                <div class="col-12 mb-4">
+                                <div class="mb-4 col-12">
                                     <div class="card bg-success">
-                                        <div class="card-body text-start text-center">
+                                        <div class="text-center card-body text-start">
                                             <h3 class="text-light ">Streams en Directo</h3>
                                         </div>
                                     </div>
@@ -22,14 +22,14 @@
                                     @foreach ($streams as $streams)
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="card banner">
-                                                <div class="card-body text-center">
-                                                    <h3 class="text-light text-center">{{ $streams['name'] }}</h3>
+                                                <div class="text-center card-body">
+                                                    <h3 class="text-center text-light">{{ $streams['name'] }}</h3>
                                                     @if (env('APP_ENV') == 'local')
                                                         <img src="{{ $streams['img'] }} " alt="tag"
-                                                            class="w-50  m-1 text-center " style="height: 200px">
+                                                            class="m-1 text-center w-50 " style="height: 200px">
                                                     @else
                                                         <img src=" {{ $streams['img'] }}" alt="tag"
-                                                            class="w-50 m-1 text-center " style="height: 200px">
+                                                            class="m-1 text-center w-50 " style="height: 200px">
                                                     @endif
                                                     <div class="col">
                                                         <button class="btn btn-primary"><a
@@ -63,7 +63,7 @@
                                 @endif
 
 
-                                <div class="col-6 text-center">
+                                <div class="text-center col-6">
 
                                 </div>
                             </div>

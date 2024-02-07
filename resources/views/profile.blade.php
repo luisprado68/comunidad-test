@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <div class="container mt-5 ">
@@ -7,22 +7,22 @@
                 @include('link')
             @else
                 <div class="d-flex justify-content-center">
-                    <div class="card  bg-secondary profile">
+                    <div class="card bg-secondary profile">
 
-                        <div class="card-body bg-secondary m-0 p-0">
-                            <div class="card bg-black ">
-                                <h5 class="card-title mt-2  text-center text-light ">Edita tu Perfil</h5>
+                        <div class="p-0 m-0 card-body bg-secondary">
+                            <div class="bg-black card ">
+                                <h5 class="mt-2 text-center card-title text-light ">Edita tu Perfil</h5>
                             </div>
                             <form action="{{ route('edit-user') }}" method="POST">
                                 @csrf
                                 <div class="row justify-content-center">
-                                    <div class="col-8 mb-3 mt-3">
+                                    <div class="mt-3 mb-3 col-8">
 
                                         <input type="text" class="form-control" aria-label="Default" name="id"
                                             aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}"
                                             style="display: none">
                                     </div>
-                                    <div class="col-8 mb-3 mt-3">
+                                    <div class="mt-3 mb-3 col-8">
                                         <label class="block mb-2 text-sm font-medium text-white"
                                             for="channel">Canal</label>
                                         <input type="text" class="form-control" aria-label="Default" name="channel"
@@ -32,7 +32,7 @@
                                                 class="text-danger position-absolute">{{ trans('user.create.fields.channel') }}</span>
                                         @enderror
                                     </div>
-                                    <div class="col-8 mb-3 mt-3">
+                                    <div class="mt-3 mb-3 col-8">
                                         <label class="block mb-2 text-sm font-medium text-white" for="name">Nombre
                                             Completo</label>
                                         <input type="text" class="form-control" aria-label="Default" name="name"
@@ -43,7 +43,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-8 mb-3">
+                                    <div class="mb-3 col-8">
                                         <label class="block mb-2 text-sm font-medium text-white" for="country">País</label>
                                         <select class="form-select" aria-label="Default select example" name="country">
                                             @if ($user->country->name)
@@ -64,7 +64,7 @@
                                     </div>
 
                                     <div class="row " style="margin-right:10px">
-                                        <div class="col-3 offset-2 mb-3">
+                                        <div class="mb-3 col-3 offset-2">
                                             <label class="block mb-2 text-sm font-medium text-white"
                                                 for="area">Teléfono</label>
                                             <select class="form-select" aria-label="Default select example" name="area">
@@ -341,7 +341,7 @@
                                     </div>
 
 
-                                    <div class="col-8 mb-3 ">
+                                    <div class="mb-3 col-8 ">
                                         <label class="block mb-2 text-sm font-medium text-white" for="timezone">Zona
                                             Horaria</label>
                                         <select class="form-select" aria-label="Default select example" name="timezone">
@@ -365,7 +365,7 @@
 
                                     </div>
 
-                                    <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
+                                    <div class="mt-2 mb-4 col-6" style="display: block;margin-right:105px">
                                         <button type="submit" class="btn btn-primary">Guardar</button>
                                         {{-- <a href="{{ route('summary') }}"><button type="button" class="btn btn-danger">Volver</button></a> --}}
                                     </div>
