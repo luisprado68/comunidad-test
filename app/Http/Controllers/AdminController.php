@@ -80,15 +80,17 @@ class AdminController extends Controller
     }
     public function list()
     {
+        $action = "index";
+        return view('admin.main-admin', compact('action'));
 
-        if (Session::has('user-log')) {
-            $this->user_model = session('user-log');
-            $users = $this->userService->getUsersModel();
-            // dd($users);
-            return view('admin.list', ['users' => $users, 'user_model' => $this->user_model]);
-        } else {
-            return redirect('admin');
-        }
+        // if (Session::has('user-log')) {
+        //     $this->user_model = session('user-log');
+        //     $users = $this->userService->getUsersModel();
+        //     // dd($users);
+        //     return view('admin.list', ['users' => $users, 'user_model' => $this->user_model]);
+        // } else {
+        //     return redirect('admin');
+        // }
     }
     public function schedulers()
     {

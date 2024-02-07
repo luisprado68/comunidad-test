@@ -78,7 +78,7 @@
                             {{-- <input type="text" class="form-control" aria-label="Default" name="name"
                             aria-describedby="inputGroup-sizing-default"
                             value="{{ $user->name }}"> --}}
-                            {{-- <li><a class="dropdown-item" href="{{ route('profile') }}">Perfil</a></li> --}}
+                            <li><a class="dropdown-item" href="{{ route('profile') }}">Perfil</a></li>
                             <li><a class="dropdown-item" href="{{ route('summary') }}">Resumen</a></li>
                             <li><a class="dropdown-item" href="{{ route('support') }}">Apoyar</a></li>
                             <li><a class="dropdown-item" href="{{ route('schedule') }}">Agendar</a></li>

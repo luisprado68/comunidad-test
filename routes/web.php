@@ -45,21 +45,21 @@ Route::group(['/'], function () {
     //Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('support', [SupportController::class, 'index'])->name('support');
     Route::get('my_agendas', [MyAgendaController::class, 'index'])->name('my_agendas');
-    // Route::get('profile', [ProfileController::class, 'index'])->name('profile');
-    // Route::post('profile/edit', [ProfileController::class, 'editUser'])->name('edit-user');
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('profile/edit', [ProfileController::class, 'editUser'])->name('edit-user');
     Route::get('history', [HistoryController::class, 'index'])->name('history');
     Route::get('donations', [DonationController::class, 'index'])->name('donation');
     Route::get('schedule', [ScheduleController::class, 'index'])->name('schedule');
-    // Route::post('schedule/update', [ScheduleController::class, 'updateScheduler'])->name('schedule-update');
+    Route::post('schedule/update', [ScheduleController::class, 'updateScheduler'])->name('schedule-update');
     // Route::get('test', [ScheduleController::class, 'test'])->name('test');
     Route::get('privacy', [PrivacyController::class, 'index'])->name('privacy');
 
-    // Route::get('login', [LoginController::class, 'login'])->name('login');
+    Route::get('login_twich', [LoginController::class, 'loginTwich'])->name('loginTwich');
     Route::get('login_token', [LoginController::class, 'getToken'])->name('getToken');
-    // Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('logout_twich', [LoginController::class, 'logoutTwich'])->name('logout');
 
-    // Route::get('admin', [AdminController::class, 'index'])->name('admin-login');
-    // Route::post('admin-login', [AdminController::class, 'login'])->name('admin-login');
+    Route::get('admin', [AdminController::class, 'index'])->name('admin-login');
+    Route::post('admin-login', [AdminController::class, 'login'])->name('admin-login');
 
     Route::get('login_test', [LoginController::class, 'login_test'])->name('login-test');
     Route::post('login-test-login', [LoginController::class, 'login_post'])->name('login-post');

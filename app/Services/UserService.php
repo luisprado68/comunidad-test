@@ -252,4 +252,38 @@ final class UserService
             return false;
         }
     }
+
+    public function TableQuery($statusFilter, $filter)
+    {
+        $query = $this->model::query()->select('*');
+            // ->with('account')
+            // ->where('account_id', session('currentAccountId'));
+
+        // if (isset($filter["orderColumn"])) {
+        //     $query->orderBy($filter["orderColumn"], $filter["orderDirection"]);
+        // } else {
+        //     $query->orderBy('order', 'DESC');
+        // }
+
+        // if (isset($filter["branch-states"]) && !empty($filter["branch-states"])) {
+        //     $states = $filter["branch-states"];
+        //     $query->where(function ($query) use ($states) {
+        //         foreach ($states as $state) {
+        //             $query->orWhere('state', $state);
+        //         }
+        //     });
+        // }
+
+        // if (isset($filter["search"]) && !empty($filter["search"])) {
+        //     $query->where(function ($query) use ($filter) {
+        //         $query->orWhere('title', 'like', '%' . $filter["search"] . '%')
+        //             ->orWhere('phone', 'like', '%' . $filter["search"] . '%')
+        //             ->orWhere('email', 'like', '%' . $filter["search"] . '%')
+        //             ->orWhere('city', 'like', '%' . $filter["search"] . '%')
+        //             ->orWhere('state', 'like', '%' . $filter["search"] . '%')
+        //             ->orWhere('street', 'like', '%' . $filter["search"] . '%');
+        //     });
+        // }
+        return $query;
+    }
 }

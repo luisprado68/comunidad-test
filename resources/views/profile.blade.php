@@ -358,7 +358,6 @@
 
                                         </select>
                                         @error('timezone')
-                                            {{ 'error' }}
                                             <span
                                                 class="text-danger position-absolute">{{ trans('user.create.fields.timezone') }}</span>
                                         @enderror

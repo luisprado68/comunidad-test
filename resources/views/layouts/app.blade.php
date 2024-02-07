@@ -28,7 +28,7 @@
     <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
 </head>
 
-<body class="fondo_general" style="width: 100%">
+<body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-menu')
 
@@ -43,8 +43,8 @@
 
         <!-- Page Content -->
         <main>
-            {{ $slot }}
-
+            {{-- {{ $slot }} --}}
+            @livewire('admin.admin-list')
             {{-- @yield('content') --}}
 
         </main>

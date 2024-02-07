@@ -48,7 +48,7 @@ class LoginController extends Controller
         $this->scoreService = $scoreService;
     }
 
-    public function login()
+    public function loginTwich()
     {
         $urlToken = $this->twichService->login();
         // Log::debug('**************** urlToken ***********************');
@@ -105,7 +105,7 @@ class LoginController extends Controller
         }
         // return redirect('/profile');
     }
-    public function logout()
+    public function logoutTwich()
     {
         session()->forget('user');
         session()->forget('user-log');
