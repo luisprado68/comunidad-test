@@ -103,7 +103,7 @@
                                                             data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body text-dark">
-                                                        Desea eliminar al usuario?
+                                                       <p> Desea eliminar al usuario {{$user['channel']}}?</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
