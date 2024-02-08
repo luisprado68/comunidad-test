@@ -248,11 +248,14 @@ class AdminController extends Controller
     public function delete($id)
     {
         if (Session::has('user-log')) {
+            $this->user_model = session('user-log');
             $user = $this->userService->getById($id);
-            // Log::debug(json_encode($user));
+            Log::debug('user to delete' . json_encode($user));
             $user->deleted = true;
-            $user->update();
-            $users = $this->userService->getUsersModel();
+            $user->user_action = $this->user_model->channel;
+            $user->save();
+            Log::debug('user updated' . json_encode($user));
+            // $users = $this->userService->getUsersModel();
             // return view('admin.list', ['users' => $users]);
             return redirect('admin/list');
         }

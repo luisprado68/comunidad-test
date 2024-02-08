@@ -29,6 +29,7 @@ class User extends Authenticatable
         'points_support',
         'time_zone',
         'status',
+        'user_action',
         'hours_buyed',
         'img_profile',
         'deleted',
