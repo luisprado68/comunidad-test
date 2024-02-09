@@ -25,17 +25,18 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(function () {
-            Log::debug('---------------[START]  Chatters ------------');
+          
             $this->twichService = new TwichService();
             $this->scheduleService = new ScheduleService();
 
             $now =  Carbon::now();
             $minute = $now->format('i');
-           
-            if ($minute >= env('CHATTERS_MIN_MINUTE') && $minute <= env('CHATTERS_MIN_MINUTE_2') || 
-                $minute >= env('CHATTERS_MAX_MINUTE') && $minute <= env('CHATTERS_MAX_MINUTE_2')) {
-
+            
+            if ($minute == 5  || $minute == 59) {
+                
                 Log::debug('-------------------------------------------------minute: ' . $minute);
+                Log::debug('---------------[START]  Chatters ------------');
+               
                 $currentStreams = $this->scheduleService->getCurrentStreamKernel();
                 Log::debug('**** currentStreams ******** ');
                 Log::debug(json_encode($currentStreams));
@@ -51,7 +52,7 @@ class Kernel extends ConsoleKernel
             } else {
                 Log::debug('---------------No esta habilitado------------');
             }
-        })->everyFiveMinutes();
+        })->everyMinute();
 
         $schedule->call(function () {
             Log::debug('---------------[START] Update Refresh Tokens --------');
