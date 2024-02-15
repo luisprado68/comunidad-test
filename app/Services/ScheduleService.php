@@ -63,6 +63,30 @@ final class ScheduleService
         }
     }
 
+    public function getSchedulerByUser($user_model)
+    {
+        $new_schedulers = [];
+        $groupedArray = [];
+
+        $schedulers = $this->getByUserId($user_model->id);
+        if(isset($schedulers)){
+            if(count($schedulers) > 0){
+                // $week = $this->getFormatDays($schedulers);
+                foreach ($schedulers as $key => $scheduler) {
+                   
+                    $time = new Carbon($scheduler->start);
+                    // dump($time);
+                    $time->tz = $user_model->time_zone;
+                    // dump($time);
+                    array_push($new_schedulers,['day' => strtolower($time->format('l')),'time' => $time->format('H:00')]);
+                }
+                $groupedArray = collect($new_schedulers)->groupBy('day')->toArray();
+               
+            }
+        }
+        return $groupedArray;
+    }
+
     public function getByUserIdDay($user_id)
     {
         $this->setModel();
@@ -253,12 +277,12 @@ final class ScheduleService
         $hour_first = $this->parseHoursToCountry($en->endOfWeek(Carbon::MONDAY),$user->time_zone);
         // dump($id);
         $start = $en->startOfWeek(Carbon::MONDAY)->addHours($hour_first)->format('Y-m-d H:00:00');
-        // dump('------ week -----------------start');
+        //  dump('------ week -----------------start' . json_encode($hour_first));
         // dump($start);
-        $hour_end = $this->parseHoursToCountry($en->startOfWeek(Carbon::MONDAY),$user->time_zone);
+       
         $end = $en->endOfWeek(Carbon::SATURDAY)->addHours($hour_first)->format('Y-m-d H:00:00');
 
-        // dump('------ week -----------------end');
+        
         // dump($end);
         
         // $end = $en->startOfWeek(Carbon::SATURDAY);

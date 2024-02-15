@@ -74,17 +74,21 @@
 
                                 <h4 class="text-center">Agenda Semanal</h4>
 
-                                @foreach ($date_array as $key => $days)
-                                    <div class="col-lg-2 col-md-4  col-sm-12 my-4">
-                                        <input class="form-control form-control-lg bg-warning text-center"
-                                            type="text" placeholder="{{ trans('user.create.' . $key) }}" disabled>
+                                @foreach ($week as $key => $days)
+                                                <div class="col-lg-4 col-md-4  col-sm-12 my-4">
+                                                    <input class="form-control form-control-lg bg-warning text-center"
+                                                        type="text" placeholder="{{ trans('user.create.' . $key) }}"
+                                                        disabled>
 
-                                        @foreach ($days['times'] as $time)
-                                            <input class="form-control form-control-lg bg-light text-center"
-                                                type="text" placeholder="{{ $time }}" disabled>
-                                        @endforeach
-                                    </div>
-                                @endforeach
+                                                    @foreach ($days as $time)
+                                                        <input class="form-control form-control-lg bg-light text-center"
+                                                            type="text" placeholder="{{ $time['time'] }}" disabled>
+                                                    @endforeach
+
+
+
+                                                </div>
+                                            @endforeach
                             </div>
 
                         </div>

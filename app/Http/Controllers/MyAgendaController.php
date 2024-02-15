@@ -8,6 +8,7 @@ use App\Services\TwichService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 
 class MyAgendaController extends Controller
 {
@@ -39,6 +40,8 @@ class MyAgendaController extends Controller
     {
         $active = false;
         $week = [];
+        $new_schedulers = [];
+        $groupedArray = [];
         // if (env('APP_ENV') == 'local') {
         //     $this->user_model = $this->userService->getById(env('USER_TEST'));
         // }
@@ -53,17 +56,10 @@ class MyAgendaController extends Controller
                 session(['status' => 0]);
             }
           
-           
             
-            $schedulers = $this->scheduleService->getByUserIdDay($this->user_model->id);
-            if(isset($schedulers)){
-                if(count($schedulers) > 0){
-                    $week = $this->getFormatDays($schedulers);
-                }
-            }
-           
-            
-            return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $week, 'user' => $this->user_model]);
+            $groupedArray = $this->scheduleService->getSchedulerByUser($this->user_model);
+
+            return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $groupedArray, 'user' => $this->user_model]);
         }
         else{
             return redirect('/');
@@ -78,12 +74,14 @@ class MyAgendaController extends Controller
                
             $date = new Carbon($scheduler->day);
            
-            $dates =$this->scheduleService->getByUserIdAndDate($this->user_model,$scheduler->day);
+            $dates =$this->scheduleService->getByUserIdAndDate($this->user_model,$scheduler->start);
+            dump($dates);
             foreach ($dates as $key => $value) {
                 
                 $time = new Carbon($value->start);
+                // dump($time);
                 $time->tz = $this->user_model->time_zone;
-                // dump($this->user_model->time_zone);
+                dump($time);
                 array_push($time_by_day,$time->format('H:00'));
             }
             $day_name = strtolower($time->format('l'));

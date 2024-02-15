@@ -64,9 +64,9 @@
                                                         type="text" placeholder="{{ trans('user.create.' . $key) }}"
                                                         disabled>
 
-                                                    @foreach ($days['times'] as $time)
+                                                    @foreach ($days as $time)
                                                         <input class="form-control form-control-lg bg-light text-center"
-                                                            type="text" placeholder="{{ $time }}" disabled>
+                                                            type="text" placeholder="{{ $time['time'] }}" disabled>
                                                     @endforeach
 
 

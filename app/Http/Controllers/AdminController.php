@@ -179,10 +179,11 @@ class AdminController extends Controller
                 }
             }
 
+            $groupedArray = $this->scheduleService->getSchedulerByUser($user);
 
-
-            $date_array = $this->getDays($user);
-            return view('admin.show', ['user' => $user, 'date_array' => $date_array, 'date' => $test, 'streamers_supported' => $streamers_supported]);
+            // $date_array = $this->getDays($user);
+            // dd($groupedArray);
+            return view('admin.show', ['user' => $user, 'week' => $groupedArray, 'date' => $test, 'streamers_supported' => $streamers_supported]);
         } else {
             return redirect('admin');
         }
