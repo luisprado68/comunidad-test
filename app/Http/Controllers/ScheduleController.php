@@ -8,6 +8,9 @@ use App\Services\UserService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Carbon\CarbonTimeZone;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\Return_;
@@ -175,6 +178,12 @@ class ScheduleController extends Controller
                 if ($user_model->range->hours_for_day <= count($this->scheduleService->getSchedulerDayEndByUser($user_model, Carbon::SATURDAY))) {
                     $this->days_with_time['sabado']['status'] = false;
                 }
+
+                // $this->parseHoursToCountry_test(Carbon::FRIDAY,$user_model->time_zone);
+
+
+
+
                 // dump($this->days_with_time);
                 $schedules = $this->scheduleService->getScheduleorThisWeek($user_model);
                 $new_schedules = [];
@@ -416,5 +425,62 @@ class ScheduleController extends Controller
         $utc =  new Carbon($date->format('Y-m-d') . $time);
         $utc->addHours($hour_diff);
         return $utc;
+    }
+
+    public function parseHoursToCountry_test($date,$time_zone = null){
+        dump('parseHoursToCountry-----------------------------------------');
+        dump($date);
+        dump($time_zone);
+
+
+        $en = $this->scheduleService->setSunday();
+        dump('en');
+        dump($en);
+    //  dump('endOfWeek--------------------------------');
+    // dump($en->endOfWeek($date));
+    
+    // $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
+
+    $timezone1 = new DateTimeZone('Europe/Rome');
+    $timezone2 = new DateTimeZone('UTC');
+    
+    // Get the offsets in seconds for each timezone
+    $offset1 = $timezone1->getOffset(new DateTime());
+    $offset2 = $timezone2->getOffset(new DateTime());
+    
+    // Convert offsets to hours
+    $hourDifference = abs(($offset2 - $offset1) / 3600);
+  
+    dump('hourDifference  -------------------------*** '.$hourDifference);
+
+        dump('time_zone  -------------------------'.$time_zone);
+        $new_time_user = Carbon::now($time_zone);
+        dump('new_time_user  -------------------------'.$new_time_user);
+        $utc_teste =  Carbon::now('UTC');
+        dump('new_test now -------------------------'.$utc_teste);
+        $new_diff = $utc_teste->diffInHours($new_time_user);
+        dump('new_diff  -------------------------'.$new_diff);
+
+
+       
+        // $new_time_user->tz = $time_zone;
+        
+        dump('new_test  time_zone-------------------------'.$new_time_user);
+       
+
+
+        $start =  $en->endOfWeek($date);
+        dump('inicio -------------------------'.$start);
+        $start->tz = $time_zone;
+        dump('inicio tz-------------------------'.$start);
+        $start_utc_country =  new Carbon($start->format('Y-m-d H:i'));
+        dump('start_utc_country tz-------------------------'.$start_utc_country);
+        $utc =  $en->endOfWeek($date);
+       
+        $diff = $start_utc_country->diffInHours($utc,false);   
+        // dd($diff);
+       
+        
+        return $diff;
     }
 }

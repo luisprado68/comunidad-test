@@ -9,6 +9,8 @@ use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Carbon\Factory;
+use DateTime;
+use DateTimeZone;
 use Error;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -478,22 +480,34 @@ final class ScheduleService
     }
 
     public function parseHoursToCountry($end,$time_zone = null){
+        // dump('parseHoursToCountry-----------------------------------------');
         // dump($time_zone);
-        // dump($end);
+        // dd($end);
         
-        $start =  $end;
-        // dump($start);
-        $start->tz = $time_zone;
-        // dump($start);
-        $start_utc_country =  new Carbon($start->format('Y-m-d H:i'));
-        // dump($start_utc_country);
-        $utc =  $end;
+        // $start =  $end;
+        // // dump($start);
+        // $start->tz = $time_zone;
+        // // dump($start);
+        // $start_utc_country =  new Carbon($start->format('Y-m-d H:i'));
+        // // dump($start_utc_country);
+        // $utc =  $end;
        
-        $diff = $start_utc_country->diffInHours($utc,false);   
+        // $diff = $start_utc_country->diffInHours($utc,false);   
         // dd($diff);
-       
+        $timezone1 = new DateTimeZone($time_zone);
+        $timezone2 = new DateTimeZone('UTC');
         
-        return $diff;
+        // Get the offsets in seconds for each timezone
+        $offset1 = $timezone1->getOffset(new DateTime());
+        $offset2 = $timezone2->getOffset(new DateTime());
+        
+        // Convert offsets to hours
+        $hourDifference = abs(($offset1 - $offset2) / 3600);
+        if($time_zone == 'Europe/Rome'){
+            $hourDifference = $hourDifference  * -1;
+        }
+        
+        return $hourDifference;
     }
     public function getSchedulerDayByUser($user,$date)
     {   
@@ -516,11 +530,13 @@ final class ScheduleService
             }
             $dates = $this->model::whereBetween('start', [$start, $end])->where('user_id',$user->id)->orderBy('start', 'ASC')->get();
         }
-       
+       if($date == 3){
         // dump('start');
         // dump($start);
-        //dump('end');
-        //  dump($end);
+        // //dump('end');
+        // dump($end);
+       }
+        
   
         
         // dump('hours');
@@ -530,15 +546,23 @@ final class ScheduleService
     }
     public function getSchedulerDayEndByUser($user,$date)
     {
+        $hour_diff = null;
         $dates = [];
         if(isset($user->time_zone) && $user->time_zone != ''){
             $en = $this->setSunday();
+            // dump('en');
             // dump($en);
         //  dump('endOfWeek--------------------------------');
         // dump($en->endOfWeek($date));
+        
         $hour_diff = $this->parseHoursToCountry($en->endOfWeek($date),$user->time_zone);
-        // dump('day--------------------------------');
+        
+        // if($date == 5){
+        //      dump('hour_diff--------------------------------');
         // dump($hour_diff);
+        // }
+        
+       
         $this->setModel();
         $dates = null;
         
