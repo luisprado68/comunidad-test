@@ -59,9 +59,10 @@
                                         </div>
                                         <div class="card bg-dark text-light mt-2">
                                             <div class="row">
-
+                                                
                                                 {{-- @dump($days_with_time) --}}
                                                 @foreach ($days_with_time as $key_day => $day_with_time)
+                                                {{-- @dump($day_with_time['status']) --}}
                                                     @if ($day_with_time['status'])
                                                         <div class="col-lg-4 col-md-4 col-sm-4  px-4 my-3">
                                                             <input

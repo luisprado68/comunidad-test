@@ -248,11 +248,13 @@ class ScheduleController extends Controller
                     //saca los dias inclusive el actual para agendar los bronces
                     $i = 0;
                     foreach ($this->days_with_time as $key => $value) {
-
-                        if ($day_int == $i) {
-                            break;
+                        // Log::debug('i----------------------------- ' . json_encode($i));
+                        if ($day_int != $i) {
+                            $this->days_with_time[$key]['status'] = false;
+                        }else{
+                            $this->days_with_time[$key]['status'] = true;
                         }
-                        $this->days_with_time[$key]['status'] = false;
+                       
                         $i++;
                     }
                 }

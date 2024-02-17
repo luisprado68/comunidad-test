@@ -506,7 +506,10 @@ final class ScheduleService
         if($time_zone == 'Europe/Rome'){
             $hourDifference = $hourDifference  * -1;
         }
-        
+        if($time_zone == 'Europe/Madrid'){
+            $hourDifference = $hourDifference  * -1;
+        }
+        // Log::debug('hourDifference------------------------***' . json_encode($hourDifference));
         return $hourDifference;
     }
     public function getSchedulerDayByUser($user,$date)
