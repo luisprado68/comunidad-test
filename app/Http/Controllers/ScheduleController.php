@@ -249,11 +249,14 @@ class ScheduleController extends Controller
                     $i = 0;
                     foreach ($this->days_with_time as $key => $value) {
                         // Log::debug('i----------------------------- ' . json_encode($i));
-                        if ($day_int != $i) {
-                            $this->days_with_time[$key]['status'] = false;
-                        }else{
+                        if ($day_int == $i) {
                             $this->days_with_time[$key]['status'] = true;
+                            break;
                         }
+                        $this->days_with_time[$key]['status'] = false;
+                        // else{
+                        //     $this->days_with_time[$key]['status'] = true;
+                        // }
                        
                         $i++;
                     }
@@ -358,7 +361,6 @@ class ScheduleController extends Controller
                 }
             }
             if ($value['day'] == "6") {
-
                 if (count(($value['horarios'])) +  count($this->scheduleService->getSchedulerDayEndByUser($user_model, Carbon::SATURDAY)) > $user_model->range->hours_for_day) {
                     $this->data['status'] = 'error';
                     $this->data['message'] = 'Supera la hora diaria permitida';

@@ -37,9 +37,15 @@
                                             <button type="submit" class="btn btn-success"><a class="dropdown-item"
                                                 href="{{ route('admin-schedulers') }}">Ver Agendas</a></button>
                                         </div>
-                                    
-                                            
+                                        @if ($user_model->role_id == 3 )
+                                            <div class="col-2 mb-4">
+                                                <button type="submit" class="btn btn-danger"><a class="dropdown-item"
+                                                    href="{{ route('admin-schedulers-delete') }}">Eliminar Calendarios</a></button>
+                                            </div>
                                         @endif
+                                      
+                                            
+                        @endif
                         <table class="table table-responsive table-hover table-dark">
                             <thead>
                                 <tr>

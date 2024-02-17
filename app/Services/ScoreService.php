@@ -118,7 +118,10 @@ final class ScoreService
             if(!empty($score)){
                 $score->points_day = isset($userArray['points_day']) ? $userArray['points_day'] : null;
                 $score->points_week = isset($userArray['points_week']) ? $userArray['points_week'] : null;
-                $score->neo_coins = isset($userArray['neo_coins']) ? $userArray['neo_coins'] : null;
+                if(isset($userArray['neo_coins'])){
+                    $score->neo_coins =  $userArray['neo_coins'];
+                }
+               
                 // $score->points_support = isset($userArray['points_support']) ? $userArray['points_support'] : null;
                 $score->update();
                 return $score->id;

@@ -116,6 +116,13 @@ final class ScheduleService
         }
     }
 
+    public function getSchedulersToDelete($startDate,$endDate){
+        $this->setModel();
+        $schedulers = [];
+        $schedulers = $this->model::
+        whereBetween('created_at', [$startDate, $endDate])->get();
+        return $schedulers;
+    }
 
     public function validateNewScheduleByUser($date){
         $this->setModel();

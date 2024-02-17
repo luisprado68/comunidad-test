@@ -73,11 +73,13 @@ Route::group(['/'], function () {
 
     Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
     Route::get('admin/schedulers', [AdminController::class, 'schedulers'])->name('admin-schedulers');
+    Route::get('admin/schedulers/delete', [AdminController::class, 'deleteScheduler'])->name('admin-schedulers-delete');
     Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
     Route::get('admin/show/{id}', [AdminController::class, 'show'])->name('admin-show');
     Route::get('admin/show/{id}/edit', [AdminController::class, 'editScheduler'])->name('admin-show-scheduler');
     Route::get('admin/delete/{id}', [AdminController::class, 'delete'])->name('admin-delete');
-    Route::post('admin/post', [AdminController::class, 'post'])->name('admin-post');
+    Route::post('admin/post', [AdminController::class, 'post'])->name('admin-post'); 
+    Route::post('admin/post/scheduler/delete', [AdminController::class, 'schedulersDelete'])->name('admin-post-scheduler-delete');
     Route::get('admin/logout', [AdminController::class, 'logoutAdmin'])->name('logout-admin');
 
     Route::get('referrer/{user_name}', [ScoreController::class, 'getPointSupport'])->name('referrer');

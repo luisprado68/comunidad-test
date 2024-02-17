@@ -60,7 +60,7 @@ class Kernel extends ConsoleKernel
             $this->twichService = new TwichService();
             $this->scoreService = new ScoreService();
             $this->schedulerService = new ScheduleService();
-            $allUsers = $this->userService->all();
+            
             $now =  Carbon::now();
          
             $day = $now->format('l');
@@ -71,6 +71,7 @@ class Kernel extends ConsoleKernel
                 Log::debug('---------------[Start] Start Reset Points---------------');
                 Log::debug('hour' . json_encode($hour));
                 Log::debug('day' . json_encode($day));
+                $allUsers = $this->userService->all();
                 foreach ($allUsers as $key => $user) {
                     // $this->twichService->getRefreshToken($user);
                     $user_array['user_id'] = $user->id;
@@ -78,18 +79,18 @@ class Kernel extends ConsoleKernel
                     $user_array['points_week'] = 0;
                     $result = $this->scoreService->update($user_array);
 
-                    $schedulers_by_user = $this->schedulerService->getByUserId($user_array);
-
-                    if(count($schedulers_by_user) > 0){
-                        foreach ($schedulers_by_user as $key => $scheduler_by_user) {
-                            $date = new Carbon($scheduler_by_user->start);
-                            $day = $date->format('l');
-                            if($day != 'Sunday'){
-                                $this->schedulerService->delete($scheduler_by_user->id);
+                    $schedulers_by_user = $this->schedulerService->getByUserId($user->id);
+                    if(isset($schedulers_by_user)){
+                        if(count($schedulers_by_user) > 0){
+                            foreach ($schedulers_by_user as $key => $scheduler_by_user) {
+                                $date = new Carbon($scheduler_by_user->start);
+                                $day = $date->format('l');
+                                if($day != 'Sunday'){
+                                    $this->schedulerService->delete($scheduler_by_user->id);
+                                }
                             }
                         }
                     }
-
 
                     Log::debug('result:  ---' . json_encode($result));
                 }

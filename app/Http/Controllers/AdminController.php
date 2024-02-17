@@ -6,6 +6,7 @@ use App\Services\BillingService;
 use App\Services\RangeService;
 use App\Services\RoleService;
 use App\Services\ScheduleService;
+use App\Services\ScoreService;
 use App\Services\StreamSupportService;
 use App\Services\SupportScoreService;
 use App\Services\TwichService;
@@ -38,19 +39,22 @@ class AdminController extends Controller
     private $scheduleService;
     private $streamSupportService;
     private $rangeService;
+    private $scoreService;
 
     public function __construct(
         TwichService $twichService,
         UserService $userService,
         ScheduleService $scheduleService,
         StreamSupportService $streamSupportService,
-        RangeService $rangeService
+        RangeService $rangeService,
+        ScoreService $scoreService
     ) {
         $this->twichService = $twichService;
         $this->userService = $userService;
         $this->scheduleService = $scheduleService;
         $this->streamSupportService = $streamSupportService;
         $this->rangeService = $rangeService;
+        $this->scoreService = $scoreService;
     }
 
     public function index()
@@ -90,6 +94,22 @@ class AdminController extends Controller
             return redirect('admin');
         }
     }
+
+    public function deleteScheduler()
+    {
+
+        if (Session::has('user-log')) {
+            $this->user_model = session('user-log');
+            $users = $this->userService->getUsersModel();
+            $ranges = $this->rangeService->all();
+            $user = $this->userService->getById(31);
+            // dd($users);
+            return view('admin.deleteScheduler', ['users' => $users, 'user_model' => $this->user_model,'user' => $user,'ranges' => $ranges]);
+        } else {
+            return redirect('admin');
+        }
+    }
+
     public function schedulers()
     {
         $week_time_zone = [];
@@ -145,6 +165,51 @@ class AdminController extends Controller
         } else {
             return redirect('admin');
         }
+    }
+
+    public function schedulersDelete(Request $request){
+
+        $scheduler = $request->all();
+        $inicio = new Carbon($scheduler['inicio'] .' 00:00:00');
+        $fin = new Carbon($scheduler['fin'] . ' 23:59:59');
+
+        $schedulers = $this->scheduleService->getSchedulersToDelete($inicio,$fin);
+        if(isset($schedulers)){
+            if(count($schedulers) > 0){
+                foreach ($schedulers as $key => $scheduler_by_user) {
+                   
+                        $this->scheduleService->delete($scheduler_by_user->id);
+                    
+                }
+            }
+          
+        }
+        // dd($schedulers);
+        $allUsers = $this->userService->all();
+        foreach ($allUsers as $key => $user) {
+            // $this->twichService->getRefreshToken($user);
+            $user_array['user_id'] = $user->id;
+            $user_array['points_day'] = 0;
+            $user_array['points_week'] = 0;
+            $result = $this->scoreService->update($user_array);
+
+            // $schedulers_by_user = $this->scheduleService->getByUserId($user->id);
+
+            // if(isset($schedulers_by_user)){
+            //     if(count($schedulers_by_user) > 0){
+            //         foreach ($schedulers_by_user as $key => $scheduler_by_user) {
+            //             $date = new Carbon($scheduler_by_user->start);
+            //             $day = $date->format('l');
+            //             if($day != 'Sunday'){
+            //                 $this->scheduleService->delete($scheduler_by_user->id);
+            //             }
+            //         }
+            //     }
+            //     Log::debug('result:  ---' . json_encode($result));
+            // }
+            
+        }
+        return redirect('admin/list');
     }
     public function edit($id)
     {
@@ -253,6 +318,7 @@ class AdminController extends Controller
             $user = $this->userService->getById($id);
             Log::debug('user to delete' . json_encode($user));
             $user->deleted = true;
+            $user->status = false;
             $user->user_action = $this->user_model->channel;
             $user->save();
             Log::debug('user updated' . json_encode($user));

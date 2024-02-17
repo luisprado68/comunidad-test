@@ -58,7 +58,20 @@ class MyAgendaController extends Controller
           
             
             $groupedArray = $this->scheduleService->getSchedulerByUser($this->user_model);
+            // $test = new Carbon('2024-02-11 00:10:00');
+            // dump($test->format('H'));
+            // dump($test->format('l'));
+            $today = Carbon::now();
+            $today->tz = $this->user_model->time_zone;
 
+            foreach ($groupedArray as $key => $value) {
+               
+                if(strtolower($today->format('l')) == $key){
+
+                    break;
+                }
+                unset($groupedArray[$key]);
+            }
             return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $groupedArray, 'user' => $this->user_model]);
         }
         else{
