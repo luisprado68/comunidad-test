@@ -42,7 +42,7 @@
                                                     </ul>
                                                 </div>
                                                 @if (!session()->has('user'))
-                                                    <div class="col-md-6">
+                                                    <div class="col-lg-4 col-md-4">
                                                         <div class="card-body text-center">
                                                             @if (env('APP_ENV') == 'local')
                                                                 <a class="dropdown-item"
@@ -62,7 +62,18 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-lg-4 col-md-4">
+                                                        <div class="card-body text-center">
+                                                            <button type="button" class="btn btn-lg trovo-button" 
+                                                                style="">
+                                                                <img src="{{ asset('/img/trovo.png') }}" alt="" width="25px">
+                                                                 Únete con
+                                                                TROVO</button>
+                                                                
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4">
                                                         <div class="card-body text-center">
                                                             <button type="button" class="btn btn-lg kick-button"
                                                                 style="">
@@ -78,18 +89,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-s-12">
+                                <div class="col-lg-4 col-md-6 col-s-12">
                                     <div class="col-md-12 s-12 pt-5 w-100">
                                         <div class="card banner">
                                             <h6 class="text-center">Streamers en directo.</h6>
 
                                             <div class="row">
-                                                <div class="col-md-6 p-3">
+                                                <div class="col-md-12 p-3">
                                                     <div class="card streamer-uno" style="height: 150px; background-color: violet">
                                                         {{-- <div class="w-50"></div> --}}
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 p-3">
+                                                <div class="col-md-12 p-3">
                                                     <div class="card streamer-dos" style="height: 150px;background-color: violet">
                                                         {{-- <div class="w-50"></div> --}}
                                                     </div>
@@ -98,18 +109,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-s-12">
+                                <div class="col-lg-4 col-md-4 col-s-12">
                                     <div class="col-md-12 pt-5 w-100">
-                                        <div class="card banner_kick">
+                                        <div class="card banner_trovo">
                                             <h6 class="text-center">Streamers en directo.</h6>
 
                                             <div class="row">
-                                                <div class="col-md-6 p-3">
+                                                <div class="col-md-12 p-3">
                                                     <div class="card under" style="height: 150px">
                                                         <div class="w-50"></div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 p-3">
+                                                <div class="col-md-12 p-3">
                                                     <div class="card under" style="height: 150px">
                                                         <div class="w-50"></div>
                                                     </div>
@@ -118,7 +129,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-4 col-md-4 col-s-12">
+                                    <div class="col-md-12 s-12 pt-5 w-100">
+                                        <div class="card banner_kick">
+                                            <h6 class="text-center">Streamers en directo.</h6>
 
+                                            <div class="row">
+                                                <div class="col-md-12 p-3">
+                                                    <div class="card under" style="height: 150px">
+                                                        <div class="w-50"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 p-3">
+                                                    <div class="card under" style="height: 150px">
+                                                        <div class="w-50"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
