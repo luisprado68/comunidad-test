@@ -64,21 +64,21 @@
                                                     </div>
                                                     <div class="col-lg-4 col-md-4">
                                                         <div class="card-body text-center">
-                                                            <button type="button" class="btn btn-lg trovo-button" 
+                                                            <a class="dropdown-item" href="https://trovo.live/" target="_blank"><button type="button" class="btn btn-lg trovo-button" 
                                                                 style="">
                                                                 <img src="{{ asset('/img/trovo.png') }}" alt="" width="25px">
                                                                  Únete con
-                                                                TROVO</button>
+                                                                TROVO</button></a>
                                                                 
                                                             
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-md-4">
                                                         <div class="card-body text-center">
-                                                            <button type="button" class="btn btn-lg kick-button"
+                                                            <a class="dropdown-item" href="https://kick.com/" target="_blank"><button type="button" class="btn btn-lg kick-button"
                                                                 style="">
                                                                 <i class="fa-brands fa-kickstarter"></i> Únete con
-                                                                KICK</button>
+                                                                KICK</button></a>
                                                             
                                                         </div>
                                                     </div>
