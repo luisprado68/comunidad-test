@@ -100,9 +100,9 @@ class MyAgendaController extends Controller
                     $i = 0;
             foreach ($groupedArray as $key => $value) {
                 
-                $groupedArray[$key]['status'] = true;
-                if ($day_int >= $i) {
-                    $groupedArray[$key]['status'] = false;
+                $groupedArray[$key]['status'] = false;
+                if ($day_int <= $i) {
+                    $groupedArray[$key]['status'] = true;
                 }
                 $i++;
                
