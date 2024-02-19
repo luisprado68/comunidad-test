@@ -69,6 +69,7 @@ final class ScheduleService
     {
         $new_schedulers = [];
         $groupedArray = [];
+        $items = [];
 
         $schedulers = $this->getByUserId($user_model->id);
         if(isset($schedulers)){
@@ -81,11 +82,15 @@ final class ScheduleService
                     $time->tz = $user_model->time_zone;
                     // dump($time);
                     array_push($new_schedulers,['day' => strtolower($time->format('l')),'time' => $time->format('H:00')]);
+                   
+                    Log::debug('new_schedulers------------ '. json_encode($new_schedulers));
                 }
+               
                 $groupedArray = collect($new_schedulers)->groupBy('day')->toArray();
                
             }
         }
+        Log::debug('groupedArray------------ '. json_encode($groupedArray));
         return $groupedArray;
     }
 

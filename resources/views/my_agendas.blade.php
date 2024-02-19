@@ -57,21 +57,24 @@
                                 @if (count($week) > 0)
                                     <div class="card bg-dark text-light mt-2">
                                         <div class="row">
-
+                                            {{-- @dump($week) --}}
                                             @foreach ($week as $key => $days)
-                                                <div class="col-lg-4 col-md-4  col-sm-12 my-4">
-                                                    <input class="form-control form-control-lg bg-warning text-center"
-                                                        type="text" placeholder="{{ trans('user.create.' . $key) }}"
-                                                        disabled>
-
-                                                    @foreach ($days as $time)
-                                                        <input class="form-control form-control-lg bg-light text-center"
-                                                            type="text" placeholder="{{ $time['time'] }}" disabled>
-                                                    @endforeach
-
-
-
-                                                </div>
+                                                    {{-- @dump($days) --}}
+                                                    @if ($days['status'])
+                                                        <div class="col-lg-4 col-md-4  col-sm-12 my-4">
+                                                            <input class="form-control form-control-lg bg-warning text-center"
+                                                            type="text" placeholder="{{ trans('user.create.' . $key) }}"
+                                                            disabled>
+                                                            @foreach ($days as $key => $time)
+                                                        
+                                                                @if ($key != 'status')
+                                                                    <input class="form-control form-control-lg bg-light text-center"
+                                                                type="text" placeholder="{{ $time['time'] }}" disabled>
+                                                            @endif
+                                                            
+                                                            @endforeach
+                                                        </div>
+                                                    @endif                                                 
                                             @endforeach
 
 

@@ -8,6 +8,7 @@ use App\Services\TwichService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 
 class MyAgendaController extends Controller
@@ -56,22 +57,57 @@ class MyAgendaController extends Controller
                 session(['status' => 0]);
             }
           
-            
-            $groupedArray = $this->scheduleService->getSchedulerByUser($this->user_model);
-            $test = new Carbon('2024-02-11 06:10:00');
-            dump($test->format('H'));
-            dump($test->format('l'));
+            $groupedArray['sunday']=[
+            0 =>  [
+              "day" => "monday",
+              "time" => "15:00"
+            ]];
+            $groupedArray_two = $this->scheduleService->getSchedulerByUser($this->user_model);
+            $groupedArray = array_merge($groupedArray, $groupedArray_two);
+           
+            // $test = new Carbon('2024-02-11 06:10:00');
+            // dump($test->format('H'));
+            // dump($test->format('l'));
             $today = Carbon::now();
             $today->tz = $this->user_model->time_zone;
+            // dump($groupedArray);
 
+            $day_int = 0;
+                    switch ($today->format('l')) {
+                        case 'Sunday':
+                            $day_int = 0;
+                            break;
+                        case 'Monday':
+                            $day_int = 1;
+                            break;
+                        case 'Tuesday':
+                            $day_int = 2;
+                            break;
+                        case 'Wednesday':
+                            $day_int = 3;
+                            break;
+                        case 'Thursday':
+                            $day_int = 4;
+                            break;
+                        case 'Friday':
+                            $day_int = 5;
+                            break;
+                        case 'Saturday':
+                            $day_int = 6;
+                            break;
+                    }
+           
+                    $i = 0;
             foreach ($groupedArray as $key => $value) {
-               
-                if(strtolower($today->format('l')) == $key){
-
-                    break;
+                
+                $groupedArray[$key]['status'] = true;
+                if ($day_int >= $i) {
+                    $groupedArray[$key]['status'] = false;
                 }
-                unset($groupedArray[$key]);
+                $i++;
+               
             }
+            // dd($groupedArray);
             return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $groupedArray, 'user' => $this->user_model]);
         }
         else{
