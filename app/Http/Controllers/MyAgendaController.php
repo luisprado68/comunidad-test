@@ -77,8 +77,7 @@ class MyAgendaController extends Controller
             // dump($test->format('l'));
             $today = Carbon::now();
             $today->tz = $this->user_model->time_zone;
-            dump($today->format('l'));
-            dump($groupedArray);
+            
 
             $day_int = 0;
                     switch ($today->format('l')) {
@@ -110,15 +109,14 @@ class MyAgendaController extends Controller
                 
                 $groupedArray[$key]['status'] = false;
                 if ($day_int <= $i) {
-                    dump($i);
-                    dump($groupedArray[$key]['status']);
+                   
                     $groupedArray[$key]['status'] = true;
                 }
                 $i++;
                
             }
 
-            dump($groupedArray);
+          
             // dd($groupedArray);
             return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $groupedArray, 'user' => $this->user_model]);
         }
