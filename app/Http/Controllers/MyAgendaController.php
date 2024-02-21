@@ -62,6 +62,13 @@ class MyAgendaController extends Controller
               "day" => "monday",
               "time" => "15:00"
             ]];
+            $groupedArray['monday'] = [];
+            $groupedArray['tuesday'] = [];
+            $groupedArray['wednesday'] = [];
+            $groupedArray['thursday'] = [];
+            $groupedArray['friday'] = [];
+            $groupedArray['saturday'] = [];
+
             $groupedArray_two = $this->scheduleService->getSchedulerByUser($this->user_model);
             $groupedArray = array_merge($groupedArray, $groupedArray_two);
            
