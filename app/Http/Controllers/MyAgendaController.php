@@ -103,6 +103,7 @@ class MyAgendaController extends Controller
                 
                 $groupedArray[$key]['status'] = false;
                 if ($day_int <= $i) {
+                    dump($i);
                     $groupedArray[$key]['status'] = true;
                 }
                 $i++;
