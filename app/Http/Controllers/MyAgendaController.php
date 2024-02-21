@@ -108,6 +108,8 @@ class MyAgendaController extends Controller
                 $i++;
                
             }
+
+            dump($groupedArray);
             // dd($groupedArray);
             return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $groupedArray, 'user' => $this->user_model]);
         }
