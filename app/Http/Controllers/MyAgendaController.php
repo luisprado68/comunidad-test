@@ -71,6 +71,7 @@ class MyAgendaController extends Controller
             $today = Carbon::now();
             $today->tz = $this->user_model->time_zone;
             dump($today->format('l'));
+            dump($groupedArray);
 
             $day_int = 0;
                     switch ($today->format('l')) {
