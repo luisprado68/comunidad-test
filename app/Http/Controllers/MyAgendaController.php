@@ -70,7 +70,7 @@ class MyAgendaController extends Controller
             // dump($test->format('l'));
             $today = Carbon::now();
             $today->tz = $this->user_model->time_zone;
-            // dump($groupedArray);
+            dump($today->format('l'));
 
             $day_int = 0;
                     switch ($today->format('l')) {
