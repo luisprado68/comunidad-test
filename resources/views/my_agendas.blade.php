@@ -61,24 +61,26 @@
                                             @foreach ($week as $key => $days)
                                                     {{-- @dump($days) --}}
                                                     @if ($days['status'])
-                                                        <div class="col-lg-4 col-md-4  col-sm-12 my-4">
+                                                       
                                                             
                                                             @if ( count($days) > 1 )
-                                                            <input class="form-control form-control-lg bg-warning text-center"
-                                                            type="text" placeholder="{{ trans('user.create.' . $key) }}"
-                                                            disabled>
-                                                                @foreach ($days as $key => $time)
-                                                                    {{-- @dump(count($days)) --}}
-                                                                    @if ($key != 'status')
-                                                                        <input class="form-control form-control-lg bg-light text-center"
-                                                                    type="text" placeholder="{{ $time['time'] }}" disabled>
+                                                            <div class="col-lg-4 col-md-4  col-sm-12 my-4">
+                                                                    <input class="form-control form-control-lg bg-warning text-center"
+                                                                    type="text" placeholder="{{ trans('user.create.' . $key) }}"
+                                                                    disabled>
+                                                                    @foreach ($days as $key => $time)
+                                                                        {{-- @dump(count($days)) --}}
+                                                                        @if ($key != 'status')
+                                                                            <input class="form-control form-control-lg bg-light text-center"
+                                                                        type="text" placeholder="{{ $time['time'] }}" disabled>
 
-                                                                    @endif
-                                                            
-                                                                @endforeach
+                                                                        @endif
+                                                                
+                                                                    @endforeach
+                                                                </div>
                                                             @endif
                                                             
-                                                        </div>
+                                                       
                                                     @endif                                                 
                                             @endforeach
 
