@@ -16,9 +16,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route as FacadesRoute;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -34,6 +36,7 @@ class AdminController extends Controller
     public $test_url;
     public $user;
     public $user_model;
+    public $route;
     private $twichService;
     private $userService;
     private $scheduleService;
@@ -86,10 +89,12 @@ class AdminController extends Controller
     {
 
         if (Session::has('user-log')) {
+            $this->route = FacadesRoute::current();
+            
             $this->user_model = session('user-log');
             $users = $this->userService->getUsersModel();
             // dd($users);
-            return view('admin.list', ['users' => $users, 'user_model' => $this->user_model]);
+            return view('admin.list', ['users' => $users, 'user_model' => $this->user_model,'route' => $this->route]);
         } else {
             return redirect('admin');
         }
@@ -110,6 +115,33 @@ class AdminController extends Controller
         }
     }
 
+    public function usersDeleted(){
+        if (Session::has('user-log')) {
+            $this->route = FacadesRoute::current();
+            $this->user_model = session('user-log');
+            $users = $this->userService->getUsersDeleted();
+            // dd($users);
+            return view('admin.list', ['users' => $users, 'user_model' => $this->user_model,'route' => $this->route]);
+        } else {
+            return redirect('admin');
+        }
+    }
+
+    public function uploadUser($id){
+
+        if (Session::has('user-log')) {
+            $this->user_model = session('user-log');
+            $user = $this->userService->getById($id);
+          
+            $user->deleted = false;
+            // $user->status = false;
+           
+            $user->save();
+            Log::debug('user updated' . json_encode($user));
+      
+            return redirect('admin/list');
+        }
+    }
     public function schedulers()
     {
         $week_time_zone = [];

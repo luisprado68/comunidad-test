@@ -172,6 +172,19 @@ final class UserService
         }
     }
     
+    public function getUsersDeleted()
+    {
+        $this->setModel();
+
+        $users = $this->model::where('deleted',true)->get();
+
+        if (count($users) > 0) {
+            return $users;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @param $userArray
      * @return false|mixed

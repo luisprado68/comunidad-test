@@ -33,9 +33,21 @@
                 <div class="container mt-5 ">
                     <div class="row">
                         @if ( $user_model->role_id == 3 || $user_model->role_id == 1)
-                                        <div class="col-2 mb-4">
+                                        <div class="col-2 mb-4 mr-4">
                                             <button type="submit" class="btn btn-success"><a class="dropdown-item"
                                                 href="{{ route('admin-schedulers') }}">Ver Agendas</a></button>
+                                        </div>
+                                        @if ($route->uri == 'admin/deleted-users')
+                                            <div class="col-2 mb-4">
+                                                <button type="submit" class="btn btn-secondary"><a class="dropdown-item"
+                                                    href="{{ route('admin-list') }}"><i class="bi bi-people-fill"> Usuarios</i></a></button>
+                                            </div>
+                                            
+                                        @endif
+                                        
+                                        <div class="col-2 mb-4">
+                                            <button type="submit" class="btn btn-warning"><a class="dropdown-item"
+                                                href="{{ route('admin-users-deleted') }}"><i class="bi bi-archive-fill"> Papelera</i></a></button>
                                         </div>
                                         @if ($user_model->role_id == 3 )
                                             <div class="col-2 mb-4">
@@ -46,6 +58,13 @@
                                       
                                             
                         @endif
+                        
+                        @if ($route->uri == 'admin/deleted-users')
+                            <h3 class="text-center">Usuarios Eliminados</h3>
+                            @else
+                            <h3 class="text-center">Usuarios</h3>
+                        @endif
+                       
                         <table class="table table-responsive table-hover table-dark">
                             <thead>
                                 <tr>
@@ -90,37 +109,46 @@
                                         href="{{ route('admin-show', $user['id']) }}"><i class="bi bi-eye-fill"></i></a></button>
                                         @endif
                                       
-                                        
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        @if (!$user->deleted)
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="{{'#exampleModal' . $user->id}}">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="{{'exampleModal' . $user->id}}" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title text-dark" id="exampleModalLabel">
-                                                            Eliminar el usuario
-                                                        </h5>
-                                                        <button type="button" class="btn-close"
-                                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body text-dark">
-                                                       <p> Desea eliminar al usuario {{$user->channel}}?</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Cerrar</button>
-                                                        <button type="button" class="btn btn-danger"><a
-                                                                class="dropdown-item"
-                                                                href="{{ route('admin-delete', $user->id) }}">Eliminar</a></button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="{{'exampleModal' . $user->id}}" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-dark" id="exampleModalLabel">
+                                                                Eliminar el usuario
+                                                            </h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-dark">
+                                                        <p> Desea eliminar al usuario {{$user->channel}}?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Cerrar</button>
+                                                            <button type="button" class="btn btn-danger"><a
+                                                                    class="dropdown-item"
+                                                                    href="{{ route('admin-delete', $user->id) }}">Eliminar</a></button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+
+                                            @else
+                                               <button type="button" class="btn btn-info text-light"><a
+                                                                    class="dropdown-item"
+                                                                    href="{{ route('admin-user-add', $user->id) }}"><i class="bi bi-file-arrow-up-fill"></i></a></button>
+                                        @endif
+                                       
+
+                                       
                                         
                                     </tr>
                                 @endforeach

@@ -73,6 +73,9 @@ Route::group(['/'], function () {
 
     Route::get('admin/list', [AdminController::class, 'list'])->name('admin-list');
     Route::get('admin/schedulers', [AdminController::class, 'schedulers'])->name('admin-schedulers');
+    
+    Route::get('admin/users/upload/{id}', [AdminController::class, 'uploadUser'])->name('admin-user-add'); 
+    Route::get('admin/deleted-users', [AdminController::class, 'usersDeleted'])->name('admin-users-deleted');
     Route::get('admin/schedulers/delete', [AdminController::class, 'deleteScheduler'])->name('admin-schedulers-delete');
     Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
     Route::get('admin/show/{id}', [AdminController::class, 'show'])->name('admin-show');
