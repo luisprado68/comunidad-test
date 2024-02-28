@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Models\Range;
+use App\Models\Role;
 use App\Models\User;
 use Broobe\Services\Service;
 use Broobe\Services\Traits\{CreateModel, DestroyModel, ReadModel, UpdateModel};
@@ -13,7 +15,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-final class UserService
+final class RoleService
 {
     public $model;
     public $code_test;
@@ -32,19 +34,36 @@ final class UserService
      */
     protected function setModel(): void
     {
-        $this->model = User::class;
+        $this->model = Role::class;
     }
 
     public function all(){
         $this->setModel();
         
-        $users = $this->model::all();
-        if(count($users) > 0){
-            return $users;
+        $roles = $this->model::all();
+        if(count($roles) > 0){
+            return $roles;
         }else {
             return null;
         }
     }
+
+    public function getRoles($role_id){
+        $this->setModel();
+        
+        if($role_id == 1){
+            $roles = $this->model::whereIn('id', [1,2,4,5])->get();
+        }elseif($role_id == 3){
+            $roles = $this->model::all();
+        }
+        
+        if(count($roles) > 0){
+            return $roles;
+        }else {
+            return null;
+        }
+    }
+
     public function getById($id)
     {
         $this->setModel();
@@ -56,28 +75,7 @@ final class UserService
         }
     }
 
-    public function getByChannel($channel)
-    {
-        $this->setModel();
-        $user = $this->model::where('channel', $channel)->first();
-        if ($user) {
-            return $user;
-        } else {
-            return null;
-        }
-    }
-
-    public function getByIdandTwichId($twich_id)
-    {
-        $this->setModel();
-        $user = $this->model::where('twich_id', $twich_id)->first();
-        if ($user) {
-            return $user;
-        } else {
-            return null;
-        }
-    }
-
+ 
     /**
      * @param $accountId
      * @return mixed
@@ -163,7 +161,7 @@ final class UserService
     {
         $this->setModel();
 
-        $users = $this->model::where('deleted',false)->get();
+        $users = $this->model::all();
 
         if (count($users) > 0) {
             return $users;
@@ -171,20 +169,6 @@ final class UserService
             return false;
         }
     }
-    
-    public function getUsersDeleted()
-    {
-        $this->setModel();
-
-        $users = $this->model::where('deleted',true)->get();
-
-        if (count($users) > 0) {
-            return $users;
-        } else {
-            return false;
-        }
-    }
-
     /**
      * @param $userArray
      * @return false|mixed
@@ -228,8 +212,6 @@ final class UserService
             $user = User::find($userArray['id']);
             $user->name = $userArray['name'];
             $user->email = $userArray['email'];
-            $user->range_id = intval($userArray['range']);
-            $user->role_id = intval($userArray['role']);
             // $user->active = $userArray['active'];
             if(array_key_exists('status',$userArray)){
                 $user->status = $userArray['status'];

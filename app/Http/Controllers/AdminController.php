@@ -43,6 +43,7 @@ class AdminController extends Controller
     private $streamSupportService;
     private $rangeService;
     private $scoreService;
+    private $rolesService;
 
     public function __construct(
         TwichService $twichService,
@@ -50,7 +51,8 @@ class AdminController extends Controller
         ScheduleService $scheduleService,
         StreamSupportService $streamSupportService,
         RangeService $rangeService,
-        ScoreService $scoreService
+        ScoreService $scoreService,
+        RoleService $rolesService
     ) {
         $this->twichService = $twichService;
         $this->userService = $userService;
@@ -58,6 +60,7 @@ class AdminController extends Controller
         $this->streamSupportService = $streamSupportService;
         $this->rangeService = $rangeService;
         $this->scoreService = $scoreService;
+        $this->rolesService = $rolesService;
     }
 
     public function index()
@@ -246,9 +249,11 @@ class AdminController extends Controller
     public function edit($id)
     {
         if (Session::has('user-log')) {
+            $this->user_model = session('user-log');
             $ranges = $this->rangeService->all();
+            $roles = $this->rolesService->getRoles($this->user_model->role_id);
             $user = $this->userService->getById($id);
-            return view('admin.edit', ['user' => $user, 'ranges' => $ranges]);
+            return view('admin.edit', ['user' => $user, 'ranges' => $ranges,'roles' => $roles,'user_model' => $this->user_model]);
         } else {
             return redirect('admin');
         }

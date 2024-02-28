@@ -69,6 +69,17 @@
                                                     @endforeach
                                                   </select>
                                             </div>
+                                            <div class="col-8 mb-3 ">
+                                                <label class="block mb-2 text-sm font-medium text-white"
+                                                for="range">Rol</label>
+                                                <select class="form-select form-select mb-3" aria-label=".form-select example" name="role" id="role">
+                                                    {{-- <option value="{{''}} selected>Seleccione una opción</option> --}}
+                                                    @foreach ($roles as $role)
+                                                    
+                                                    <option value="{{ $role->id }}" {{ ( $role->id == $user->role_id) ? 'selected' : '' }}> {{ $role->name }} </option>
+                                                    @endforeach
+                                                  </select>
+                                            </div>
                                             <div class="col-8 mb-3 mt-3">
                                                 <input class="form-check-input" type="checkbox"  type="checkbox" name="status"  value="1" @if (isset($user)) @if ($user->status==1) checked @endif @endif id="">
                                                 <label class="form-check-label" for="flexCheckChecked">
