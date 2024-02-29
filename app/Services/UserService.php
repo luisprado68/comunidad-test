@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 final class UserService
@@ -172,6 +173,45 @@ final class UserService
         }
     }
     
+    public function getUsersTop()
+    {
+        $this->setModel();
+
+        $users = $this->model::select('*','scores.points_day as points_day',
+        'scores.points_week as points_week','scores.neo_coins as neo_coins')->join('scores', 'users.id', '=', 'scores.user_id')
+        ->orderBy('scores.points_day', 'desc')
+        ->orderBy('scores.points_week', 'desc')
+        ->orderBy('scores.neo_coins', 'desc')
+        ->where('users.deleted',0)
+        ->limit(10)
+        ->get();
+
+        if (count($users) > 0) {
+            return $users;
+        } else {
+            return false;
+        }
+    }
+
+    public function getUsersSchedulers()
+    {
+        $this->setModel();
+
+        $users = $this->model::join('schedule', 'users.id', '=', 'schedule.user_id')
+        ->select('users.id as id','users.name as name', DB::raw('COUNT(schedule.user_id) as top','users.channel as channel','users.status as status'))
+        ->where('users.deleted',false)
+        ->groupBy('schedule.user_id')
+        ->orderByDesc('top')
+        ->get();
+        Log::debug('--------------------------------------------------------------------------------------');
+        Log::debug(json_encode($users));
+        if (count($users) > 0) {
+            return $users;
+        } else {
+            return false;
+        }
+    }
+
     public function getUsersDeleted()
     {
         $this->setModel();

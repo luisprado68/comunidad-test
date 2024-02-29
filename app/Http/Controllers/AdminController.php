@@ -202,6 +202,33 @@ class AdminController extends Controller
         }
     }
 
+    public function rankingsPoints(){
+       
+        if (Session::has('user-log')) {
+            $this->route = FacadesRoute::current();
+            
+            $this->user_model = session('user-log');
+            $users = $this->userService->getUsersTop();
+            // dd($users);
+            return view('admin.rankings-points', ['users' => $users, 'user_model' => $this->user_model,'route' => $this->route]);
+        } else {
+            return redirect('admin');
+        }
+    }
+
+    public function rankingsSchedulers(){
+        if (Session::has('user-log')) {
+            $this->route = FacadesRoute::current();
+            
+            $this->user_model = session('user-log');
+            $users = $this->userService->getUsersSchedulers();
+            // dd($users);
+            return view('admin.rankings-schedulers', ['users' => $users, 'user_model' => $this->user_model,'route' => $this->route]);
+        } else {
+            return redirect('admin');
+        }
+    }
+
     public function schedulersDelete(Request $request){
 
         $scheduler = $request->all();

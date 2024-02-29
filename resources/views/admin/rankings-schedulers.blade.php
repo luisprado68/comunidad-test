@@ -38,13 +38,8 @@
                                                 href="{{ route('admin-schedulers') }}">Ver Agendas</a></button>
                                         </div>
                                         <div class="col-2 mb-4 mr-4">
-                                            <button type="submit" class="btn btn-success"><a class="dropdown-item"
-                                                href="{{ route('admin-rankings-points') }}"><i class="bi bi-people-fill"> Rankings Puntos</i></a></button>
-                                        </div>
-
-                                        <div class="col-2 mb-4 mr-4">
-                                            <button type="submit" class="btn btn-success"><a class="dropdown-item"
-                                                href="{{ route('admin-rankings-schedulers') }}"><i class="bi bi-people-fill"> Rankings Agendas</i></a></button>
+                                            <a href="{{ route('admin-list') }}"><button type="button"
+                                                class="btn btn-dark">Volver</button></a>
                                         </div>
                                         @if ($route->uri == 'admin/deleted-users')
                                             <div class="col-2 mb-4">
@@ -78,14 +73,14 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Id</th>
-                                    <th scope="col">Rol</th>
-                                    <th scope="col">Rango</th>
+                                    {{--<th scope="col">Rol</th>
+                                    <th scope="col">Rango</th> --}}
                                     <th scope="col">Name</th>
                                     <th scope="col">Canal</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Telefono</th>
-                                    <th scope="col">Activo</th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Top</th>
+                                    {{-- <th scope="col">Puntajes de Semanal</th>
+                                    <th scope="col">Neo Coins</th> --}}
+                                    <th scope="col">status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -93,68 +88,22 @@
                                 @foreach ($users as $user)
                                     <tr>
                                         <th scope="row">{{ $user->id }}</th>
-                                        @if ($user->role_id == 3)
-                                            <td> Admin</td>
-                                        @else
-                                        <td class="fuente_tabla">{{ $user->role->name }}</td>
-                                        @endif
-                                        <td class="fuente_tabla">{{ $user->range->name }}</td>
+                                        
+                                        {{-- <td class="fuente_tabla">{{ $user->range->name }}</td> --}}
                                         <td class="fuente_tabla">{{ $user->name }}</td>
                                         <td class="fuente_tabla">{{ $user->channel }}</td>
-                                        <td class="fuente_tabla">{{ $user->email }}</td>
-                                        <td class="fuente_tabla">{{ $user->phone }}</td>
+                                        <td class="fuente_tabla">{{ $user->top }}</td>
+                                        {{-- <td class="fuente_tabla">{{ $user->points_week }}</td>
+                                        <td class="fuente_tabla">{{ $user->neo_coins }}</td> --}}
                                         <td>@if ($user->status)
                                             <i class="bi bi-check-circle-fill  text-success"></i>
                                             @else
                                             <i class="bi bi-x-circle-fill text-danger"></i>
                                         @endif</td>
-                                        <td><button type="submit" class="btn btn-primary"><a class="dropdown-item"
-                                                    href="{{ route('admin-edit', $user['id']) }}"><i class="bi bi-pencil-square"></i></a></button>
-                                        {{-- @dump($user_model->role_id) --}}
-                                        @if ( $user_model->role_id == 3 || $user_model->role_id == 1 )
+                                       
                                         
-                                    
-                                            <button type="submit" class="btn btn-success"><a class="dropdown-item"
-                                        href="{{ route('admin-show', $user['id']) }}"><i class="bi bi-eye-fill"></i></a></button>
-                                        @endif
                                       
-                                        @if (!$user->deleted)
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="{{'#exampleModal' . $user->id}}">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="{{'exampleModal' . $user->id}}" tabindex="-1"
-                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title text-dark" id="exampleModalLabel">
-                                                                Eliminar el usuario
-                                                            </h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body text-dark">
-                                                        <p> Desea eliminar al usuario {{$user->channel}}?</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cerrar</button>
-                                                            <button type="button" class="btn btn-danger"><a
-                                                                    class="dropdown-item"
-                                                                    href="{{ route('admin-delete', $user->id) }}">Eliminar</a></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @else
-                                               <button type="button" class="btn btn-info text-light"><a
-                                                                    class="dropdown-item"
-                                                                    href="{{ route('admin-user-add', $user->id) }}"><i class="bi bi-file-arrow-up-fill"></i></a></button>
-                                        @endif
+                                      
                                        
 
                                        
