@@ -74,8 +74,11 @@ class MyAgendaController extends Controller
             if(count($groupedArray_two) > 0){
                 //valido que tenga una agenda para agregar el punto al referido
                 $supportScore = $this->supportScoreService->getByUserSupportId($this->user_model->id);
-                $supportScore->point = 1;
-                $supportScore->save();
+                if($supportScore){
+                    $supportScore->point = 1;
+                    $supportScore->save();
+                }
+               
             }
             $groupedArray = array_merge($groupedArray, $groupedArray_two);
            

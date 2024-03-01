@@ -69,7 +69,7 @@ final class SupportScoreService
         if ($userSupport) {
             return $userSupport;
         } else {
-            return [];
+            return false;
         }
     }
 
