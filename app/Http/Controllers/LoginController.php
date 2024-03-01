@@ -92,13 +92,14 @@ class LoginController extends Controller
                 // $total = count($user_model_created->supportScores->where('point',1));
             }
         }else{
+            Log::debug('support----------------------- ' . json_encode($user_model->supportScores));
             if(count($user_model->supportScores)> 0){
                 $total = count($user_model->supportScores->where('point', 1));
             }
             
             if ($total != 0) {
                 $user_model->points_support = $total;
-                $user_model->update();
+                $user_model->save();
             }
             $this->scoreService->evaluatePoint($user_model);
         }
