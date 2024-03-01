@@ -65,7 +65,12 @@ class LoginController extends Controller
         $user = $this->twichService->getUser();
         Log::debug('get token----------------------');
         Log::debug(json_encode($user));
-        $user_model = $this->userService->userExists($user['email'], $user['id']);
+        if(array_key_exists('email',$user)){
+            $user_model = $this->userService->userExists($user['email'], $user['id']);
+        }else{
+            $user_model = $this->userService->userExists($user['id']);
+        }
+        
         
 
         // dump($user_model);

@@ -84,13 +84,13 @@ final class UserService
      * @return mixed
      */
 
-    public function userExists($email, $twich_id = null)
+    public function userExists($email= null, $twich_id = null)
     {
-        
+        $user = null;
         $this->setModel();
         if (isset($twich_id)) {
             $user = $this->model::where('twich_id', $twich_id)->first();
-        } else {
+        } elseif (isset($twich_id)) {
             $user = $this->model::where('email', $email)->first();
         }
 
