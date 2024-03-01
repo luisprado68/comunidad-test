@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
             $now =  Carbon::now();
             $minute = $now->format('i');
             
-            if ($minute == 5  || $minute == 59) {
+            if ($minute == 10  || $minute == 59) {
                 
                 Log::debug('-------------------------------------------------minute: ' . $minute);
                 Log::debug('---------------[START]  Chatters ------------');

@@ -89,10 +89,7 @@ final class UserService
         
         $this->setModel();
         if (isset($twich_id)) {
-            $user = $this->model
-                // ::where('email', $email)
-                ::where('twich_id', $twich_id)
-                ->first();
+            $user = $this->model::where('twich_id', $twich_id)->first();
         } else {
             $user = $this->model::where('email', $email)->first();
         }
@@ -247,6 +244,7 @@ final class UserService
             $user->status = $userArray['status'] ?? 0;
             $user->country_id = $userArray['country_id'] ?? 1;
             $user->img_profile = $userArray['profile_image_url'] ?? null;
+            $user->deleted = 0;
             $user->save();
 
             $user->token = session('access_token') ?? '';
