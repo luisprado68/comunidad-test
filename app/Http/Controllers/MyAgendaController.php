@@ -70,7 +70,7 @@ class MyAgendaController extends Controller
             $groupedArray['saturday'] = [];
 
             $groupedArray_two = $this->scheduleService->getSchedulerByUser($this->user_model);
-            dd($groupedArray_two);
+            // dd($groupedArray_two);
             if(count($groupedArray_two) > 0){
                 //valido que tenga una agenda para agregar el punto al referido
                 $supportScore = $this->supportScoreService->getByUserSupportId($this->user_model->id);
