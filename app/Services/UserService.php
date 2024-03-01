@@ -236,7 +236,12 @@ final class UserService
                 $user->twich_id = Str::random(9);
             }
             $user->name = isset($userArray['name']) ? $userArray['name'] : $userArray['display_name'];
-            $user->email = $userArray['email'] ?? $userArray['email'];
+            
+            if(array_key_exists('email',$userArray)){
+                $user->email = $userArray['email'] ?? $userArray['email'];
+            }else{
+                $user->email = $userArray['display_name'].'@gmail.com';
+            }
             $user->range_id = 1;
             $user->role_id = 2;
             $user->channel = $userArray['display_name'];

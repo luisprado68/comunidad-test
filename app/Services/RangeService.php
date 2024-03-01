@@ -177,57 +177,9 @@ final class RangeService
      * @param $userArray
      * @return false|mixed
      */
-    public function create($userArray)
-    {
-        try {
-            $user = new User();
-            if (isset($userArray['id'])) {
-                $user->twich_id = $userArray['id'];
-            } else {
-                $user->twich_id = Str::random(9);
-            }
-            $user->name = isset($userArray['name']) ? $userArray['name'] : $userArray['display_name'];
-            $user->email = $userArray['email'] ?? $userArray['email'];
-            $user->range_id = 1;
-            $user->role_id = 2;
-            $user->channel = $userArray['display_name'];
-            $user->password = $userArray['display_name']; //TODO
-            $user->status = $userArray['status'] ?? 0;
-            $user->country_id = $userArray['country_id'] ?? 1;
-            $user->img_profile = $userArray['profile_image_url'] ?? null;
-            $user->save();
+  
 
-            $user->token = session('access_token') ?? '';
-            $user->update();
-            return $user;
-        } catch (Error $e) {
-            return false;
-        }
-    }
 
-    /**
-     * @param array $user
-     * @return User $user
-     */
-    public function update($userArray)
-    {
-        // dd($userArray['checkbox']);
-        try {
-            $user = User::find($userArray['id']);
-            $user->name = $userArray['name'];
-            $user->email = $userArray['email'];
-            // $user->active = $userArray['active'];
-            if(array_key_exists('status',$userArray)){
-                $user->status = $userArray['status'];
-            }else{
-                $user->status = 0;
-            }
-            $user->update();
-            return $user->id;
-        } catch (Error $e) {
-            return false;
-        }
-    }
 
     public function updateUser($userArray)
     {
