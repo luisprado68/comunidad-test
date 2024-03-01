@@ -26,9 +26,9 @@ class ScoreController extends Controller
   
 
     public function getPointSupport($user_name){
-        $user = $this->userService->getByChannel($user_name);
+        $user_referrer = $this->userService->getByChannel($user_name);
         // dump(json_encode($user));
-        session(['support_to_user_id' => $user->id] );
+        session(['support_to_user_id' => $user_referrer->id] );
         return redirect('/');
         // dump($user);
     }

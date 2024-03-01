@@ -70,6 +70,13 @@ class MyAgendaController extends Controller
             $groupedArray['saturday'] = [];
 
             $groupedArray_two = $this->scheduleService->getSchedulerByUser($this->user_model);
+            dd($groupedArray_two);
+            if(count($groupedArray_two) > 0){
+                //valido que tenga una agenda para agregar el punto al referido
+                $supportScore = $this->supportScoreService->getByUserSupportId($this->user_model->id);
+                $supportScore->point = 1;
+                $supportScore->save();
+            }
             $groupedArray = array_merge($groupedArray, $groupedArray_two);
            
             // $test = new Carbon('2024-02-11 06:10:00');
@@ -117,7 +124,7 @@ class MyAgendaController extends Controller
             }
 
           
-            // dd($groupedArray);
+            
             return view('my_agendas', ['showAgendas' => $this->showAgendas, 'week' => $groupedArray, 'user' => $this->user_model]);
         }
         else{

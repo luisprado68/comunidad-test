@@ -63,9 +63,10 @@ final class SupportScoreService
 
     public function getByUserSupportId($user_id)
     {
+        $userSupport = null;
         $this->setModel();
-        $userSupport = $this->model::whereJsonContains('user->user_id',$user_id)->get();
-        if (count($userSupport) > 0) {
+        $userSupport = $this->model::whereJsonContains('user->user_id',$user_id)->where('point',0)->first();
+        if ($userSupport) {
             return $userSupport;
         } else {
             return [];
@@ -109,6 +110,7 @@ final class SupportScoreService
             $score->point = isset($userArray['point']) ? $userArray['point'] :null;
             $score->user = isset($userArray['user']) ? $userArray['user'] : null;
             $score->save();
+
             Log::debug('SupportScore');
             Log::debug(json_encode($score));
             return $score;
