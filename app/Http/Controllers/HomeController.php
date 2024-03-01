@@ -31,7 +31,7 @@ class HomeController extends Controller
         // }
         if(session()->exists('user')){
             $user = session('user');
-            
+            Log::debug('user------------------------ ' . json_encode($user));
             $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
             // $currentStreams = $this->scheduleService->getStreamByUser($userModel);
             
