@@ -33,11 +33,11 @@ class HomeController extends Controller
             $user = session('user');
             
             $userModel = $this->userService->userExistsActive($user['display_name'].'@gmail.com',$user['id']);
-            $currentStreams = $this->scheduleService->getStreamByUser($userModel);
+            // $currentStreams = $this->scheduleService->getStreamByUser($userModel);
             
-            if(count($currentStreams) > 0){
-                $times = $this->scheduleService->getTimes($currentStreams,$userModel);
-            }
+            // if(count($currentStreams) > 0){
+            //     $times = $this->scheduleService->getTimes($currentStreams,$userModel);
+            // }
             // @dd($active);
             if($userModel->status){
                
@@ -49,7 +49,7 @@ class HomeController extends Controller
 
             
         }
-        return view('home',['times' => json_encode($times)]);
+        return view('home');
         
     }
 

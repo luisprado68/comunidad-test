@@ -39,11 +39,11 @@ class ProfileController extends Controller
             $this->user = session('user');
           
             $user_model = $this->userService->userExistsActive($this->user['display_name'].'@gmail.com',$this->user['id']);
-            $currentStreams = $this->scheduleService->getStreamByUser($user_model);
+            // $currentStreams = $this->scheduleService->getStreamByUser($user_model);
             
-            if(count($currentStreams) > 0){
-                $times = $this->scheduleService->getTimes($currentStreams,$user_model);
-            }
+            // if(count($currentStreams) > 0){
+            //     $times = $this->scheduleService->getTimes($currentStreams,$user_model);
+            // }
             // @dd($active);
             if($user_model->status){
                
@@ -62,7 +62,7 @@ class ProfileController extends Controller
             // }
             
             // dump($user_model);
-            return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model,'times' => json_encode($times)]);
+            return view('profile',['timezone' => $timezone,'countries' => $countries,'user' => $user_model]);
         }else{
             return redirect('/');
         }   
