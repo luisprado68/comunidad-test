@@ -118,14 +118,17 @@ class MyAgendaController extends Controller
             foreach ($groupedArray as $key => $value) {
                 
                 $groupedArray[$key]['status'] = false;
-                if ($day_int < $i) {
+                if ($day_int <= $i) {
+                    if(isset($groupedArray[$key][0])){
+                        // dump($groupedArray[$key][0]['day']);
+                        if($groupedArray[$key][0]['day'] != 'sunday'){
+                            $groupedArray[$key]['status'] = true;
+                        }
+                        
+
+                    }
                     
-                    // if($day_int == 0){
-                    //     $groupedArray[$key]['status'] = false;
-                    // }else{
-                        $groupedArray[$key]['status'] = true;
-                    // }
-                    // @dump($groupedArray[$key]);
+                  
                    
                 }
                 $i++;
