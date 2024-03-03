@@ -59,7 +59,7 @@ class MyAgendaController extends Controller
           
             $groupedArray['sunday']=[
             0 =>  [
-              "day" => "monday",
+              "day" => "sunday",
               "time" => "15:00"
             ]];
             $groupedArray['monday'] = [];
@@ -118,9 +118,15 @@ class MyAgendaController extends Controller
             foreach ($groupedArray as $key => $value) {
                 
                 $groupedArray[$key]['status'] = false;
-                if ($day_int <= $i) {
+                if ($day_int < $i) {
+                    dump($day_int);
+                    // if($day_int == 0){
+                    //     $groupedArray[$key]['status'] = false;
+                    // }else{
+                        $groupedArray[$key]['status'] = true;
+                    // }
+                    // @dump($groupedArray[$key]);
                    
-                    $groupedArray[$key]['status'] = true;
                 }
                 $i++;
                
