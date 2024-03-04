@@ -159,7 +159,7 @@
                                                     <div class="row">
                                                         
                                                             @foreach ($twoElements1 as $twoElements)
-                                                            <div class="col-4 text-center mb-4">
+                                                            <div class="col-lg-4 col-md-4 col-sm-6 text-center mb-4">
                                                                
                                                                     <div class=" text-light">
                                                                         <p style="display: inline"><b>{{'#' .$top++}}</b></p>
@@ -172,7 +172,7 @@
                                                             @endforeach
                                                             
                                                             @foreach ($twoElements2 as $twoElements)
-                                                            <div class="col-4 text-center mb-4">
+                                                            <div class="col-lg-4 col-md-4 col-sm-6 text-center mb-4">
                                                                
                                                                     <div class=" text-light">
                                                                         <p style="display: inline"><b>{{'#' .$top++}}</b></p>
@@ -185,7 +185,7 @@
                                                             @endforeach
 
                                                             @foreach ($twoElements3 as $twoElements)
-                                                            <div class="col-4 text-center  mb-4">
+                                                            <div class="col-lg-4 col-md-4 col-sm-6 text-center  mb-4">
                                                                
                                                                     <div class=" text-light">
                                                                         <p style="display: inline">{{'#' .$top++}}</p>
@@ -198,7 +198,7 @@
                                                             @endforeach
 
                                                             @foreach ($twoElements4 as $twoElements)
-                                                            <div class="col-4 text-center  mb-4">
+                                                            <div class="col-lg-4 col-md-4 col-sm-6 text-center  mb-4">
                                                                
                                                                     <div class=" text-light">
                                                                         <p style="display: inline">{{'#' .$top++}}</p>
