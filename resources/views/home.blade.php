@@ -197,18 +197,18 @@
                                                             
                                                             @endforeach
 
-                                                            @foreach ($twoElements4 as $twoElements)
+                                                            {{-- @foreach ($twoElements4 as $twoElements) --}}
                                                             <div class="col-4 text-center">
                                                                
                                                                     <div class=" text-light">
                                                                         <p style="display: inline">{{'#' .$top++}}</p>
-                                                                        <p>{{$twoElements['channel']}}</p>
-                                                                        <img src="{{$twoElements['img_profile']}}" alt="tag"
+                                                                        <p>{{$twoElements4[0]['channel']}}</p>
+                                                                        <img src="{{$twoElements4[0]['img_profile']}}" alt="tag"
                                                                         class="rounded-circle m-1" width="100px">
                                                                     </div>
                                                                 </div>
                                                             
-                                                            @endforeach
+                                                            {{-- @endforeach --}}
                                                     </div>
                                                 
                                                    

@@ -49,6 +49,7 @@ class HomeController extends Controller
         }
         $users = $this->userService->getUsersTop();
         $users = $users->toArray();
+        
         $twoElements1 = array_slice($users, 0, 3);
         
         // Get two elements starting from index 3
