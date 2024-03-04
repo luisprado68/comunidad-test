@@ -159,56 +159,56 @@
                                                     <div class="row">
                                                         
                                                             @foreach ($twoElements1 as $twoElements)
-                                                            <div class="col-4 text-center">
+                                                            <div class="col-4 text-center mb-4">
                                                                
                                                                     <div class=" text-light">
-                                                                        <p style="display: inline">{{'#' .$top++}}</p>
+                                                                        <p style="display: inline"><b>{{'#' .$top++}}</b></p>
                                                                         <p>{{$twoElements['channel']}}</p>
                                                                         <img src="{{$twoElements['img_profile']}}" alt="tag"
-                                                                        class="rounded-circle m-1" width="100px">
+                                                                        class="rounded-circle" width="100px">
                                                                     </div>
                                                                 </div>
                                                             
                                                             @endforeach
                                                             
                                                             @foreach ($twoElements2 as $twoElements)
-                                                            <div class="col-4 text-center">
+                                                            <div class="col-4 text-center mb-4">
                                                                
                                                                     <div class=" text-light">
-                                                                        <p style="display: inline">{{'#' .$top++}}</p>
+                                                                        <p style="display: inline"><b>{{'#' .$top++}}</b></p>
                                                                         <p>{{$twoElements['channel']}}</p>
                                                                         <img src="{{$twoElements['img_profile']}}" alt="tag"
-                                                                        class="rounded-circle m-1" width="100px">
+                                                                        class="rounded-circle" width="100px">
                                                                     </div>
                                                                 </div>
                                                             
                                                             @endforeach
 
                                                             @foreach ($twoElements3 as $twoElements)
-                                                            <div class="col-4 text-center">
+                                                            <div class="col-4 text-center  mb-4">
                                                                
                                                                     <div class=" text-light">
                                                                         <p style="display: inline">{{'#' .$top++}}</p>
                                                                         <p>{{$twoElements['channel']}}</p>
                                                                         <img src="{{$twoElements['img_profile']}}" alt="tag"
-                                                                        class="rounded-circle m-1" width="100px">
+                                                                        class="rounded-circle" width="100px">
                                                                     </div>
                                                                 </div>
                                                             
                                                             @endforeach
 
-                                                            {{-- @foreach ($twoElements4 as $twoElements) --}}
-                                                            <div class="col-4 text-center">
+                                                            @foreach ($twoElements4 as $twoElements)
+                                                            <div class="col-4 text-center  mb-4">
                                                                
                                                                     <div class=" text-light">
                                                                         <p style="display: inline">{{'#' .$top++}}</p>
-                                                                        <p>{{$twoElements4[0]['channel']}}</p>
-                                                                        <img src="{{$twoElements4[0]['img_profile']}}" alt="tag"
-                                                                        class="rounded-circle m-1" width="100px">
+                                                                        <p>{{$twoElements['channel']}}</p>
+                                                                        <img src="{{$twoElements['img_profile']}}" alt="tag"
+                                                                        class="rounded-circle" width="100px">
                                                                     </div>
                                                                 </div>
                                                             
-                                                            {{-- @endforeach --}}
+                                                            @endforeach
                                                     </div>
                                                 
                                                    
