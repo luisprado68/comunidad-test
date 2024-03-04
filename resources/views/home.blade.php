@@ -15,7 +15,6 @@
                         <h4 class="text-light text-center">PARA QUE PUEDAN INTERACTUAR,HACER COLABORACIONES, TORNEOS Y EVENTOS.</h4>
                     </div>
                     <div class="card mt-4 bg-dark">
-                        {{-- <div class="card-body fondo_claro"> --}}
                         <div class="card-body bg-dark">
                             <div class="row">
 
@@ -149,13 +148,88 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-3">
+                                    <div class="col-md-12 w-100">
+                                        <div class="card" style="background-color: #031633">
+                                            {{-- <div class="card-header">{{ __('Dashboard') }}</div> --}}
+
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h1 class="text-center pb-3 text-light">Top de la semana</h1>
+                                                    <div class="row">
+                                                        
+                                                            @foreach ($twoElements1 as $twoElements)
+                                                            <div class="col-4 text-center">
+                                                               
+                                                                    <div class=" text-light">
+                                                                        <p style="display: inline">{{'#' .$top++}}</p>
+                                                                        <p>{{$twoElements['channel']}}</p>
+                                                                        <img src="{{$twoElements['img_profile']}}" alt="tag"
+                                                                        class="rounded-circle m-1" width="100px">
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                            @endforeach
+                                                            
+                                                            @foreach ($twoElements2 as $twoElements)
+                                                            <div class="col-4 text-center">
+                                                               
+                                                                    <div class=" text-light">
+                                                                        <p style="display: inline">{{'#' .$top++}}</p>
+                                                                        <p>{{$twoElements['channel']}}</p>
+                                                                        <img src="{{$twoElements['img_profile']}}" alt="tag"
+                                                                        class="rounded-circle m-1" width="100px">
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                            @endforeach
+
+                                                            @foreach ($twoElements3 as $twoElements)
+                                                            <div class="col-4 text-center">
+                                                               
+                                                                    <div class=" text-light">
+                                                                        <p style="display: inline">{{'#' .$top++}}</p>
+                                                                        <p>{{$twoElements['channel']}}</p>
+                                                                        <img src="{{$twoElements['img_profile']}}" alt="tag"
+                                                                        class="rounded-circle m-1" width="100px">
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                            @endforeach
+
+                                                            @foreach ($twoElements4 as $twoElements)
+                                                            <div class="col-4 text-center">
+                                                               
+                                                                    <div class=" text-light">
+                                                                        <p style="display: inline">{{'#' .$top++}}</p>
+                                                                        <p>{{$twoElements['channel']}}</p>
+                                                                        <img src="{{$twoElements['img_profile']}}" alt="tag"
+                                                                        class="rounded-circle m-1" width="100px">
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                            @endforeach
+                                                    </div>
+                                                
+                                                   
+
+                                                    <div class="row">
+                                                       
+                                                        
+                                                    </div>
+                                                   
+                                                </div>
+                                              
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {{-- @if (isset($times))
-                        <input type="text" class="form-control" aria-label="Default" name="times" id="times"
-                        aria-describedby="inputGroup-sizing-default" value="{{ $times }}" style="display: none">
-                    @endif --}}
+                   
                    
                 @endif
 

@@ -137,51 +137,66 @@ final class ScoreService
 
     public function evaluatePoint($user)
     {
-     
+        Log::debug('-------------------------------------------------evaluatePoint: ');
         $current_time = Carbon::now();
-        $current_time->tz = $user->time_zone;
-        if (strtolower($current_time->format('l')) == 'sunday') {
-            if($user->role_id != 4){
+        
                 if ($user->score) {
                     $score = $user->score;
                     Log::debug(json_encode($score));
-                    if ($user->score->points_week == 60) {
-                        if ($user->range->id <= 4) {
-                            $user->range_id = $user->range_id + 1;
-                            // Log::debug('1*********');
+                    if(isset($score)){
+                        $date_time = Carbon::parse($user->updated_at);
+                        if ($user->score->points_week == 60) {
+                            
+                            if (!$date_time->isSameWeek($current_time)) {
+                                // Log::debug(' distinto------------------------------------: ');
+                                if ($user->range_id < 4) {
+                                    $range_id = $user->range_id;
+                                    $range_id = $range_id + 1;
+                                    // Log::debug(' range_id------------------------------------: ' . json_encode($range_id));
+                                    $user->range_id = $range_id;
+                                    $user->save();
+                                    // Log::debug('1*********');
+                                }
+                            }
+                            
+                        } elseif ($user->score->points_week >= 45 && $user->score->points_week < 60  && $user->range_id == 2) {
+                            Log::debug('2*********');
+                            $user->range_id = 2;
+                            $user->save();
+                           
+                        } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 3) {
+                            $user->range_id = 3;
+                            Log::debug('3*********');
+                        } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 4) {
+                            Log::debug('4*********');
+                            $user->range_id = 4;
+                            $user->save();
+                            
+                        } elseif ($user->score->points_week <= 50 || $user->score->points_week < 45) {
+                             Log::debug('5*********');
+                            if($user->range_id > 1 && $user->role->id != 1 && $user->role->id != 4 && $user->role->id != 5 ){
+                                if (!$date_time->isSameWeek($current_time)) {
+                                    $range_before =  $user->range_id;
+                                    $user->range_id = $range_before - 1;
+                                    $user->save();
+                                }
+                                
+                            }
+                            
+                        } elseif ($user->points_support == 25) {
+                            if (!$date_time->isSameWeek($current_time)) {
+                                Log::debug('6*********');
+                                $user->range_id = 4;
+                                $user->save();
+                            }
+                             
                         }
-                    } elseif ($user->score->points_week == 60 && $user->range_id == 1) {
-                        // Log::debug('2*********');
-                        $user->range_id = 2;
-                        
-                    } elseif ($user->score->points_week >= 45 && $user->score->points_week < 60  && $user->range_id == 2) {
-                        // Log::debug('3*********');
-                        $user->range_id = 2;
                        
-                    } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 3) {
-                        $user->range_id = 3;
-                       
-                    } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 4) {
-                        // Log::debug('4*********');
-                        $user->range_id = 4;
-                        
-                    } elseif ($user->score->points_week <= 50 || $user->score->points_week < 45) {
-                        // Log::debug('5*********');
-                        if($user->range_id > 1 && $user->role->id != 1){
-                            $range_before =  $user->range_id;
-                            $user->range_id = $range_before - 1;
-                        }
-                        
-                        
-                    } elseif ($user->points_support == 25) {
-                        // Log::debug('6*********');
-                        $user->range_id = 4;
-                        
                     }
-                    $user->update();
+                   
                 }
-            }
+        
             
-        }
+    
     }
 }

@@ -286,3 +286,9 @@ div.avaibleInput{
     font-size: 0.95rem;
   
 }
+
+tr.top {
+  border-color:#031633;
+  border-style: solid;
+  border-width: 0;
+}

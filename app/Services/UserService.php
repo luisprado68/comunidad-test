@@ -199,6 +199,7 @@ final class UserService
         ->where('users.deleted',false)
         ->groupBy('schedule.user_id')
         ->orderByDesc('top')
+        ->limit(10)
         ->get();
         Log::debug('--------------------------------------------------------------------------------------');
         Log::debug(json_encode($users));

@@ -28,10 +28,12 @@ class Kernel extends ConsoleKernel
           
             $this->twichService = new TwichService();
             $this->scheduleService = new ScheduleService();
+            $this->scoreService = new ScoreService();
+            $this->userService = new UserService();
 
             $now =  Carbon::now();
             $minute = $now->format('i');
-            
+
             if ($minute == 10  || $minute == 59) {
                 
                 Log::debug('-------------------------------------------------minute: ' . $minute);
@@ -53,6 +55,27 @@ class Kernel extends ConsoleKernel
                 Log::debug('---------------No esta habilitado------------');
             }
         })->everyMinute();
+
+
+        $schedule->call(function () {
+            Log::debug('---------------[START]  Evaluete Points and Ranges ------------');
+            $this->twichService = new TwichService();
+            $this->scheduleService = new ScheduleService();
+            $this->scoreService = new ScoreService();
+            $this->userService = new UserService();
+
+            $users = $this->userService->getUsersModel();
+            // Log::debug('-------------------------------------------------users: '. json_encode($users));
+            if(count($users) > 0){
+                foreach ($users as $key => $user) {
+                    $this->scoreService->evaluatePoint($user);
+                    
+                }
+            }
+            Log::debug('---------------[END]  Evaluete Points and Ranges ------------');
+        })->daily();
+
+
 
         $schedule->call(function () {
             Log::debug('---------------[START] Update Refresh Tokens --------');
