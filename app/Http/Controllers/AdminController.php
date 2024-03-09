@@ -65,12 +65,12 @@ class AdminController extends Controller
 
     public function index()
     {
-        Log::debug('index-----');
-
+      
         return view('admin.adminLogin');
     }
     public function login(Request $request)
     {
+        
         Log::debug('login-----');
         $credentials = $request->all();
         // dd($credentials);
@@ -78,12 +78,12 @@ class AdminController extends Controller
         $exist = $this->userService->userLogin($credentials['email'], $credentials['password']);
 
 
-        if (!empty($exist)) {
+        if (!empty($exist['user']) && $exist['user'] != false) {
             // dd($exist);
             Log::debug('exist-----');
             return redirect('admin/list');
         } else {
-            return redirect('admin');
+            return redirect('admin')->with(['message' => $exist['message']]);
         }
 
         // return view('admin.adminLogin');

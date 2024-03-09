@@ -131,26 +131,31 @@ class LoginController extends Controller
         // dd($credentials);
 
 
-        $user_model = $this->userService->userLogin($credentials['email'], $credentials['password']);
-        Log::debug('login admin------------');
-        Log::debug(json_encode($user_model));
-        session(['access_token' => $user_model->token]);
+        $result = $this->userService->userLogin($credentials['email'], $credentials['password']);
+        if(isset($result['user'])){
+            
+            $user_model = $result['user'];
+            Log::debug('login admin------------');
+            Log::debug(json_encode($user_model));
+            session(['access_token' => $user_model->token]);
 
-        $user_twich = $this->twichService->getUser();
-        // dd($user_test);
-        if (isset($user_twich) && !empty($user_twich)) {
-            $user_response = $user_twich;
-        } else {
-
-            $user_response['display_name'] = $user_model->channel;
-            $user_response['id'] = $user_model->twich_id;
-            if (isset($user_model->img_profile) && !empty($user_model->img_profile)) {
-                $user_response['profile_image_url'] = $user_model->img_profile;
+            $user_twich = $this->twichService->getUser();
+            // dd($user_test);
+            if (isset($user_twich) && !empty($user_twich)) {
+                $user_response = $user_twich;
             } else {
-                $user_response['profile_image_url'] = 'https://static-cdn.jtvnw.net/jtv_user_pictures/6471351b-ea90-4cd2-828b-406a7dea08e1-profile_image-300x300.png';
+
+                $user_response['display_name'] = $user_model->channel;
+                $user_response['id'] = $user_model->twich_id;
+                if (isset($user_model->img_profile) && !empty($user_model->img_profile)) {
+                    $user_response['profile_image_url'] = $user_model->img_profile;
+                } else {
+                    $user_response['profile_image_url'] = 'https://static-cdn.jtvnw.net/jtv_user_pictures/6471351b-ea90-4cd2-828b-406a7dea08e1-profile_image-300x300.png';
+                }
+                session(['user' => $user_response]);
             }
-            session(['user' => $user_response]);
         }
+        
 
 
         // $user_response['profile_image_url'] = 'https://static-cdn.jtvnw.net/jtv_user_pictures/6471351b-ea90-4cd2-828b-406a7dea08e1-profile_image-300x300.png';

@@ -90,7 +90,7 @@ class Kernel extends ConsoleKernel
             $hour = $now->format('H');
            
             //corre a las 3 amm arg 00 mex
-            if($day == 'Sunday' && $hour == "06"){
+            if($day == 'Sunday' && $hour == "10"){
                 Log::debug('---------------[Start] Start Reset Points---------------');
                 Log::debug('hour' . json_encode($hour));
                 Log::debug('day' . json_encode($day));

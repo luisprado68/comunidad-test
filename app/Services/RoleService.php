@@ -125,24 +125,7 @@ final class RoleService
         }
     }
 
-    public function userLogin($email, $password)
-    {
-     
-        $this->setModel();
-        if (isset($email) && isset($password)) {
-           
-            $user = $this->model
-                ::where('email', $email)
-                ->where('channel',$password)
-                ->first();
-                session(['user-log' => $user]);
-                return  $user;
-        } else {
-            return false;
-        }
-
-        
-    }
+   
 
     public function getUsers()
     {

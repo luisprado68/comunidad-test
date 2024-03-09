@@ -127,7 +127,8 @@ final class UserService
 
     public function userLogin($email, $password)
     {
-     
+     $result['user'] = false;
+     $result['message'] = '';
         $this->setModel();
         if (isset($email) && isset($password)) {
            
@@ -136,9 +137,19 @@ final class UserService
                 ->where('channel',$password)
                 ->first();
                 session(['user-log' => $user]);
-                return  $user;
+                if(isset($user)){
+                    if($user->role_id == 1){
+                        $result['user'] = $user;
+                        return  $result;
+                    }else{
+                        $result['message'] = 'No tiene permiso para acceder';
+                        return $result;
+                    }
+                }
+                
+                
         } else {
-            return false;
+            return $result;
         }
 
         

@@ -68,9 +68,13 @@
                                             <div class="col-6 mt-2 mb-4" style="display: block;margin-right:105px">
                                                 <button type="submit" class="btn btn-primary">Ingresar</button>
                                             </div>
+                                            <div class="col-6 mt-2 mb-4 text-danger" style="display: block;margin-right:105px">
+                                                {{session('message')}}
+                                            </div>
                                         </div>
 
                                     </div>
+                                    
                                 </div>
                             </div>
                         </form>
