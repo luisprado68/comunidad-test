@@ -132,7 +132,8 @@ class LoginController extends Controller
         // dd($credentials);
 
 
-        $result = $this->userService->userLogin($credentials['email'], $credentials['password']);
+        $result = $this->userService->userLoginTwich($credentials['email'], $credentials['password']);
+        Log::debug('result-----' . json_encode($result));
         if(isset($result['user']) && $result['user'] != false){
             
             $user_model = $result['user'];
