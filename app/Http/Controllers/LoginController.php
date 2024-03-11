@@ -125,6 +125,7 @@ class LoginController extends Controller
     }
     public function login_post(Request $request)
     {
+        $user_model = null;
         $user_response = [];
         Log::debug('login-----');
         $credentials = $request->all();
