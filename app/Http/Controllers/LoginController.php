@@ -132,7 +132,7 @@ class LoginController extends Controller
 
 
         $result = $this->userService->userLogin($credentials['email'], $credentials['password']);
-        if(isset($result['user'])){
+        if(isset($result['user']) && $result['user'] != false){
             
             $user_model = $result['user'];
             Log::debug('login admin------------');
