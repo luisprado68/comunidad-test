@@ -292,3 +292,12 @@ tr.top {
   border-style: solid;
   border-width: 0;
 }
+.fa-discord:hover{
+  color: #53609e !important;
+  font-size: 31px !important;
+  cursor: pointer;
+}
+
+.animate__animated.animate__bounce:hover{
+  --animate-duration: 2s;
+}

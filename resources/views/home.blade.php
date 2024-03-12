@@ -148,7 +148,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 ">
+                                    <div class="col pt-3  px-3">
+                                        <div class="row">
+                                       
+                                            <div class="col-12 text-center text-light card " style="background-color: #6474b8">
+                                                <h4>Sumate a la comunidad en Discord!</h4>
+                                                <a href="https://discord.gg/uncB86TTSg" target="_blank"><i class='fab fa-discord pb-2 animate__animated animate__bounce' style='font-size:30px;color:white'></i></a>
+                                                {{-- <h1 class="animate__animated animate__bounce">An animated element</h1> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
                                 <div class="col-12 pt-3">
+                                    
                                     <div class="col-md-12 w-100">
                                         <div class="card" style="background-color: #031633">
                                             {{-- <div class="card-header">{{ __('Dashboard') }}</div> --}}
@@ -210,24 +224,17 @@
                                                             
                                                             @endforeach
                                                     </div>
-                                                
-                                                   
-
-                                                    <div class="row">
-                                                       
-                                                        
-                                                    </div>
-                                                   
                                                 </div>
-                                              
-
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                
+                                
                             </div>
+                            
                         </div>
+                       
                     </div>
                    
                    
