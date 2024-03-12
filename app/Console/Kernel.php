@@ -107,10 +107,11 @@ class Kernel extends ConsoleKernel
                         if(count($schedulers_by_user) > 0){
                             foreach ($schedulers_by_user as $key => $scheduler_by_user) {
                                 $date = new Carbon($scheduler_by_user->start);
+                                //se elimina todos
                                 $day = $date->format('l');
-                                if($day != 'Sunday'){
-                                    $this->schedulerService->delete($scheduler_by_user->id);
-                                }
+                                // if($day != 'Sunday'){
+                                   $this->schedulerService->delete($scheduler_by_user->id);
+                                // }
                             }
                         }
                     }
