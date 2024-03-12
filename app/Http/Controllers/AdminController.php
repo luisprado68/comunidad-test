@@ -69,7 +69,20 @@ class AdminController extends Controller
         $location = Location::get(request()->ip());
         dump($location);
         if ($location) {
+            $currentDateTime = Carbon::now();
+            $currentDateTime->tz = $location->timezone;
+            $otherDateTime = Carbon::parse('2024-03-12T21:00:00');
+            $otherDateTime->tz = $location->timezone;
+            dump($currentDateTime);
+            dump($otherDateTime);
             
+            if($currentDateTime->gt($otherDateTime)){
+                dump('finished');
+            }elseif ($currentDateTime->lt($otherDateTime)) {
+                dump('active');
+            }
+
+            dump($location->timezone);
             dump($location->timezone);
             $timezone = $location->timezone;
         } else {
