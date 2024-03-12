@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Log as ModelsLog;
 use App\Services\ScheduleService;
 use App\Services\ScoreService;
 use App\Services\TwichService;
@@ -78,7 +79,7 @@ class Kernel extends ConsoleKernel
 
 
         $schedule->call(function () {
-            Log::debug('---------------[START] Update Refresh Tokens --------');
+            Log::debug('---------------[START]  Reset Calendar --------');
             $this->userService = new UserService();
             $this->twichService = new TwichService();
             $this->scoreService = new ScoreService();
@@ -91,6 +92,11 @@ class Kernel extends ConsoleKernel
            
             //corre a las 3 amm arg 00 mex
             if($day == 'Sunday' && $hour == "10"){
+                ModelsLog::create([
+                    'action' => 'Reset Calendar',
+                    'message' => 'Se reseta los puntos'
+                ]);
+                
                 Log::debug('---------------[Start] Start Reset Points---------------');
                 Log::debug('hour' . json_encode($hour));
                 Log::debug('day' . json_encode($day));
