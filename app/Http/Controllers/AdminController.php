@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route as FacadesRoute;
 use Illuminate\Support\Facades\Session;
+use Stevebauman\Location\Facades\Location;
 
 class AdminController extends Controller
 {
@@ -65,6 +66,17 @@ class AdminController extends Controller
 
     public function index()
     {
+        $location = Location::get(request()->ip());
+        dump($location);
+        if ($location) {
+            
+            dump($location->timezone);
+            $timezone = $location->timezone;
+        } else {
+            // Default timezone in case location cannot be determined
+            $timezone = 'UTC';
+        }
+    
       
         return view('admin.adminLogin');
     }
