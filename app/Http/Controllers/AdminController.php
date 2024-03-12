@@ -66,9 +66,9 @@ class AdminController extends Controller
 
     public function index()
     {
-        $location = Location::get(request()->ip());
-        dump($location);
-        $this->validateDates($location);
+        // $location = Location::get(request()->ip());
+        // dump($location);
+        // $this->validateDates($location);
     
       
         return view('admin.adminLogin');
