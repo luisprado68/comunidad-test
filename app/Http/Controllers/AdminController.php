@@ -68,30 +68,34 @@ class AdminController extends Controller
     {
         $location = Location::get(request()->ip());
         dump($location);
-        if ($location) {
-            $currentDateTime = Carbon::now();
-            $currentDateTime->tz = $location->timezone;
-            $otherDateTime = Carbon::parse('2024-03-12T21:00:00');
-            $otherDateTime->tz = $location->timezone;
-            dump($currentDateTime);
-            dump($otherDateTime);
-            
-            if($currentDateTime->gt($otherDateTime)){
-                dump('finished');
-            }elseif ($currentDateTime->lt($otherDateTime)) {
-                dump('active');
-            }
-
-            dump($location->timezone);
-            dump($location->timezone);
-            $timezone = $location->timezone;
-        } else {
-            // Default timezone in case location cannot be determined
-            $timezone = 'UTC';
-        }
+        $this->validateDates($location);
     
       
         return view('admin.adminLogin');
+    }
+
+    public function validateDates($location){
+
+        $currentDateTime = Carbon::now();
+        $otherDateTime = Carbon::parse('2024-03-12T21:00:00');
+        if ($location) {
+            $currentDateTime->tz = $location->timezone;
+            $otherDateTime->tz = $location->timezone;
+            dump('si');
+        } else {
+            dump('no');
+            $timezone = "America/Argentina/Buenos_Aires";
+            $currentDateTime->tz = $timezone;
+            $otherDateTime->tz = $timezone;
+        }
+            dump($currentDateTime);
+            dump($otherDateTime);
+            
+        if($currentDateTime->gt($otherDateTime)){
+            dump('finished');
+        }elseif ($currentDateTime->lt($otherDateTime)) {
+            dump('active');
+        }
     }
     public function login(Request $request)
     {
