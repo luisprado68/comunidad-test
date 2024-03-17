@@ -82,7 +82,7 @@ class Kernel extends ConsoleKernel
                         $user_array['points_day'] = 0;
                         $user_array['points_week'] = 0;
                         $result = $this->scoreService->update($user_array);
-                        
+                        Log::debug('---------------[Start] Start Reset Points---------------');
                     }
                 }
             }
@@ -134,7 +134,7 @@ class Kernel extends ConsoleKernel
 
                     Log::debug('result:  ---' . json_encode($result));
                 }
-                Log::debug('---------------[Start] Start Reset Points---------------');
+                
             }
             Log::debug('---------------[FINISH] END Update Refresh Tokens---------------');
         })->hourly();
