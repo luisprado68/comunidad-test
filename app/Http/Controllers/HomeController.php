@@ -34,22 +34,22 @@ class HomeController extends Controller
         $active = false;
         $times = [];
 
-        $users = $this->userService->getUsersModel();
-                // Log::debug('-------------------------------------------------users: '. json_encode($users));
-                if(count($users) > 0){
-                    foreach ($users as $key => $user) {
-                        $this->scoreService->evaluatePoint($user);
-                        //reseteo de puntos TODO bulk update
-                        $user_array['user_id'] = $user->id;
-                        $user_array['points_day'] = 0;
-                        $user_array['points_week'] = 0;
-                        $result = $this->scoreService->update($user_array);
+        // $users = $this->userService->getUsersModel();
+        //         // Log::debug('-------------------------------------------------users: '. json_encode($users));
+        //         if(count($users) > 0){
+        //             foreach ($users as $key => $user) {
+        //                 $this->scoreService->evaluatePoint($user);
+        //                 //reseteo de puntos TODO bulk update
+        //                 $user_array['user_id'] = $user->id;
+        //                 $user_array['points_day'] = 0;
+        //                 $user_array['points_week'] = 0;
+        //                 $result = $this->scoreService->update($user_array);
                         
-                    }
+        //             }
 
-                    //LOg:
-                    
-                }
+        //             //LOg:
+
+        //         }
         // if(session()->exists('support_to_user')){
         //     dump(session('support_to_user'));
         // }
