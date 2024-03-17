@@ -59,22 +59,37 @@ class Kernel extends ConsoleKernel
 
 
         $schedule->call(function () {
-            Log::debug('---------------[START]  Evaluete Points and Ranges ------------');
-            $this->twichService = new TwichService();
-            $this->scheduleService = new ScheduleService();
-            $this->scoreService = new ScoreService();
-            $this->userService = new UserService();
 
-            $users = $this->userService->getUsersModel();
-            // Log::debug('-------------------------------------------------users: '. json_encode($users));
-            if(count($users) > 0){
-                foreach ($users as $key => $user) {
-                    $this->scoreService->evaluatePoint($user);
-                    
+            $now =  Carbon::now();
+         
+            $day = $now->format('l');
+            $hour = $now->format('H');
+            if($day == 'Sunday' && $hour == "10"){
+
+                Log::debug('---------------[START]  Evaluete Points and Ranges ------------');
+                $this->twichService = new TwichService();
+                $this->scheduleService = new ScheduleService();
+                $this->scoreService = new ScoreService();
+                $this->userService = new UserService();
+    
+                $users = $this->userService->getUsersModel();
+                // Log::debug('-------------------------------------------------users: '. json_encode($users));
+                if(count($users) > 0){
+                    foreach ($users as $key => $user) {
+                        $this->scoreService->evaluatePoint($user);
+                        //reseteo de puntos TODO bulk update
+                        $user_array['user_id'] = $user->id;
+                        $user_array['points_day'] = 0;
+                        $user_array['points_week'] = 0;
+                        $result = $this->scoreService->update($user_array);
+                        
+                    }
                 }
             }
+
+           
             Log::debug('---------------[END]  Evaluete Points and Ranges ------------');
-        })->daily();
+        })->hourly();
 
 
 
@@ -91,7 +106,7 @@ class Kernel extends ConsoleKernel
             $hour = $now->format('H');
            
             //corre a las 3 amm arg 00 mex
-            if($day == 'Sunday' && $hour == "10"){
+            if($day == 'Sunday' && $hour == "11"){
                 ModelsLog::create([
                     'action' => 'Reset Calendar',
                     'message' => 'Se reseta los puntos'
@@ -103,11 +118,6 @@ class Kernel extends ConsoleKernel
                 $allUsers = $this->userService->all();
                 foreach ($allUsers as $key => $user) {
                     // $this->twichService->getRefreshToken($user);
-                    $user_array['user_id'] = $user->id;
-                    $user_array['points_day'] = 0;
-                    $user_array['points_week'] = 0;
-                    $result = $this->scoreService->update($user_array);
-
                     $schedulers_by_user = $this->schedulerService->getByUserId($user->id);
                     if(isset($schedulers_by_user)){
                         if(count($schedulers_by_user) > 0){

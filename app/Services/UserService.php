@@ -205,7 +205,7 @@ final class UserService
     {
         $this->setModel();
 
-        $users = $this->model::where('deleted',false)->get();
+        $users = $this->model::where('deleted',0)->get();
 
         if (count($users) > 0) {
             return $users;

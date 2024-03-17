@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\RangeType;
+use App\Enums\RoleType;
 use App\Models\Score;
 use App\Models\User;
 use Broobe\Services\Service;
@@ -121,9 +123,7 @@ final class ScoreService
                 if(isset($userArray['neo_coins'])){
                     $score->neo_coins =  $userArray['neo_coins'];
                 }
-               
-                // $score->points_support = isset($userArray['points_support']) ? $userArray['points_support'] : null;
-                $score->update();
+                $score->save();
                 return $score->id;
             }else{
                 return false;
@@ -137,66 +137,63 @@ final class ScoreService
 
     public function evaluatePoint($user)
     {
-        Log::debug('-------------------------------------------------evaluatePoint: ');
-        $current_time = Carbon::now();
-        
                 if ($user->score) {
                     $score = $user->score;
-                    Log::debug(json_encode($score));
                     if(isset($score)){
-                        $date_time = Carbon::parse($user->updated_at);
                         if ($user->score->points_week == 60) {
-                            
-                            if (!$date_time->isSameWeek($current_time)) {
-                                // Log::debug(' distinto------------------------------------: ');
                                 if ($user->range_id < 4) {
                                     $range_id = $user->range_id;
                                     $range_id = $range_id + 1;
-                                    // Log::debug(' range_id------------------------------------: ' . json_encode($range_id));
                                     $user->range_id = $range_id;
                                     $user->save();
-                                    // Log::debug('1*********');
+                                    Log::debug('Subio de rango*********');
                                 }
-                            }
-                            
-                        } elseif ($user->score->points_week >= 45 && $user->score->points_week < 60  && $user->range_id == 2) {
-                            Log::debug('2*********');
-                            $user->range_id = 2;
-                            $user->save();
-                           
-                        } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 3) {
-                            $user->range_id = 3;
-                            Log::debug('3*********');
-                        } elseif ($user->score->points_week >= 50 && $user->score->points_week < 60  && $user->range_id == 4) {
-                            Log::debug('4*********');
-                            $user->range_id = 4;
-                            $user->save();
-                            
-                        } elseif ($user->score->points_week <= 50 || $user->score->points_week < 45) {
-                             Log::debug('5*********');
-                            if($user->range_id > 1 && $user->role->id != 1 && $user->role->id != 4 && $user->role->id != 5 ){
-                                if (!$date_time->isSameWeek($current_time)) {
+                        }
+                        elseif (($user->score->points_week < 50 && ($user->range_id == RangeType::oro || $user->range_id == RangeType::platino)) || 
+                        ($user->score->points_week < 45 &&  $user->range_id == RangeType::plata)) {
+                             
+                            if($user->range_id > RangeType::bronce && $user->role->id == RoleType::streamer ){
+                                Log::debug('Bajo de rango*********');
+                                Log::debug($user->score->points_week);
+                                Log::debug($user->channel);
                                     $range_before =  $user->range_id;
                                     $user->range_id = $range_before - 1;
                                     $user->save();
-                                }
-                                
                             }
                             
                         } elseif ($user->points_support == 25) {
-                            if (!$date_time->isSameWeek($current_time)) {
-                                Log::debug('6*********');
-                                $user->range_id = 4;
-                                $user->save();
-                            }
+
+                                if($user->range_id != 4){
+                                    $user->range_id = 4;
+                                    $user->save();
+                                }
+                                
+                            
                              
                         }
                        
                     }
                    
                 }
+                
         
             
     
+    }
+    public function getUsersSixty(){
+
+        $users_upload_range = User::select('users.name as name', 'users.channel as channel', 'ranges.id as range_id', 'scores.points_day as points_day', 'scores.points_week as points_week', 'scores.updated_at as updated_at')
+        ->join('scores', 'users.id', '=', 'scores.user_id')
+        ->join('ranges', 'users.range_id', '=', 'ranges.id')
+        ->orderBy('scores.points_week', 'desc')
+        // ->where('scores.points_week',60)
+        ->get();
+        if(count($users_upload_range)){
+            return $users_upload_range;
+        }else{
+            return false;
+        }
+        
+        
     }
 }
