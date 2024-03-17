@@ -60,13 +60,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
 
-            $now =  Carbon::now();
-         
-            $day = $now->format('l');
-            $hour = $now->format('H');
-            if($day == 'Sunday' && $hour == "10"){
-
-                Log::debug('---------------[START]  Evaluete Points and Ranges ------------');
+                Log::debug('---------------[START]  Evaluete Points and Ranges & Start Reset Points ------------');
                 $this->twichService = new TwichService();
                 $this->scheduleService = new ScheduleService();
                 $this->scoreService = new ScoreService();
@@ -82,60 +76,60 @@ class Kernel extends ConsoleKernel
                         $user_array['points_day'] = 0;
                         $user_array['points_week'] = 0;
                         $result = $this->scoreService->update($user_array);
-                        Log::debug('---------------[Start] Start Reset Points---------------');
+                        
                     }
+                    ModelsLog::create([
+                        'action' => 'Validacion de puntos',
+                        'message' => 'Se reseta los puntos'
+                    ]);
                 }
-            }
-
-           
-            Log::debug('---------------[END]  Evaluete Points and Ranges ------------');
-        })->hourly();
+            
+            Log::debug('---------------[END]  Evaluete Points and Ranges & Start Reset Points ------------');
+        })->weeklyOn(7, '10:30');
 
 
 
         $schedule->call(function () {
-            Log::debug('---------------[START]  Reset Calendar --------');
+            Log::debug('---------------[START]  Reset Calendar refresh token --------');
             $this->userService = new UserService();
-            $this->twichService = new TwichService();
-            $this->scoreService = new ScoreService();
             $this->schedulerService = new ScheduleService();
-            
-            $now =  Carbon::now();
-         
-            $day = $now->format('l');
-            $hour = $now->format('H');
-           
+              
             //corre a las 3 amm arg 00 mex
-            if($day == 'Sunday' && $hour == "11"){
                 ModelsLog::create([
                     'action' => 'Reset Calendar',
-                    'message' => 'Se reseta los puntos'
+                    'message' => 'Se reseta los calendarios'
                 ]);
                 
-                Log::debug('---------------[Start] Start Reset Points---------------');
-                Log::debug('hour' . json_encode($hour));
-                Log::debug('day' . json_encode($day));
                 $allUsers = $this->userService->all();
                 foreach ($allUsers as $key => $user) {
-                    // $this->twichService->getRefreshToken($user);
+
                     $schedulers_by_user = $this->schedulerService->getByUserId($user->id);
                     if(isset($schedulers_by_user)){
                         if(count($schedulers_by_user) > 0){
                             foreach ($schedulers_by_user as $key => $scheduler_by_user) {
                                 $date = new Carbon($scheduler_by_user->start);
                                 //se elimina todos
-                                $day = $date->format('l');
-                                // if($day != 'Sunday'){
                                    $this->schedulerService->delete($scheduler_by_user->id);
-                                // }
                             }
                         }
                     }
-
-                    Log::debug('result:  ---' . json_encode($result));
                 }
-                
-            }
+            Log::debug('---------------[FINISH] END Reset Calendar---------------');
+        })->weeklyOn(7, '10:00');
+
+
+        $schedule->call(function () {
+            Log::debug('---------------[START]  Refresh Tokens--------');
+            $this->userService = new UserService();
+            $this->twichService = new TwichService();
+         
+                $allUsers = $this->userService->all();
+                foreach ($allUsers as $key => $user) {
+
+                    $this->twichService->getRefreshToken($user);
+
+                }
+
             Log::debug('---------------[FINISH] END Update Refresh Tokens---------------');
         })->hourly();
     }

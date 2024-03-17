@@ -278,7 +278,7 @@ class AdminController extends Controller
         // dd($schedulers);
         $allUsers = $this->userService->all();
         foreach ($allUsers as $key => $user) {
-            // $this->twichService->getRefreshToken($user);
+          
             $user_array['user_id'] = $user->id;
             $user_array['points_day'] = 0;
             $user_array['points_week'] = 0;
