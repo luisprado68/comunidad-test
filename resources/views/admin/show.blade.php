@@ -84,44 +84,44 @@
 
                                                     @foreach ($days as $time)
                                                     <div class="row">
-                                                        <div class="col-10">
+                                                        <div class="col-12">
                                                             <input class="form-control form-control-lg bg-light text-center"
                                                             type="text" placeholder="{{ $time['time'] }}" disabled>
                                                         </div>
-                                                        <div class="col-2">
+                                                        {{-- <div class="col-2">
                                                             
                                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                                                     data-bs-target="{{'#deleteCalendar' . $user->id}}">
                                                                     <i class="bi bi-trash-fill"></i>
                                                                 </button>
 
-                                                                 <!-- Modal -->
-                                            <div class="modal fade" id="{{'deleteCalendar' . $user->id}}" tabindex="-1"
-                                                aria-labelledby="calendarLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title text-dark" id="calendarLabel">
-                                                                Eliminar agenda
-                                                            </h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body text-dark">
-                                                        <p> Desea eliminar la agenda de {{$time['time'] }}?</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cerrar</button>
-                                                            <button type="button" class="btn btn-danger"><a
-                                                                    class="dropdown-item"
-                                                                    href="{{ route('admin-delete-schedule',$time['id']) }}">Eliminar</a></button>
                                                                 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                        </div>
+                                                                <div class="modal fade" id="{{'deleteCalendar' . $user->id}}" tabindex="-1"
+                                                                    aria-labelledby="calendarLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title text-dark" id="calendarLabel">
+                                                                                    Eliminar agenda
+                                                                                </h5>
+                                                                                <button type="button" class="btn-close"
+                                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body text-dark">
+                                                                            <p> Desea eliminar la agenda de {{$time['time'] }}?</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary"
+                                                                                    data-bs-dismiss="modal">Cerrar</button>
+                                                                                <button type="button" class="btn btn-danger"><a
+                                                                                        class="dropdown-item"
+                                                                                        href="{{ route('admin-delete-schedule',$time['id']) }}">Eliminar</a></button>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div> --}}
                                                     </div>
                                                         
                                                     @endforeach
