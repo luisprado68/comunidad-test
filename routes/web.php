@@ -79,6 +79,7 @@ Route::group(['/'], function () {
     Route::get('admin/users/upload/{id}', [AdminController::class, 'uploadUser'])->name('admin-user-add'); 
     Route::get('admin/deleted-users', [AdminController::class, 'usersDeleted'])->name('admin-users-deleted');
     Route::get('admin/schedulers/delete', [AdminController::class, 'deleteScheduler'])->name('admin-schedulers-delete');
+    Route::get('admin/delete/schedulers/{id}', [AdminController::class, 'deleteSchedulerUser'])->name('admin-delete-schedule');
     Route::get('admin/{id}', [AdminController::class, 'edit'])->name('admin-edit');
     Route::get('admin/show/{id}', [AdminController::class, 'show'])->name('admin-show');
     Route::get('admin/show/{id}/edit', [AdminController::class, 'editScheduler'])->name('admin-show-scheduler');

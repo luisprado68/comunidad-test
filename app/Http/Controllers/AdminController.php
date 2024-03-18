@@ -146,6 +146,39 @@ class AdminController extends Controller
             return redirect('admin');
         }
     }
+    public function deleteSchedulerUser($id){
+        
+        $streamers_supported = [];
+        $test = null;
+        if (Session::has('user-log')) {
+            $scheduler = $this->scheduleService->getById($id);
+            Log::debug(json_encode('scheduler *************** '.$scheduler));
+            $user = $scheduler->user;
+            Log::debug(json_encode('user *************** '.$user));
+            $scheduler->delete();
+            // dd($users);
+
+            if (isset($user->score)) {
+                $date = new Carbon($user->score->updated_at);
+                $date->tz = $user->time_zone;
+                $test = $date->format('d-m-Y H:i:s');
+            }
+
+            if (isset($user->streamSupport)) {
+                // dd($user->streamSupport);
+                foreach ($user->streamSupport as $streamer) {
+                    $supported = json_decode($streamer->supported);
+                    // dd($supported->name);
+                    array_push($streamers_supported, ['name' => $supported->name, 'time' => $streamer->updated_at]);
+                }
+            }
+
+            $groupedArray = $this->scheduleService->getSchedulerByUser($user);
+            return view('admin.show', ['user' => $user, 'week' => $groupedArray, 'date' => $test, 'streamers_supported' => $streamers_supported]);
+        } else {
+            return redirect('admin');
+        }
+    }
 
     public function usersDeleted(){
         if (Session::has('user-log')) {
@@ -340,11 +373,14 @@ class AdminController extends Controller
             $groupedArray = $this->scheduleService->getSchedulerByUser($user);
 
             // $date_array = $this->getDays($user);
-            // dd($groupedArray);
+            //  dump($groupedArray);
             return view('admin.show', ['user' => $user, 'week' => $groupedArray, 'date' => $test, 'streamers_supported' => $streamers_supported]);
         } else {
             return redirect('admin');
         }
+    }
+    public function getCalendarios(){
+
     }
 
     public function editScheduler(){

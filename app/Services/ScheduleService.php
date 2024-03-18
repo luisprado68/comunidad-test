@@ -81,7 +81,7 @@ final class ScheduleService
                     // dump($time);
                     $time->tz = $user_model->time_zone;
                     // dump($time);
-                    array_push($new_schedulers,['day' => strtolower($time->format('l')),'time' => $time->format('H:00')]);
+                    array_push($new_schedulers,['day' => strtolower($time->format('l')),'time' => $time->format('H:00'),'id' => $scheduler->id]);
                    
                     Log::debug('new_schedulers------------ '. json_encode($new_schedulers));
                 }
