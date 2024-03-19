@@ -88,7 +88,7 @@
                                                             <input class="form-control form-control-lg bg-light text-center"
                                                             type="text" placeholder="{{ $time['time'] }}" disabled>
                                                         </div>
-                                                        {{-- <div class="col-2">
+                                                        <div class="col-2">
                                                             
                                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                                                     data-bs-target="{{'#deleteCalendar' . $user->id}}">
@@ -121,7 +121,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                        </div> --}}
+                                                        </div>
                                                     </div>
                                                         
                                                     @endforeach
