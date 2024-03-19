@@ -84,11 +84,11 @@
 
                                                     @foreach ($days as $time)
                                                     <div class="row">
-                                                        <div class="col-12">
+                                                        <div class="col-10">
                                                             <input class="form-control form-control-lg bg-light text-center"
                                                             type="text" placeholder="{{ $time['time'] }}" disabled>
                                                         </div>
-                                                        <div class="col-2">
+                                                        <div class="col-2 p-1">
                                                             
                                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                                                     data-bs-target="{{'#deleteCalendar' . $user->id}}">
