@@ -105,7 +105,7 @@ class TwichController extends Controller
                                     }
 
                                     if ($score->points_week == 60) {
-                                        $score->points_week = 0;
+                                        // $score->points_week = 0;
                                     } else {
                                         $score->points_week = $score->points_week + 1;
                                     }
