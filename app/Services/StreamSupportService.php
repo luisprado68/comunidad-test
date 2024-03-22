@@ -121,6 +121,7 @@ final class StreamSupportService
             $score = new StreamSupport();
             $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
             $score->supported = isset($userArray['supported']) ? $userArray['supported'] : null;
+            $score->minutes = isset($userArray['minutes']) ? $userArray['minutes'] : null;
             $score->save();
             Log::debug('SupportScore');
             Log::debug(json_encode($score));
@@ -142,6 +143,7 @@ final class StreamSupportService
             $score = SupportScore::find($userArray['id']);
             $score->user_id = isset($userArray['user_id']) ? $userArray['user_id'] : null;
             $score->supported = isset($userArray['supported']) ? $userArray['supported'] : null;
+            $score->minutes = isset($userArray['minutes']) ? $userArray['minutes'] : null;
             $score->update();
             return $score->id;
         } catch (Error $e) {

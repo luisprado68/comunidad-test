@@ -21,6 +21,7 @@ class StreamSupport extends Authenticatable
 
         'user_id',
         'supported',
+        'minutes'
      
     ];
 

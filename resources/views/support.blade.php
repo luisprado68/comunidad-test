@@ -35,8 +35,8 @@
                                                             class="w-50 m-1 text-center " style="height: 200px">
                                                     @endif
                                                     <div class="col">
-                                                        <p id="contador"></p>
-                                                        <p id="contadorDos"></p>
+                                                        <p id="contador" style="display: none"></p>
+                                                        <p id="contadorDos" style="display: none"></p>
                                                         <p id="{{'twich_id'.$key}}">{{ $stream['twich_id'] }}</p>
                                                         <a id="{{'url'.$key}}" style="" href="{{ 'https://www.twitch.tv/' . $stream['login'] }}">
                                                         </a>

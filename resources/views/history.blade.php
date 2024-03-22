@@ -18,17 +18,19 @@
                                         </div>
 
                                     </div>
+                                   
                                     @foreach ($scores as $score)
                                     <div class="card bg-dark text-light mt-2 mb-2">
                                         <div class="row">
                                                 <div class="col-lg-12">
-                                                    {{-- <div class="text-lg font-bold text-center">mar. 03 oct. 04:05</div> --}}
-                                                    <div class="text-lg font-bold text-center">{{$score['date']}}</div>
+                                                    
+                                                    {{-- <div class="text-lg font-bold text-center">{{$score['date'] . ' Tiempo apoyando: '.$score['minutes'] .' min.' }}</div> --}}
+                                                    <div class="text-lg font-bold text-center">{{$score['date'] }}</div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="text-lg font-bold pt-3">{{$score['channel']}}</div>
                                                 </div>
-                                                @if ($score['time'] >= 55 && $score['time'] <= 59)
+                                                @if ($score['minutes'] >= 50 && $score['time'] <= 59)
                                                 <div class="col">
                                                     <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
                                                 </div>

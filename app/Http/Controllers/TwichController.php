@@ -67,6 +67,7 @@ class TwichController extends Controller
                                 Log::debug('*********** update supportStreams*************');
                                 $exist_supported = true;
                                 $supportStream->supported = json_encode($support_created);
+                                $supportStream->minutes = $minutos;
                                 $supportStream->update();
                             }               
                         }
@@ -77,6 +78,7 @@ class TwichController extends Controller
                         $support['name'] = $user_streaming->channel;
                         $streamSupport['user_id'] = $user_model->id;
                         $streamSupport['supported'] = json_encode($support);
+                        $streamSupport['minutes'] = $minutos;
                         $created = $this->streamSupportService->create($streamSupport);
                     }
                 }
