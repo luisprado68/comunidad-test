@@ -66,20 +66,23 @@ class SupportController extends Controller
                 //levante la imagen del canal en base de datos y cuando esta en on live muestre la img del directo
                 
                 foreach ($currentStreams as $key => $currentStream) {
-
+                    
                     $stream = $this->twichService->getStream($currentStream->user);
                     // $userTwich = $this->twichService->getUser($currentStream->user);
                     if(isset($stream) && !empty($stream)){
+
                         $size['name'] = $stream['user_name'];
                         $size['login'] = $stream['user_login'];
                         // dump($stream['thumbnail_url']);
                         $size['img'] = str_replace("{width}x{height}", "500x300", $stream['thumbnail_url']);
+                        $size['twich_id'] = $currentStream->user->twich_id;
                        
                         array_push($arrayStream,$size);
                     }else{
                         $size['name'] = $currentStream->user->channel;
                         $size['login'] =  $currentStream->user->channel;
                         $size['img'] =  $currentStream->user->img_profile;
+                        $size['twich_id'] = $currentStream->user->twich_id;
                        
                         array_push($arrayStream,$size);
                     }

@@ -90,7 +90,7 @@ class Kernel extends ConsoleKernel
 
 
         $schedule->call(function () {
-            Log::debug('---------------[START]  Reset Calendar refresh token --------');
+            Log::debug('---------------[START]  Reset Calendar --------');
             $this->userService = new UserService();
             $this->schedulerService = new ScheduleService();
               

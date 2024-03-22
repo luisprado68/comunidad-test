@@ -45,6 +45,7 @@ Route::group(['/'], function () {
     });
    
     Route::get('chatters', [TwichController::class, 'getChatters'])->name('get-chatters');
+    Route::post('/points', [TwichController::class, 'setPoints'])->name('set-points');
     // Route::get('send/', [LoginController::class, 'getToken'])->name('getToken');
 
     Route::get('summary', [SummaryController::class, 'index'])->name('summary');

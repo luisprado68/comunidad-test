@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="container">
         <div class="row">
             @if (session()->has('user') && session('status') == 0)
@@ -19,24 +20,44 @@
                                     </div>
                                 </div>
                                 @if ($show_streams)
-                                    @foreach ($streams as $streams)
+                              
+                                    @foreach ($streams as $key => $stream)
+                                   
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="card banner">
                                                 <div class="card-body text-center">
-                                                    <h3 class="text-light text-center">{{ $streams['name'] }}</h3>
+                                                    <h3 class="text-light text-center">{{ $stream['name'] }}</h3>
                                                     @if (env('APP_ENV') == 'local')
-                                                        <img src="{{ $streams['img'] }} " alt="tag"
+                                                        <img src="{{ $stream['img'] }} " alt="tag"
                                                             class="w-50  m-1 text-center " style="height: 200px">
                                                     @else
-                                                        <img src=" {{ $streams['img'] }}" alt="tag"
+                                                        <img src=" {{ $stream['img'] }}" alt="tag"
                                                             class="w-50 m-1 text-center " style="height: 200px">
                                                     @endif
                                                     <div class="col">
-                                                        <button class="btn btn-primary"><a
-                                                                href="{{ 'https://www.twitch.tv/' . $streams['login'] }}"
+                                                        <p id="contador"></p>
+                                                        <p id="contadorDos"></p>
+                                                        <p id="{{'twich_id'.$key}}">{{ $stream['twich_id'] }}</p>
+                                                        <a id="{{'url'.$key}}" style="" href="{{ 'https://www.twitch.tv/' . $stream['login'] }}">
+                                                        </a>
+                                                       
+                                                        {{-- <button class="btn btn-primary"><a
+                                                                href="{{ 'https://www.twitch.tv/' . $stream['login'] }}"
                                                                 target="_blank"
                                                                 style="text-decoration: none;color:white">Ver
-                                                                Stream</a></button>
+                                                                Stream</a></button> --}}
+                                                                @if ($key == 0)
+                                                                <button class="btn btn-primary"><a
+                                                                    href="#" onclick="abrirVentana(); return false;"
+                                                                    style="text-decoration: none;color:white">Ver
+                                                                    Stream</a></button>
+                                                                @else
+                                                                <button class="btn btn-primary"><a
+                                                                    href="#" onclick="abrirVentanaSegunda(); return false;"
+                                                                    style="text-decoration: none;color:white">Ver
+                                                                    Stream</a></button>
+                                                                @endif
+                                                               
 
                                                     </div>
                                                 </div>
