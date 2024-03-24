@@ -21,6 +21,12 @@ function abrirVentana() {
   intervalo = setInterval(actualizarContador, 1000); // Actualizar cada segundo
   // Abrir la ventana
   ventanaAbierta = window.open(laravelVariable, "_blank");
+
+  setTimeout(function() {
+    clearInterval(intervalo);
+    console.log('El intervalo se ha detenido después de 50 minutos');
+    sendData(2,twich_id);
+  }, 3000000);
 }
 
 function abrirVentanaSegunda() {
@@ -30,6 +36,14 @@ function abrirVentanaSegunda() {
   intervaloSegunda = setInterval(actualizarContadorSegunda, 1000); // Actualizar cada segundo
   // Abrir la ventana
   ventanaAbiertaSegunda = window.open(laravelVariableSeg, "_blank");
+
+  // Configuración del setTimeout para detener el setInterval después de 2 minutos (120,000 milisegundos)
+  setTimeout(function() {
+    clearInterval(intervaloSegunda);
+    console.log('El intervalo se ha detenido después de 50 minutos');
+    sendData(minutosTranscurridosSeg,twich_id_seg);
+    // minutos * 60000
+  }, 3000000);
 }
 
 function actualizarContador() {
@@ -53,9 +67,16 @@ function actualizarContador() {
     clearInterval(intervalo); // Detener el contador si la ventana se ha cerrado
   } else if (ventanaAbierta && !ventanaAbierta.document.hasFocus()) {
     clearInterval(intervalo); // Detener el contador si la ventana no está enfocada
+  }else if(minutosTranscurridos == 2){
+    clearInterval(intervalo);
   }
   console.log(minutosTranscurridos);
+  sendData(minutosTranscurridos,twich_id);
+   
+}
 
+function sendData(minutosTranscurridos,twich_id){
+  console.log('sendataaaa');
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     var datos = {
@@ -75,8 +96,6 @@ function actualizarContador() {
         }
     });
 }
-
-
 function actualizarContadorSegunda() {
 
   var ahoraSegunda = new Date();
@@ -97,26 +116,11 @@ function actualizarContadorSegunda() {
     clearInterval(intervaloSegunda); // Detener el contador si la ventana se ha cerrado
   } else if (ventanaAbiertaSegunda && !ventanaAbiertaSegunda.document.hasFocus()) {
     clearInterval(intervaloSegunda); // Detener el contador si la ventana no está enfocada
+  }else if(minutosTranscurridosSeg == 2){
+    clearInterval(intervaloSegunda);
   }
   console.log(minutosTranscurridosSeg);
 
-  var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-  var datos_seg = {
-      minutos: minutosTranscurridosSeg,
-      twich_id:twich_id_seg,
-      _token: csrfToken 
-  };
-  $.ajax({
-      type: 'POST',
-      url: '/points',
-      data: datos_seg,
-      success: function(response) {
-          console.log(response.mensaje); // Mensaje de éxito recibido del servidor
-      },
-      error: function(xhr, status, error) {
-          console.error(error); // Manejar errores de la solicitud
-      }
-  });
+  sendData(minutosTranscurridosSeg,twich_id_seg);
 
 }

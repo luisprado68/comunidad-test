@@ -35,18 +35,21 @@
                                                             class="w-50 m-1 text-center " style="height: 200px">
                                                     @endif
                                                     <div class="col">
+                                                        {{-- nuevos cambios --}}
                                                         <p id="contador" style="display: none"></p>
                                                         <p id="contadorDos" style="display: none"></p>
-                                                        <p id="{{'twich_id'.$key}}">{{ $stream['twich_id'] }}</p>
+                                                        <p id="{{'twich_id'.$key}}"  style="display: none">{{ $stream['twich_id'] }}</p>
                                                         <a id="{{'url'.$key}}" style="" href="{{ 'https://www.twitch.tv/' . $stream['login'] }}">
                                                         </a>
                                                        
-                                                        {{-- <button class="btn btn-primary"><a
+                                                        <button class="btn btn-primary"><a
                                                                 href="{{ 'https://www.twitch.tv/' . $stream['login'] }}"
                                                                 target="_blank"
                                                                 style="text-decoration: none;color:white">Ver
-                                                                Stream</a></button> --}}
-                                                                @if ($key == 0)
+                                                                Stream</a></button>
+
+                                                                {{-- nuevos cambios --}}
+                                                                {{-- @if ($key == 0)
                                                                 <button class="btn btn-primary"><a
                                                                     href="#" onclick="abrirVentana(); return false;"
                                                                     style="text-decoration: none;color:white">Ver
@@ -56,7 +59,7 @@
                                                                     href="#" onclick="abrirVentanaSegunda(); return false;"
                                                                     style="text-decoration: none;color:white">Ver
                                                                     Stream</a></button>
-                                                                @endif
+                                                                @endif --}}
                                                                
 
                                                     </div>

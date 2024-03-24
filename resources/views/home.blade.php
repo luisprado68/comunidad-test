@@ -8,15 +8,7 @@
                 @if (session()->has('user') && session('status') == 0)
 
                     @include('link')
-                @else
-                <div class="col">
-                    <p id="contador"></p>
-                    <a href="#" onclick="abrirVentana(); return false;">Abrir Ventana</a>
-                    
-                    <p id="contadorDos"></p>
-                    <a href="#" onclick="abrirVentanaSegunda(); return false;">Abrir Ventana Dos</a>
-                </div>
-                
+                @else 
                     <div class="col text-center pb-3">
                         <h4 class="text-light text-center">BIENVENIDO A LA COMUNIDAD MAS GRANDE DE STREAMERS</h4>
                         <h4 class="text-light text-center">DONDE PODRÁS CONOCER CREADORES DE CONTENIDO</h4>

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\RangeType;
 use App\Enums\RoleType;
+use App\Models\Log as ModelsLog;
 use App\Models\Score;
 use App\Models\User;
 use Broobe\Services\Service;
@@ -141,6 +142,10 @@ final class ScoreService
                     $score = $user->score;
                     if(isset($score)){
                         if ($user->score->points_week == 60) {
+                            ModelsLog::create([
+                                'action' => '60 puntos',
+                                'message' => 'Usuario: '.$user->id . ' Channel: '.$user->channel.' Subio de rango puntaje semanal: '.$user->score->points_week,
+                            ]);
                                 if ($user->range_id < 4) {
                                     $range_id = $user->range_id;
                                     $range_id = $range_id + 1;
@@ -153,6 +158,10 @@ final class ScoreService
                         ($user->score->points_week < 45 &&  $user->range_id == RangeType::plata)) {
                              
                             if($user->range_id > RangeType::bronce && $user->role->id == RoleType::streamer ){
+                                ModelsLog::create([
+                                    'action' => 'Bajo de rango ',
+                                    'message' => 'Usuario: '.$user->id . ' Channel: '.$user->channel.' bajo de rango puntaje semanal: '.$user->score->points_week,
+                                ]);
                                 Log::debug('Bajo de rango*********');
                                 Log::debug($user->score->points_week);
                                 Log::debug($user->channel);
