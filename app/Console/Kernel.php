@@ -85,7 +85,7 @@ class Kernel extends ConsoleKernel
                 }
             
             Log::debug('---------------[END]  Evaluete Points and Ranges & Start Reset Points ------------');
-        })->weeklyOn(7, '11:53');
+        })->weeklyOn(7, '11:55');
 
 
 
