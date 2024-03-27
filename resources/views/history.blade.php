@@ -30,7 +30,7 @@
                                                 <div class="col">
                                                     <div class="text-lg font-bold pt-3">{{$score['channel']}}</div>
                                                 </div>
-                                                @if ($score['minutes'] >= 50 && $score['time'] <= 59)
+                                                @if ($score['time'] >= 50 && $score['time'] <= 59)
                                                 <div class="col">
                                                     <div class="m-1 bg-success text-light text-center">Apoyo Completo</div>
                                                 </div>
