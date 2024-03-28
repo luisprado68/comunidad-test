@@ -25,37 +25,37 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->call(function () {
+        // $schedule->call(function () {
           
-            $this->twichService = new TwichService();
-            $this->scheduleService = new ScheduleService();
-            $this->scoreService = new ScoreService();
-            $this->userService = new UserService();
+        //     $this->twichService = new TwichService();
+        //     $this->scheduleService = new ScheduleService();
+        //     $this->scoreService = new ScoreService();
+        //     $this->userService = new UserService();
 
-            $now =  Carbon::now();
-            $minute = $now->format('i');
+        //     $now =  Carbon::now();
+        //     $minute = $now->format('i');
 
-            if ($minute == 10  || $minute == 59) {
+        //     if ($minute == 10  || $minute == 59) {
                 
-                Log::debug('-------------------------------------------------minute: ' . $minute);
-                Log::debug('---------------[START]  Chatters ------------');
+        //         Log::debug('-------------------------------------------------minute: ' . $minute);
+        //         Log::debug('---------------[START]  Chatters ------------');
                
-                $currentStreams = $this->scheduleService->getCurrentStreamKernel();
-                Log::debug('**** currentStreams ******** ');
-                Log::debug(json_encode($currentStreams));
-                if (count($currentStreams) > 0) {
-                    foreach ($currentStreams as $key => $schedule_streaming) {
+        //         $currentStreams = $this->scheduleService->getCurrentStreamKernel();
+        //         Log::debug('**** currentStreams ******** ');
+        //         Log::debug(json_encode($currentStreams));
+        //         if (count($currentStreams) > 0) {
+        //             foreach ($currentStreams as $key => $schedule_streaming) {
 
-                        $chatters_schedule =  $this->twichService->getChattersKernel($schedule_streaming);
+        //                 $chatters_schedule =  $this->twichService->getChattersKernel($schedule_streaming);
                        
-                    }
-                }
+        //             }
+        //         }
 
-                Log::debug('---------------[FINISH] END Chatters------------');
-            } else {
-                Log::debug('---------------No esta habilitado------------');
-            }
-        })->everyMinute();
+        //         Log::debug('---------------[FINISH] END Chatters------------');
+        //     } else {
+        //         Log::debug('---------------No esta habilitado------------');
+        //     }
+        // })->everyMinute();
 
 
         $schedule->call(function () {
@@ -122,11 +122,25 @@ class Kernel extends ConsoleKernel
             Log::debug('---------------[START]  Refresh Tokens--------');
             $this->userService = new UserService();
             $this->twichService = new TwichService();
-         
+            
+            
                 $allUsers = $this->userService->all();
                 foreach ($allUsers as $key => $user) {
 
                     $this->twichService->getRefreshToken($user);
+                    if(isset($user->time_zone)){
+                        $now =  Carbon::now($user->time_zone);
+                        $hour = $now->format('H');
+                        if($hour == '00'){
+                            
+                            $score = $user->score;
+                            if(isset($score)){
+                                $score->points_day = 0;
+                                $user->save();
+                            }
+                        }
+                    }
+                   
 
                 }
 

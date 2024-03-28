@@ -36,20 +36,20 @@
                                                     @endif
                                                     <div class="col">
                                                         {{-- nuevos cambios --}}
-                                                        {{-- <p id="contador" style="display: none"></p>
+                                                        <p id="contador" style="display: none"></p>
                                                         <p id="contadorDos" style="display: none"></p>
                                                         <p id="{{'twich_id'.$key}}"  style="display: none">{{ $stream['twich_id'] }}</p>
                                                         <a id="{{'url'.$key}}" style="" href="{{ 'https://www.twitch.tv/' . $stream['login'] }}">
-                                                        </a> --}}
+                                                        </a>
                                                        
-                                                        <button class="btn btn-primary"><a
+                                                        {{-- <button class="btn btn-primary"><a
                                                                 href="{{ 'https://www.twitch.tv/' . $stream['login'] }}"
                                                                 target="_blank"
                                                                 style="text-decoration: none;color:white">Ver
-                                                                Stream</a></button> 
+                                                                Stream</a></button>  --}}
 
                                                                 {{-- nuevos cambios--}}
-                                                               {{--  @if ($key == 0)
+                                                                @if ($key == 0)
                                                                 <button class="btn btn-primary"><a
                                                                     href="#" onclick="abrirVentana(); return false;"
                                                                     style="text-decoration: none;color:white">Ver
@@ -60,7 +60,7 @@
                                                                     style="text-decoration: none;color:white">Ver
                                                                     Stream</a></button>
                                                                 @endif
-                                                                --}}
+                                                               
 
                                                     </div>
                                                 </div>
