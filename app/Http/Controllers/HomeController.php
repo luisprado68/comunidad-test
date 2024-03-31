@@ -32,6 +32,7 @@ class HomeController extends Controller
     }
     public function index()
     {
+
         if(session()->exists('user')){
             $user = session('user');
             Log::debug('user------------------------ ' . json_encode($user));

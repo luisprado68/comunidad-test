@@ -410,7 +410,7 @@ final class ScheduleService
         //     $minute = env('WATCH_SUPPORT_MINUTE');
         // }
         // else{
-            $back_minute = 59;
+            $back_minute = 58;
             $minute = env('WATCH_SUPPORT_MINUTE');
             $hour = $date_before->format('H');
             // $backHour = $hour-1;
