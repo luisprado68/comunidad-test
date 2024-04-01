@@ -152,7 +152,8 @@ class AdminController extends Controller
         $test = null;
         if (Session::has('user-log')) {
             $scheduler = $this->scheduleService->getById($id);
-            Log::debug(json_encode('scheduler *************** '.$scheduler));
+            if(isset($scheduler)){
+                Log::debug(json_encode('scheduler *************** '.$scheduler));
             $user = $scheduler->user;
             Log::debug(json_encode('user *************** '.$user));
             $scheduler->delete();
@@ -174,6 +175,8 @@ class AdminController extends Controller
             }
 
             $groupedArray = $this->scheduleService->getSchedulerByUser($user);
+            }
+            
             return view('admin.show', ['user' => $user, 'week' => $groupedArray, 'date' => $test, 'streamers_supported' => $streamers_supported]);
         } else {
             return redirect('admin');

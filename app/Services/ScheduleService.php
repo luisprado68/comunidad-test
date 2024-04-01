@@ -527,6 +527,9 @@ final class ScheduleService
         if($time_zone == 'Europe/Berlin'){
             $hourDifference = $hourDifference  * -1;
         }
+        if($time_zone == 'Atlantic/Canary'){
+            $hourDifference = $hourDifference  * -1;
+        }
         // Log::debug('hourDifference------------------------***' . json_encode($hourDifference));
         return $hourDifference;
     }
