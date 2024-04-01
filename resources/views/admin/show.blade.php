@@ -162,7 +162,12 @@
                                            
                                             
                                         @else
-                                            0
+                                        <div class="col-3 mb-3 mt-3">
+                                            {{-- <label class="block mb-2 text-sm font-medium text-white" for="name">Punteje Semanal</label> --}}
+                                            <input type="number" class="form-control" aria-label="Default" name="points"  min="0" max="60"
+                                                aria-describedby="inputGroup-sizing-default" value="0">
+                                            
+                                        </div>
                                         @endif
                                         <div class="col mb-3 mt-3">
                                             
