@@ -84,7 +84,7 @@ class ScheduleController extends Controller
                     $current_t = Carbon::now();
                     $current_t->tz = $user_model->time_zone;
                     $day = $current_t->format('l');
-                    // dump($schedules_by_user);
+                    // dump($day);
                     if ($day == 'Sunday' || $user_model->range_id == 1 ||  $user_model->role_id != 2) {
 
 
