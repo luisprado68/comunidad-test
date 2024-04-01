@@ -143,7 +143,8 @@
                             <div class="row">
                                
                                     <form action="{{ route('admin-update-point') }}" method="POST">
-
+                                        <input type="number" class="form-control" aria-label="Default" name="user_id" 
+                                                aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
                                         <div class="col-8 mb-3 mt-3">
                                             <input class="form-check-input check-calendar" type="checkbox"  type="checkbox" name="calendar_enabled"  value="1" @if (isset($user)) @if ($user->calendar_enabled==1) checked @endif @endif id="0">
                                             <label class="form-check-label" for="flexCheckChecked">
@@ -169,8 +170,7 @@
                                             <div class="col mb-3 mt-3">
                                                 <button type="submit" class="btn btn-success">Guardar</button>
                                             </div>
-                                        <input type="number" class="form-control" aria-label="Default" name="user_id"  min="0" max="60"
-                                                aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
+                                        
                                     </form>
                             </div>
                         </div>
