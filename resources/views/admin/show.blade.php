@@ -157,25 +157,21 @@
                                                 {{-- <label class="block mb-2 text-sm font-medium text-white" for="name">Punteje Semanal</label> --}}
                                                 <input type="number" class="form-control" aria-label="Default" name="points"  min="0" max="60"
                                                     aria-describedby="inputGroup-sizing-default" value="{{ $user->score->points_week }}">
+                                            </div>
+                                        @else
+                                            <div class="col-3 mb-3 mt-3">
+                                                {{-- <label class="block mb-2 text-sm font-medium text-white" for="name">Punteje Semanal</label> --}}
+                                                <input type="number" class="form-control" aria-label="Default" name="points"  min="0" max="60"
+                                                    aria-describedby="inputGroup-sizing-default" value="0">
                                                 
                                             </div>
-                                           
-                                            
-                                        @else
-                                        <div class="col-3 mb-3 mt-3">
-                                            {{-- <label class="block mb-2 text-sm font-medium text-white" for="name">Punteje Semanal</label> --}}
-                                            <input type="number" class="form-control" aria-label="Default" name="points"  min="0" max="60"
-                                                aria-describedby="inputGroup-sizing-default" value="0">
-                                            
-                                        </div>
                                         @endif
-                                        <div class="col mb-3 mt-3">
-                                            
-                                            <button type="submit" class="btn btn-success">Guardar</button>
-                                    </div>
+                                            <div class="col mb-3 mt-3">
+                                                <button type="submit" class="btn btn-success">Guardar</button>
+                                            </div>
                                         <input type="number" class="form-control" aria-label="Default" name="user_id"  min="0" max="60"
                                                 aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
-                                </form>
+                                    </form>
                             </div>
                         </div>
                             <h6>Punteje Dia</h6>
