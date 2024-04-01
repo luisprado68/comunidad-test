@@ -530,6 +530,7 @@ final class ScheduleService
         if($time_zone == 'Atlantic/Canary'){
             $hourDifference = $hourDifference  * -1;
         }
+        
         // Log::debug('hourDifference------------------------***' . json_encode($hourDifference));
         return $hourDifference;
     }
