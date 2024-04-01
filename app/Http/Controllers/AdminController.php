@@ -294,6 +294,48 @@ class AdminController extends Controller
         }
     }
 
+    public function updatePoints(Request $request){
+
+        $streamers_supported = [];
+        if (Session::has('user-log')) {
+            $this->route = FacadesRoute::current();
+            $data = $request->all();
+            // dump($data);
+            $this->user_model = session('user-log');
+            $user = $this->userService->getById(intval($data['user_id']));
+            if(isset($user)){
+                $score = $user->score;
+                $score->points_week = intval($data['points']);
+                $score->save();
+            }
+           
+
+            // dump($score);
+            if (isset($user->score)) {
+                $date = new Carbon($user->score->updated_at);
+                $date->tz = $user->time_zone;
+                $test = $date->format('d-m-Y H:i:s');
+            }
+
+            if (isset($user->streamSupport)) {
+                // dd($user->streamSupport);
+                foreach ($user->streamSupport as $streamer) {
+                    $supported = json_decode($streamer->supported);
+                    // dd($supported->name);
+                    array_push($streamers_supported, ['name' => $supported->name, 'time' => $streamer->updated_at]);
+                }
+            }
+
+            $groupedArray = $this->scheduleService->getSchedulerByUser($user);
+            
+            
+            return view('admin.show', ['user' => $user, 'week' => $groupedArray, 'date' => $test, 'streamers_supported' => $streamers_supported]);
+      
+        } else {
+            return redirect('admin');
+        }
+    }
+
     public function schedulersDelete(Request $request){
 
         $scheduler = $request->all();
