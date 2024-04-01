@@ -141,24 +141,33 @@
                                 @csrf
                             </form> --}}
                             <div class="row">
-                                <div class="col-1 mb-3 mt-3">
+                               
                                     <form action="{{ route('admin-update-point') }}" method="POST">
-                                        @csrf
-                                    @if (isset($user->score->points_week))
-                                    
-                                            {{-- <label class="block mb-2 text-sm font-medium text-white" for="name">Punteje Semanal</label> --}}
-                                            <input type="number" class="form-control" aria-label="Default" name="points"  min="0" max="60"
-                                                aria-describedby="inputGroup-sizing-default" value="{{ $user->score->points_week }}">
-                                            
+
+                                        <div class="col-8 mb-3 mt-3">
+                                            <input class="form-check-input check-calendar" type="checkbox"  type="checkbox" name="calendar_enabled"  value="1" @if (isset($user)) @if ($user->calendar_enabled==1) checked @endif @endif id="0">
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                                Agenda Activa
+                                            </label>
                                         </div>
+                                        @csrf
+                                        @if (isset($user->score->points_week))
+                                            <div class="col-3 mb-3 mt-3">
+                                                {{-- <label class="block mb-2 text-sm font-medium text-white" for="name">Punteje Semanal</label> --}}
+                                                <input type="number" class="form-control" aria-label="Default" name="points"  min="0" max="60"
+                                                    aria-describedby="inputGroup-sizing-default" value="{{ $user->score->points_week }}">
+                                                
+                                            </div>
+                                           
+                                            
+                                        @else
+                                            0
+                                        @endif
                                         <div class="col mb-3 mt-3">
-                                         
-                                                <button type="submit" class="btn btn-success">Guardar</button>
-                                        
-                                    @else
-                                        0
-                                    @endif
-                                    <input type="number" class="form-control" aria-label="Default" name="user_id"  min="0" max="60"
+                                            
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                    </div>
+                                        <input type="number" class="form-control" aria-label="Default" name="user_id"  min="0" max="60"
                                                 aria-describedby="inputGroup-sizing-default" value="{{ $user->id }}" style="display: none">
                                 </form>
                             </div>

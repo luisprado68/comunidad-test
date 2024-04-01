@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('stream_support', function (Blueprint $table) {
-      
-            $table->integer('minutes')->nullable();
-           
-        });
+        if (!Schema::hasColumn('stream_support', 'minutes')) {
+            Schema::table('stream_support', function (Blueprint $table) {
+            
+                $table->integer('minutes')->nullable();
+               
+            });
+        }
+       
     }
 
     /**

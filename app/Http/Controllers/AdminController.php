@@ -304,6 +304,14 @@ class AdminController extends Controller
             $this->user_model = session('user-log');
             $user = $this->userService->getById(intval($data['user_id']));
             if(isset($user)){
+                if(array_key_exists('calendar_enabled',$data)){
+                    $status = true;
+                }else{
+                    $status = false;
+                }
+                $user->calendar_enabled = $status;
+                    $user->save();
+
                 $score = $user->score;
                 $score->points_week = intval($data['points']);
                 $score->save();

@@ -301,3 +301,9 @@ tr.top {
 .animate__animated.animate__bounce:hover{
   --animate-duration: 2s;
 }
+
+
+.check-calendar:checked {
+  background-color: #239714 !important;
+  border-color: #239714 !important;
+}

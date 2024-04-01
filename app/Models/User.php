@@ -36,6 +36,7 @@ class User extends Authenticatable
         'password',
         'token',
         'refresh_token',
+        'calendar_enabled'
     ];
 
     /**
