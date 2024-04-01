@@ -138,6 +138,11 @@ class Kernel extends ConsoleKernel
                                 $score->points_day = 0;
                                 $user->save();
                             }
+
+                            // ModelsLog::create([
+                            //     'action' => 'Reset de puntaje diario',
+                            //     'message' => 'Se reseta los puntos a 0'
+                            // ]);
                         }
                     }
                    

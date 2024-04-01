@@ -83,6 +83,7 @@
                                                         disabled>
 
                                                     @foreach ($days as $time)
+                                                    {{-- @dump($time) --}}
                                                     <div class="row">
                                                         <div class="col-10">
                                                             <input class="form-control form-control-lg bg-light text-center"
@@ -91,12 +92,12 @@
                                                         <div class="col-2 p-1">
                                                             
                                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                                    data-bs-target="{{'#deleteCalendar' . $user->id}}">
+                                                                    data-bs-target="{{'#deleteCalendar' . $time['id']}}">
                                                                     <i class="bi bi-trash-fill"></i>
                                                                 </button>
 
                                                                 
-                                                                <div class="modal fade" id="{{'deleteCalendar' . $user->id}}" tabindex="-1"
+                                                                <div class="modal fade" id="{{'deleteCalendar' . $time['id']}}" tabindex="-1"
                                                                     aria-labelledby="calendarLabel" aria-hidden="true">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
