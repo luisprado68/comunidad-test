@@ -273,6 +273,8 @@ final class UserService
      */
     public function create($userArray)
     {
+        Log::debug('create userArray :' . json_encode($userArray));
+        
         try {
             $user = new User();
             if (isset($userArray['id'])) {
