@@ -136,7 +136,7 @@
                         </div>
                         <div class="col-lg-12">
                             <h4 class="text-center">Puntaje</h4>
-                            <h6>Punteje Semanal</h6>
+                          
                             {{-- <form action="{{ route('admin-post') }}" method="POST">
                                 @csrf
                             </form> --}}
@@ -150,6 +150,7 @@
                                                 Agenda Activa
                                             </label>
                                         </div>
+                                        <h6>Punteje Semanal</h6>
                                         @csrf
                                         @if (isset($user->score->points_week))
                                             <div class="col-3 mb-3 mt-3">
