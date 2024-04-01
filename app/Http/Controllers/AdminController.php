@@ -295,7 +295,7 @@ class AdminController extends Controller
     }
 
     public function updatePoints(Request $request){
-
+        $new_date = null;
         $streamers_supported = [];
         if (Session::has('user-log')) {
             $this->route = FacadesRoute::current();
@@ -331,7 +331,7 @@ class AdminController extends Controller
             if (isset($user->score)) {
                 $date = new Carbon($user->score->updated_at);
                 $date->tz = $user->time_zone;
-                $test = $date->format('d-m-Y H:i:s');
+                $new_date = $date->format('d-m-Y H:i:s');
             }
 
             if (isset($user->streamSupport)) {
@@ -346,7 +346,7 @@ class AdminController extends Controller
             $groupedArray = $this->scheduleService->getSchedulerByUser($user);
             
             
-            return view('admin.show', ['user' => $user, 'week' => $groupedArray, 'date' => $test, 'streamers_supported' => $streamers_supported]);
+            return view('admin.show', ['user' => $user, 'week' => $groupedArray, 'date' => $new_date, 'streamers_supported' => $streamers_supported]);
       
         } else {
             return redirect('admin');
